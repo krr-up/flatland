@@ -17,7 +17,9 @@ There are two more unique rotations, leading to a total of four possible sets of
 
 * **Case 0**: no path
 * **Case 1**: 2 sets of paths
+  * **Case 1b**: 4 sets of paths (for simple turns)
 * **Case 2**: 4 sets of paths
+  * **Case 2b**: 4 sets of paths (for mirrored switch)
 * **Case 3**: 1 set of paths
 * **Case 4**: 4 sets of paths
 * **Case 5**: 2 sets of paths
