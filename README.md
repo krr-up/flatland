@@ -16,3 +16,14 @@ The second encoding should analyze the facts that represent the environment and 
 A way to visualize the solution encoding (in a manner similar to what flatland has provided) will help both with troubleshooting and with understanding generally the approach that a solution encoding has taken.
 
 >💡 Will this require mapping the solution output to Python, in such a way that the existing flatland visualization environment can understand it?
+
+---
+
+## Pre-class update
+`2023.04.20`
+
+### Retaining agent orientation
+It is likely that we will need to retain at each time step the orientation of the train.  There are a few reasons for this:
+1. This is consistent with the approach that flatland uses
+2. The given actions are relative to the direction of the train (i.e. move forward, turn left, turn right), not absolute instructions (e.g. move west, move east)
+3. There are many variations on the existing cases (type of track—switch, crossing, etc.) depending on their orientation, and this will be necessary for transitions (i.e. a path over the course of at least three time steps: where it comes from, where it is now, and where it's going)
