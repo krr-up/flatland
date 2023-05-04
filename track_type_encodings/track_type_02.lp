@@ -19,10 +19,22 @@
 
 %% track(X-position, Y-position, Type, Direction, Flip)
 %% path(X0,Y0, X,Y, X2,Y2)
-track(X,Y, 2,D) :- path(|D-1|-1, -1*(|D-2|+1),  X, Y,   (|D-2|+1), |D-1|-1).
-track(X,Y, 2,D) :- path(|D-1|-1, -1*(|D-2|+1),  X, Y,   (|D-2|+1), (|D-1|-1)*-1).
+path(X0,Y0, X,Y, -1*X0,-1*Y0) :- track(X,Y,2,D), X0 = X+(|D-1|-1), Y0 = -1*(Y+(|D-2|-1)).
+path(X0,Y0, X,Y,    Y0,-1*X0) :- track(X,Y,2,D), X0 = X+(|D-1|-1), Y0 = -1*(Y+(|D-2|-1)).
 path(X0,Y0, X1,Y1, X2,Y2) :- path(X2,Y2, X1,Y1, X0,Y0).
 
 
 %% example
 track(0,0,2,0).
+
+
+track(0,0,2,0).
+    % expected results - track(0,0,2,0).
+    % path( (0,-1) (0, 0) (0, 1) )
+    % path( (0,-1) (0, 0) (-1,0) )
+    % path( (0, 1) (0, 0) (0,-1) )
+    % path( (-1,0) (0, 0) (0,-1) )
+    
+
+    
+#show path/6.
