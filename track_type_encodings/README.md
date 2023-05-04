@@ -1,6 +1,8 @@
 # Creating Transition Functions
 As part of the overall effort of representing the flatland environment in ASP, transition functions play an important role. Unlike in a 4-connected or 8-connected grid map, the path that an agent can take is determined by the type of track occupying a cell.
 
+![Track types](https://i.imgur.com/Q72tAI8.png)
+
 <br><br>
 
 For instance,
