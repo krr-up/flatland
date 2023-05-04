@@ -87,7 +87,7 @@ Let's take another look at the transitions for the straight path in each orienta
 * Orientation 0
     * `(0,-1)` → `(0, 1)`
 * Orientation 1
-    * `(-1,0)` → `(0, 1)`
+    * `(-1,0)` → `(1, 0)`
 * Orientation 2
     * `(0, 1)` → `(0,-1)`
 * Orientation 3
