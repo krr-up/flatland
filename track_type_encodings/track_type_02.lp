@@ -26,9 +26,6 @@ path(X0,Y0, X1,Y1, X2,Y2) :- path(X2,Y2, X1,Y1, X0,Y0).
 
 %% example
 track(0,0,2,0).
-
-
-track(0,0,2,0).
     % expected results - track(0,0,2,0).
     % path( (0,-1) (0, 0) (0, 1) )
     % path( (0,-1) (0, 0) (-1,0) )
