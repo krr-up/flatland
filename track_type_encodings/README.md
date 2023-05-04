@@ -21,7 +21,7 @@ This document is an attempt at describing the logic behind the transition logic 
 ## Case 0: Empty
 > There is no transition.
 
-Body.
+Cells of this case are thought of as having no track at all and therefore are not assigned transition functions, as agents cannot pass through them.
 
 
 ## Case 1: Straight
