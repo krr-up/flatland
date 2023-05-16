@@ -23,6 +23,7 @@ The asprilo environment allows users to simulate the movement of agents within a
 ![asprilo environment](https://github.com/potassco/asprilo/blob/master/docs/img/example_inst.png?raw=true)
 
 The above implementation can be encoded in ASP.  First, each node within the environment is established.  After that, anything occupying the grid—such as robots, shelves, and other objects—are then defined after that.  Each initialization is represented by an `init()` predicate, within which can be found several crucial pieces of information, including the object type and its location. A snippet of ASP code defining the above implementation can be seen below:
+<br><br><br><br>
 
 ```
 % initialize nodes
@@ -42,8 +43,11 @@ init(object(shelf,1),value(at,(1,1))).
 init(object(shelf,2),value(at,(2,1))).
 init(object(shelf,3),value(at,(3,1))).
 ```
+<br>
 
 Various approaches can then lead to solutions wherein agents traverse the grid to complete their tasks. Agents can do so by moving from one cell to the next during any given time step.  Certain constraints must be considered, such as moving into unoccupied spaces.  In principle, the tasks that asprilo represents bear similarity to those in the Flatland challenge—each agent must navigate a grid-like world, beginning at its origin and ending at its destination, without interfering with others doing the same.  However, there are differences between the two which indicate that asprilo alone would not suffice as an ASP implementation for Flatland. 
+
+<br>
 
 ### What is a track transition?
 The major difference between the asprilo environment and the Flatland environment is the freedom of movement.  **In asprilo**, there is a path connecting each cell to its four neighboring cells (to the north, east, south, and west).  An agent may move from its current cell to any of the four neighboring cells, provided no constraint impedes its ability to move, such as an obstacle or another agent already present in the neighboring cell.  **In Flatland**, the ability for an agent to proceed to an adjacent cell is determined by the type of track in that cell.  The track acts as a guide that dictates all possible paths an agent may take.  For instance, if an agent is traveling along a straight track, it cannot move to the left or to the right—it must go straight.
@@ -66,3 +70,7 @@ To answer both of these questions, it would be beneficial to investigate the Fla
 * How could the movement of trains over time be represented?
 
 Consider elements from the asprilo framework.  Which aspects can be transferred; which aspects should be adapted and how could they be changed to fit this problem?
+
+Then, attempt to represent the environment below in ASP.  The red triangle represents the train facing east, and the blue square represents its destination station.
+
+![Example environment](https://github.com/krr-up/flatland/blob/murphy_dev/admin/Example%20environment.png?raw=true)
