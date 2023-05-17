@@ -67,7 +67,6 @@ This assignment asks two broad questions:
 
 To answer both of these questions, it would be beneficial to investigate the Flatland challenge in more depth, paying close attention to the attributes within the environment—the trains, the tracks, the stations, etc.
 * How each of these could and should be represented in ASP?
-* How could the movement of trains over time be represented?
 
 Consider elements from the asprilo framework.  Which aspects can be transferred; which aspects should be adapted and how could they be changed to fit this problem?
 
