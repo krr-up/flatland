@@ -4,11 +4,6 @@ As part of the overall effort of representing the flatland environment in ASP, t
 ![Track types](https://i.imgur.com/Q72tAI8.png)
 
 <br><br>
-
-For instance,
-[example]
-
-<br><br>
 The first approach is to define possible transitions by generating path atoms.  Path atoms contain three pairs of coordinates: the origin, the passthrough, and the destination.  An important note: an agent will never have more than two options.
 
 The creation of transition functions must occur in such a way that it can be broadly applied to all cases.  The number of different types of tracks, coupled with the various orientations the tracks can take on, results in a complex set of possibilities.
@@ -20,29 +15,21 @@ This document is an attempt at describing the logic behind the transition logic 
 * Facing south: 2
 * Facing west: 3
 
-## Case 0: Empty
-> There is no transition.
-
-Cells of this case are thought of as having no track at all and therefore are not assigned transition functions, as agents cannot pass through them.
-
-
-## Case 1: Straight
-> Each orientation has two possible paths.
-
-Body.
-
-### Case 1a: Curve left
-
-Body.
-
-### Case 1b: Curve right
-
-Body.
+## Building blocks
+> There are a few building blocks that allow us to craft transition functions for all track types
+* Straight
+   * Horizontal
+   * Vertical
+* Curve
+   * Standard
+   * Horizontally-flipped
+   * Vertically-flipped 
 
 
-## Case 2: Simple switch
-> Each orientation has four possible paths. 
+## Case 2
 > A track with an orientation of 0 is defined as a track that is oriented in such a way that an agent facing north (0) would have the choice of proceeding straight or traveling along the curve.
+
+Case 2 is an important track type to understand, because it contains both a straight piece and a curved piece.  Once the transitions for this track type have been determined, transformations can be applied to these tracks to fit all other cases.
 
 Here are the following transitions for a simple switch placed at `(0, 0)`:
 * Orientation 0
@@ -109,10 +96,6 @@ Let's take another look at the transitions for the curved path in each orientati
 
 At first glance, the logic appears a bit more complicated. In all cases, the $x$ and $y$ coordinate values can be swapped—and this gets us closer.  But for orientations 1 and 3, the sign must flip; for the other orientations, the sign stays the same.  This can be achieved by multiplying the new $y$ value by $-1$ to flip the sign, as this value is always $0$ in the case of the even orientations and therefore no change will occur.
 
-### Accounting for the inverse of these track layouts
-To be continued.
-
-
 ### What this looks like in Clingo
 ```
 path(|D-1|-1, -1*(|D-2|+1),  X, Y,   |D-2|+1,     |D-1|-1)  :- track(X,Y, 2,D). % transition for straight path
@@ -120,17 +103,33 @@ path(|D-1|-1, -1*(|D-2|+1),  X, Y,   |D-2|+1, -1*(|D-1|-1)) :- track(X,Y, 2,D). 
 path(X0,Y0, X1,Y1, X2,Y2) :- path(X2,Y2, X1,Y1, X0,Y0). % reverse transitions also apply
 ```
 
+### Accounting for the inverse of these track layouts
+Code to be included.
 
 
 ## Case 3: Diamond crossing
 > Each orientation has four possible paths.  However, these paths are the same regardless of orientation.
 
-Body.
+The straight path from Case 2 is replicated here.  A second straight path for the horizontal tracks is included.  No parameter for rotating the tracks (altering the orientation) is necessary because this track type has perfect turn symmetry—it is the same no matter which direction the track is placed in.
+
+### What this looks like in Clingo
+```
+path(|D-1|-1, -1*(|D-2|+1),  X, Y,   |D-2|+1,     |D-1|-1)  :- track(X,Y, 2,D). % transition for vertical path
+... % transition for horizontal path
+path(X0,Y0, X1,Y1, X2,Y2) :- path(X2,Y2, X1,Y1, X0,Y0). % reverse transitions also apply
+```
 
 
 ## Case 4: Single slip switch
 
-Body.
+The paths from Case 3 are replicated here.  Additionally, the curved path from Case 2 is also included to complete this track type.
+### What this looks like in Clingo
+```
+path(|D-1|-1, -1*(|D-2|+1),  X, Y,   |D-2|+1,     |D-1|-1)  :- track(X,Y, 2,D). % transition for vertical path
+... % transition for horizontal path
+path(|D-1|-1, -1*(|D-2|+1),  X, Y,   |D-2|+1, -1*(|D-1|-1)) :- track(X,Y, 2,D). % transition for curved path
+path(X0,Y0, X1,Y1, X2,Y2) :- path(X2,Y2, X1,Y1, X0,Y0). % reverse transitions also apply
+```
 
 
 ## Case 5: Double slip switch
