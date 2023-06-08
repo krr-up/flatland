@@ -26,7 +26,7 @@ This document is an attempt at describing the logic behind the transition logic 
    * Vertically-flipped 
 
 
-## Case 2
+## Case 2: Simple switch
 > A track with an orientation of 0 is defined as a track that is oriented in such a way that an agent facing north (0) would have the choice of proceeding straight or traveling along the curve.
 
 Case 2 is an important track type to understand, because it contains both a straight piece and a curved piece.  Once the transitions for this track type have been determined, transformations can be applied to these tracks to fit all other cases.
