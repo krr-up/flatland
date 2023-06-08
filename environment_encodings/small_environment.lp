@@ -8,10 +8,25 @@ path(X0,Y0, X1,Y1, X2,Y2)           :- path(X2,Y2, X1,Y1, X0,Y0).               
 
 % define the actions
 % move forward
+	% 0: (0 , 1)
+	% 1: (1 , 0)
+	% 2: (0 ,-1)
+	% 3: (-1, 0)
 % move right (if option)
+	% 0: (1 , 0)
+	% 1: (0 ,-1)
+	% 2: (-1, 0)
+	% 3: (0 , 1)
 % move left (if option)
+	% 0: (-1, 0)
+	% 1: (0 , 1)
+	% 2: (1 , 0)
+	% 3: (0 ,-1)
 % wait
-
+	% 0: (0 , 0)
+	% 1: (0 , 0)
+	% 2: (0 , 0)
+	% 3: (0 , 0)
 
 % designing the model world
 % tracks
@@ -27,7 +42,6 @@ init(train(0), at(0,0), direction(3)).
 
 % stations
 init(station(0), at(2,0)).
-
 
 % determining paths
 % question - do we take a pathfinding approach or do we take an action-based approach (not sure what this would entail, but it's more consistent with how Flatland approaches the problem)
