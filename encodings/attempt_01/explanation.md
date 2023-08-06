@@ -26,7 +26,7 @@ A choice rule on the three possible directions a train can move (forward, left, 
 > The motivation behind this is narrowing the scope of conceivable paths.  Trains will never be faced with more than two decisions, as there no such switch exists that offers three options.  In the future, this could be expanded upon by removing tracks that contain no decision (leaving only switches) during the pathfinding step.
 
 A choice rule on the two possible decisions a train can make (continue forward or follow the switch) assigns a single outcome per time step.  All conceivable paths are created, then integrity constraints eliminate paths that:
-1. do not follow legal paths (I.e. trains go off of the tracks)
+1. do not follow legal paths (i.e. trains go off of the tracks)
 2. do not reach the goal 
 
 ---
