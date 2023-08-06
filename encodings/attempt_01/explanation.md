@@ -8,6 +8,8 @@ In each version of the approach, the encoding provides properties for the enviro
 
 They are tested on an environment called `potsdam.lp` which is based on the track paths and stations found in the Potsdam area—from Werder(Havel) to Wannsee.
 
+![Potsdam environment](potsdam.png)
+
 ### Approach Version №1
 A choice rule on the four cardinal directions (north, east, south, west) assigns a single outcome per time step.  All conceivable paths are created, then integrity constraints eliminate paths that:
 1. do not follow legal paths (i.e. trains go off of the tracks)
