@@ -32,3 +32,21 @@ A choice rule on the two possible decisions a train can make (continue forward o
 2. do not reach the goal 
 
 ---
+
+Notes from meeting on `2023.08.10`
+
+* In the formalization, I've established G as a grid and C as a set of cells, but I haven't really used them so, do we need them?
+* The Greek letters are probably not necessary in this first case — for orientation we could use o for orientation, d for direction, c for cardinal direction, etc.
+* Maybe we don't need type × orientation × flip — can we just define separate types? 1a, 1b, 2a, 2b, 2c, etc.
+* <u>Big point</u>: the cells (and therefore the edges) and edges as defined in the formalization are not the same as the instance of `potsdam.lp`
+  * It's probably a good idea to have an instance that reflects how the cells are defined, and then a separate encoding (Python?) that creates the edges based on their track types and orientations, etc.
+* We should dummy-proof the instances by defining certain things that they can't be
+  * The cell cannot go off of the track
+  * The goal/start points must be different
+* Get rid of the optimization statement to see how things change
+* We should split up the instance probably into multiple files (depending on how Flatland does it)
+  * For instance the environment and then where the trains are, what the start/end points are
+* If the constraint in Approach Ver. 2 is cubic and causing a big problem (negative edge), then we may need to abandon this action-choice-rule approach and guess on the edge to build out the paths
+* Be curious in exploring other methods — Klaus? has a new method that simply guesses paths, and if an agent happened to be there, then it keeps it, which decouples it from some of the complexity
+* We can choose recursive or non-recursive methods
+  * Problem with recursive is cyclic paths are forbidden (will this be a problem for us?) but we can use waypoints to solve this
