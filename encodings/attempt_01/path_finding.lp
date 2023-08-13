@@ -35,5 +35,5 @@ at(cell(X,Y), T, D) :- do(A,T), at(cell(X0,Y0), T-1, D0), offset((DX,DY), D0, mo
 goal(T) :- at(cell(X,Y), T, _), end(cell(X,Y)).
 :- not goal(T), maxTime(T).
 
-#minimize { T : at(cell(X,Y),T,_) }.
+%#minimize { T : at(cell(X,Y),T,_) }.
 #show at/3.
