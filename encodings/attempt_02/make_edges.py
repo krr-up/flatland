@@ -39,7 +39,6 @@
 ### Save those three 
 
 # N = 0, W = 90, S = 180, E = 270
-input_cells = [(0,0,"7",90), (0,1,"2L",270), (0,2,"7",270), (1,0,"0",0), (1,1,"1C",90), (1,2,"7",270)]
 
 # e.g. when we get to cell (0,1), we obtain the matrix ("2L",270): [[0,0,1],[1,1,0],[0,0,0],[0,1,0]]
 # from here we know we have a connection with the cell at its north, at its west, and at its east
@@ -137,10 +136,10 @@ def main():
 
         # iterate through each of the four directional arrays
         for key, array in enumerate(matrix):
-
+            
             # consider only arrays that are not [0,0,0]
             if(sum(array) > 0):
-            	
+                
                 # find the second cell
                 x2 = offsets[key][0] + cell[0]
                 y2 = offsets[key][1] + cell[1]
@@ -149,17 +148,23 @@ def main():
                 # find the array in the second cell from this direction
                 flipped_direction = (key + 2)%4 # N → S, W → E, etc.
                 second_cell_type = cells[second_cell]
-                second_array = find_matrix(second_cell_type)[flipped_direction]
 
-                # find the offsets for all possible third cells
-                third_cell_offsets = find_third_cell(flipped_direction, second_array)
-                for offset in third_cell_offsets:
-                    third_cell = tuple([sum(x) for x in zip(second_cell,offset)])
-                    output += "edge(cell" + str(cell) + ", cell" + str(second_cell) + ", cell" + str(third_cell) + "). \n"
+                # if it's a dead end, repeat the cell
+                if second_cell_type[0] == '7':
+                    output += "edge(cell" + str(cell) + ", cell" + str(second_cell) + ", cell" + str(second_cell) + "). \n"
+                else:
+                    second_array = find_matrix(second_cell_type)[flipped_direction]
+
+                    # find the offsets for all possible third cells
+                    third_cell_offsets = find_third_cell(flipped_direction, second_array)
+                    for offset in third_cell_offsets:
+                        third_cell = tuple([sum(x) for x in zip(second_cell,offset)])
+                        output += "edge(cell" + str(cell) + ", cell" + str(second_cell) + ", cell" + str(third_cell) + "). \n"
     print(output)
 
 if __name__ == "__main__":
     main()
+
 
 
 
