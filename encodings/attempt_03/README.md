@@ -51,5 +51,5 @@ CPU Time     : 0.006s
 Going forward, there are a few things to consider:
 * Making sure this encoding works appropriately for this use case before moving on
 * Adding functionality for multiple agents — starting to explore conflict detection and resolution
-* Translate Flatland-generated environments into ASP facts so that new environments can be quickly created
+* Translating Flatland-generated environments into ASP facts so that new environments can be quickly created
 * Including visualization capability
