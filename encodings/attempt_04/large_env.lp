@@ -44,16 +44,8 @@ cell((23,5), (22,270)).
 cell((22,4), (7,270)).
 cell((22,5), (7,270)).
 
-% agents
+% parameters
 train(re). train(rb).
-
-% RE 1
-start(train(re), cell(24,5), dir(w)).
+start(train(re), cell(24,4), dir(w)).
 end(train(re), cell(0,5)).
-
-% RB 37
-%start(train(rb), cell(24,4), dir(w)).
-%end(train(rb), cell(22,0)).
-
-
 maxTime(30).

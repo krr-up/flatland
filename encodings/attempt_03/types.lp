@@ -2,8 +2,8 @@
 % % % Track types and offsets % % %
 % % % % % % % % % % % % % % % % % %
 
-%possible actions and directions
-move(f). 	move(l). 	move(r).
+% possible actions and directions
+move(f). 	move(l). 	move(r).	move(wait).
 dir(e). 	dir(w). 	dir(n). 	dir(s).
 
 % (Type, Rotation), (From,Toward) %
