@@ -70,3 +70,37 @@ At the moment, I have
 * encodings and instance representations
 * definitions in Overleaf (which need to be adjusted)
 * working on animations
+* bibliography
+
+### Notes
+Workflow, formalization and these follow each other in parallel
+
+Chose where you came from ,where you are, and orientation, and does this match the matrix/set
+
+
+One train, straight line, whole workflow
+thesis: "i'm putting myself in this scenario, sycnrhonous, not online, no acceleration, no seped"
+extract instance from flatland >> instance in ASP >> go through encoding >> put back into flatland >> visualize it
+
+wht is the rule set in flatland, what does this look like in my mathematical interpreatation?
+it starts from a point in flatland and ends with a solution that is in flatland
+
+IM
+* What actually is Flatland?
+* Talking about MAPF and how they relate
+* Analyze the proble mand workflow - what is happening at the different stages
+* Literature study
+Beyond this…?
+* Formalization… anything you dofor the IM for the 
+* "This is how things are
+
+LINE
+pre-ASP and pre-formalization
+
+ICLP - logic programming
+
+Itemize things first
+What is flatland, what is related work, what is MAPF, then refine it - thoughts evolve
+
+put your content first and then write the background - this is usually the last thing to be written the intro and the background bc it grows from the content that's written
+bacgkround you can copy/paste and cite, you don't have to reinvent the wheel
