@@ -1,0 +1,86 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\raggedright
+
+\title{Fundamentals of Flatland}
+\author{R. Kepler Murphy}
+\date{July 2023}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+The goal is to translate the elements of the Flatland environment into ASP facts that can be solved by Clingo.
+
+\section{Problem definitions}
+\subsection{Grid environment}
+The Flatland environment is a rectangular grid of width $w$ and height $h$.  It is composed of cells, each of which is classified as one of eight track types and may hold no more than one agent at any time step. Each track type may be rotated or flipped. The combination of track type, rotation, and flip is known as its arrangement. 
+
+ Let a Flatland grid be an environment of width $w$ and height $h$.  The cells in the environment can be represented by five-tuples $(x,y,t,c)$, such that:
+\begin{itemize}
+\itemsep0em 
+    \item $0 \leq x < w$
+    \item $0 \leq y < h$
+    \item $t \in \{0,1,2,3,4,5,6,7,8,9\}$
+    \item $c \in \{N,E,S,W\}$
+\end{itemize} \medskip
+
+ Each $(x,y)$ coordinate corresponds to a single cell in the environment, whereas $t$ denotes the track type, $c$ denotes the cardinal direction or orientation of the track.
+
+\subsubsection*{Track types}
+
+\begin{figure}[h]
+    \caption{The various track types available in Flatland}
+    \centering
+    \includegraphics[width=\textwidth]{track-types.png}
+    \label{fig:track-types}
+\end{figure}
+
+In the Flatland universe, there are officially eight track types. As shown in Figure \ref{fig:track-types}, track types 1 and 3 contain no switch, whereas types 2, 4, 5, and 6 contain track switches, which, from some directions, compel the agent to make a decision regarding its future path. \textit{Track type 0} represents a cell that contains no track, through which an agent cannot pass. \textit{Track type 7} is a special case wherein trains may stop and turn around. 
+
+Each track can be rotated in increments of 90º, for a total of four possible orientations, which correspond to the four cardinal directions. As a point of reference, the orientations shown in Figure \ref{fig:track-types} are oriented toward the north. Furthermore, each track type may be flipped horizontally. Given these possible transformations, in the case of \textit{track type 2}, there are eight unique arrangements. The arrangements and layout of the tracks within the environment dictate where agents are permitted to travel to.
+
+\begin{figure}[h]
+    \caption{The various track types available in Flatland}
+    \centering
+    \includegraphics[width=\textwidth]{all-track-configs.png}
+    \label{fig:all-track-confis}
+\end{figure}
+
+
+\subsection{Agents}
+ Each agent is assigned a starting cell.  Each agent has an orientation at every time step, which corresponds to the cardinal direction it is facing.  Agents can traverse the environment at a rate of one cell per time step according to transition functions, which are based on track arrangement and agent location and orientation at given time steps.  \medskip
+
+ Agents themselves are limited to performing one of five actions at any given time step:
+\begin{enumerate}
+\itemsep0em 
+    \item move forward
+    \item move left
+    \item move right
+    \item do nothing
+    \item stop moving
+\end{enumerate}
+
+ Let $A$ be a set of $n$ agents.  Each agent $a$ can be represented by the following tuple $()$. \textit{At this point, I'm not really sure whether the starting and ending positions should be properties of the agents themselves, or rather characteristics of the specific problem which are then executed using the agents.}  \medskip
+
+\hline \medskip
+
+\textbf{Below this line are personal notes and unfinished definitions and descriptions.} \medskip
+
+We can represent the trains as a set of $n$ agents $\{a_{0}, a_{1}, …, a_{n}\}$.  Each agent $a$ has a starting point $s$, a goal $g$, and an initial direction $d$.  \medskip
+
+We can represent our problem with the tuple $(x_{d}, y_{d}, t, s, g, A)$, where
+\begin{itemize}
+    \item $x_{d}$ and $y_{d}$ constitute
+    \item $t$ represents the track type
+    \item $s$ represents a set of starting points
+    \item $g$ represents a set of goals
+    \item $A$ represents a set of agents
+\end{itemize}
+
+\subsection{Environment}
+We can represent any Flatland grid environment with a directed graph $G = (V,E)$, where $V$ is a set of vertices and $E$ is a set of edges.  A mapping function $f(x,y) = (V,E)$ is defined, such that for each coordinate $(x,y)$ in the Flatland environment, we assign a vertex $v \in V$.  We assign the edges by examining the track type in each cell of the Flatland environment and determining which of its two neighboring cells are connected to each other via the current cell.  This results in a hypergraph of order $3$.
+
+
+\end{document}
