@@ -12,24 +12,24 @@ dir(e). 	dir(w). 	dir(n). 	dir(s).
 type((1,0) , (n,f)).	type((1,0) , (s,f)).
 type((1,90), (w,f)).	type((1,90), (e,f)).
 
-% Track Type 15 - Curve
-type((15,0)  , (s,l)).	type((15,0)  , (w,r)).
-type((15,90) , (e,l)).	type((15,90) , (s,r)).
-type((15,180), (n,l)).	type((15,180), (e,r)).
-type((15,270), (w,l)).	type((15,270), (n,r)).
+% Track Type 8 - Curve
+type((8,0)  , (s,l)).	type((8,0)  , (w,r)).
+type((8,90) , (e,l)).	type((8,90) , (s,r)).
+type((8,180), (n,l)).	type((8,180), (e,r)).
+type((8,270), (w,l)).	type((8,270), (n,r)).
 
 
-% Track Type 21 - Simple switch (left)
-type((21,0)  , (s,l)).	type((21,0)  , (w,r)).	type((21,0)  , (s,f)).	type((21,0)  , (n,f)).
-type((21,90) , (e,l)).	type((21,90) , (s,r)).	type((21,90) , (e,f)).	type((21,90) , (w,f)).
-type((21,180), (n,l)).	type((21,180), (e,r)).	type((21,180), (n,f)).	type((21,180), (s,f)).
-type((21,270), (w,l)).	type((21,270), (n,r)).	type((21,270), (w,f)).	type((21,270), (e,f)).
+% Track Type 2 - Simple switch (left)
+type((2,0)  , (s,l)).	type((2,0)  , (w,r)).	type((2,0)  , (s,f)).	type((2,0)  , (n,f)).
+type((2,90) , (e,l)).	type((2,90) , (s,r)).	type((2,90) , (e,f)).	type((2,90) , (w,f)).
+type((2,180), (n,l)).	type((2,180), (e,r)).	type((2,180), (n,f)).	type((2,180), (s,f)).
+type((2,270), (w,l)).	type((2,270), (n,r)).	type((2,270), (w,f)).	type((2,270), (e,f)).
 
-% Track Type 22 - Simple switch (right)
-type((22,0)  , (s,r)).	type((22,0)  , (e,l)).	type((22,0)  , (s,f)).	type((22,0)  , (n,f)).
-type((22,90) , (e,r)).	type((22,90) , (n,l)).	type((22,90) , (e,f)).	type((22,90) , (w,f)).
-type((22,180), (n,r)).	type((22,180), (w,l)).	type((22,180), (n,f)).	type((22,180), (s,f)).
-type((22,270), (w,r)).	type((22,270), (s,l)).	type((22,270), (w,f)).	type((22,270), (e,f)).
+% Track Type 9 - Simple switch (right)
+type((9,0)  , (s,r)).	type((9,0)  , (e,l)).	type((9,0)  , (s,f)).	type((9,0)  , (n,f)).
+type((9,90) , (e,r)).	type((9,90) , (n,l)).	type((9,90) , (e,f)).	type((9,90) , (w,f)).
+type((9,180), (n,r)).	type((9,180), (w,l)).	type((9,180), (n,f)).	type((9,180), (s,f)).
+type((9,270), (w,r)).	type((9,270), (s,l)).	type((9,270), (w,f)).	type((9,270), (e,f)).
 
 
 % Track Type 3 - Diamond crossing
