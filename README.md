@@ -1,18 +1,21 @@
-# flatland
+# Welcome to Flatland
 
-## Goal: ASP and the flatland environment
-`2023.03.30` The first goal of the project is to successfully work through the flatland environment and map it to ASP prior to the start of the project module classes.  There are three milestones:
-1. Generative encoding
-2. Solution encoding
-3. Visualization module
+> Welcome to Kep's repository about research into ASP-focused solutions to the Flatland problem.
 
-### Generative encoding
-Flatland creates environments by taking several parameters—the size of the environment, the number of trains, the number of cities, etc.  Our first goal should be to create an ASP encoding that takes the same parameters and creates a flatland environment as facts.  This will enable solution encodings to solve flatland problems.
+In this repository, you'll find three main areas:
+1. Encodings
+2. Course materials
+3. Individual module
 
-### Solution encoding
-The second encoding should analyze the facts that represent the environment and develop a solution.  Ideally the solution gets each train from its start point to its end point without crashing and in as quickly a manner as possible.  Initially, getting trains from start to finish will be the focus, then introducing constraints to provent collisions, and finally minimizing wait times will come last.
+## Encodings
+In this folder, you will find ongoing attempts and approaches at producing encodings to solve the Flatland problem.  These files are primarily the `.lp` files that pertain to the instances, solution encodings, and other related assets.
 
-### Visualization module
-A way to visualize the solution encoding (in a manner similar to what flatland has provided) will help both with troubleshooting and with understanding generally the approach that a solution encoding has taken.
+## Course materials
+In this folder, you will find `.md` and PDF versions of assignments that were given to our student enrolled in the KRR-Flatland course during the summer semester.  These can be referred to for future iterations of the course.
 
->💡 Will this require mapping the solution output to Python, in such a way that the existing flatland visualization environment can understand it?
+## Individual module
+In this folder, you will find materials that pertain to the IM portion of the research—this is primarily everything that comes prior to encodings and formalizations.  Specifically, the folder contains:
+* introductory thesis text
+* a bibliography
+* visual aids
+* presentation materials
