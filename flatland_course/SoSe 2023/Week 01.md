@@ -1,3 +1,4 @@
+
 # Introductory assignment
 
 ## Background information
@@ -72,4 +73,8 @@ Consider elements from the asprilo framework.  Which aspects can be transferred;
 
 Then, attempt to represent the environment below in ASP.  The red triangle represents the train facing east, and the blue square represents its destination station.
 
-![Example environment](https://github.com/krr-up/flatland/blob/murphy_dev/admin/Example%20environment.png?raw=true)
+<br>
+<p align="center">
+    <img src="assets/Example%20environment.png">
+</p>
+
