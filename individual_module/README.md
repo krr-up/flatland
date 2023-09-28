@@ -4,3 +4,4 @@ This is where I'll keep the important materials pertaining to my individual modu
 * text for my future thesis
 * a bibliography
 * visual aids, including diagrams, images, and animations
+* presentations
