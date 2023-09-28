@@ -45,7 +45,11 @@ cell((22,4), (7,270)).
 cell((22,5), (7,270)).
 
 % parameters
-train(re). train(rb).
-start(train(re), cell(24,4), dir(w)).
-end(train(re), cell(0,5)).
-maxTime(30).
+train(a). train(b).
+start(train(a), cell(6,5), dir(w)).
+end(train(a), cell(3,8)).
+
+start(train(b), cell(24,4), dir(w)).
+end(train(b), cell(22,2)).
+
+maxTime(6).
