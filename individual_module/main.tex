@@ -43,8 +43,7 @@ Multi-agent pathfinding (MAPF) is a planning problem in which agents in a shared
 \begin{itemize}
   \item Reinforcement learning
   \item Deep learning
-  \item Which ones have won?
-  \item Others
+  \item Previous winners
 \end{itemize}
 
 \subsection{What is answer set programming?}
@@ -53,7 +52,6 @@ Multi-agent pathfinding (MAPF) is a planning problem in which agents in a shared
   \item How can it help in this case?
 \end{itemize}
 
-\subsection{Next section}
 
 % The problem workflow
 \pagebreak
@@ -63,10 +61,11 @@ Multi-agent pathfinding (MAPF) is a planning problem in which agents in a shared
   \item Environment
   \item Agents
   \item Breakdowns
-  \item Others
+  \item Observation types
 \end{itemize} 
 
 \subsection{Environment}
+Explain fundamentally what they are, but also how we define them.
 \begin{itemize}
   \item Track types
   \item Cities and stations
@@ -74,10 +73,17 @@ Multi-agent pathfinding (MAPF) is a planning problem in which agents in a shared
 \end{itemize} 
 
 \subsection{Agents}
-Information on agents.
+Explain fundamentally what they are, but also how we define them.
 
 \subsection{In this paper}
 We start by looking at the simplest of workflows: a single agent in a small environment with only straight tracks and dead ends.
+
+\subsection{Technical details}
+\begin{itemize}
+  \item How does Flatland represent environments?
+  \item How does Flatland generate random environments?
+  \item How do we provide a connection between Flatland output and clingo?
+\end{itemize} 
 
 
 \bibliography{references}
