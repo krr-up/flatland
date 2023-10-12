@@ -1,0 +1,17 @@
+\contentsline {section}{\numberline {1}Introduction}{3}{}%
+\contentsline {subsection}{\numberline {1.1}Problem Background}{3}{}%
+\contentsline {subsection}{\numberline {1.2}Related works}{3}{}%
+\contentsline {subsubsection}{\numberline {1.2.1}Vehicle Scheduling Problem}{3}{}%
+\contentsline {subsubsection}{\numberline {1.2.2}Vehicle Rescheduling Problem}{3}{}%
+\contentsline {subsubsection}{\numberline {1.2.3}Multi-agent pathfinding}{4}{}%
+\contentsline {section}{\numberline {2}Approaches}{5}{}%
+\contentsline {subsection}{\numberline {2.1}Which methods have been used?}{5}{}%
+\contentsline {subsection}{\numberline {2.2}What is answer set programming?}{5}{}%
+\contentsline {section}{\numberline {3}Building Blocks}{6}{}%
+\contentsline {subsection}{\numberline {3.1}Environment}{6}{}%
+\contentsline {subsubsection}{\numberline {3.1.1}Track Types and Transitions}{6}{}%
+\contentsline {subsubsection}{\numberline {3.1.2}Points of Interest}{6}{}%
+\contentsline {subsection}{\numberline {3.2}Agents}{7}{}%
+\contentsline {subsubsection}{\numberline {3.2.1}Actions}{7}{}%
+\contentsline {subsubsection}{\numberline {3.2.2}Starting and Ending Positions}{7}{}%
+\contentsline {subsubsection}{\numberline {3.2.3}Conflicts and Speed Profiles}{8}{}%
