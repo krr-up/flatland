@@ -1,1 +1,18 @@
-\contentsline {subsection}{\numberline {2.2}What is answer set programming?}{5}{}%
+\contentsline {section}{\numberline {1}Introduction}{3}{}%
+\contentsline {subsection}{\numberline {1.1}Problem Background}{3}{}%
+\contentsline {subsection}{\numberline {1.2}Related Works}{3}{}%
+\contentsline {subsubsection}{\numberline {1.2.1}Multi-agent Pathfinding}{3}{}%
+\contentsline {subsubsection}{\numberline {1.2.2}Vehicle Scheduling Problem}{4}{}%
+\contentsline {subsubsection}{\numberline {1.2.3}Vehicle Rescheduling Problem}{4}{}%
+\contentsline {section}{\numberline {2}Approaches}{5}{}%
+\contentsline {subsection}{\numberline {2.1}Reinforcement Learning}{5}{}%
+\contentsline {subsection}{\numberline {2.2}Deep Learning}{5}{}%
+\contentsline {subsection}{\numberline {2.3}Answer Set Programming}{5}{}%
+\contentsline {section}{\numberline {3}Building Blocks}{5}{}%
+\contentsline {subsection}{\numberline {3.1}Environment}{5}{}%
+\contentsline {subsubsection}{\numberline {3.1.1}Track Types and Transitions}{6}{}%
+\contentsline {subsubsection}{\numberline {3.1.2}Points of Interest}{6}{}%
+\contentsline {subsection}{\numberline {3.2}Agents}{6}{}%
+\contentsline {subsubsection}{\numberline {3.2.1}Actions}{6}{}%
+\contentsline {subsubsection}{\numberline {3.2.2}Starting and Ending Positions}{7}{}%
+\contentsline {subsubsection}{\numberline {3.2.3}Conflicts and Speed Profiles}{7}{}%
