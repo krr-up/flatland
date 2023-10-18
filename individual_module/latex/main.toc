@@ -6,13 +6,13 @@
 \contentsline {subsubsection}{\numberline {1.2.3}Vehicle Rescheduling Problem}{4}{}%
 \contentsline {section}{\numberline {2}Approaches}{5}{}%
 \contentsline {subsection}{\numberline {2.1}Reinforcement Learning}{5}{}%
-\contentsline {subsection}{\numberline {2.2}Deep Learning}{5}{}%
-\contentsline {subsection}{\numberline {2.3}Answer Set Programming}{5}{}%
-\contentsline {section}{\numberline {3}Building Blocks}{5}{}%
-\contentsline {subsection}{\numberline {3.1}Environment}{5}{}%
-\contentsline {subsubsection}{\numberline {3.1.1}Track Types and Transitions}{6}{}%
-\contentsline {subsubsection}{\numberline {3.1.2}Points of Interest}{6}{}%
-\contentsline {subsection}{\numberline {3.2}Agents}{6}{}%
-\contentsline {subsubsection}{\numberline {3.2.1}Actions}{6}{}%
-\contentsline {subsubsection}{\numberline {3.2.2}Starting and Ending Positions}{7}{}%
-\contentsline {subsubsection}{\numberline {3.2.3}Conflicts and Speed Profiles}{7}{}%
+\contentsline {subsection}{\numberline {2.2}Operations Research}{6}{}%
+\contentsline {subsection}{\numberline {2.3}Answer Set Programming}{6}{}%
+\contentsline {section}{\numberline {3}Building Blocks}{7}{}%
+\contentsline {subsection}{\numberline {3.1}Environment}{7}{}%
+\contentsline {subsubsection}{\numberline {3.1.1}Track Types and Transitions}{7}{}%
+\contentsline {subsubsection}{\numberline {3.1.2}Points of Interest}{8}{}%
+\contentsline {subsection}{\numberline {3.2}Agents}{8}{}%
+\contentsline {subsubsection}{\numberline {3.2.1}Actions}{9}{}%
+\contentsline {subsubsection}{\numberline {3.2.2}Starting and Ending Positions}{9}{}%
+\contentsline {subsubsection}{\numberline {3.2.3}Conflicts and Speed Profiles}{10}{}%

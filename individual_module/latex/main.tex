@@ -13,9 +13,12 @@
 % background
 \pagecolor{white}
 
+% bibliography
+\usepackage[round]{natbib}
+
 
 \title{Flatland}
-\author{Ryan Kepler Murphy}
+\author{Murphy}
 \date{\today}
 
 \begin{document}
@@ -40,37 +43,60 @@ for modern railway systems. It does so by providing a simplified two-dimensional
 Scenarios in Flatland exist at the intersection of several well-explored problems.  At its core, Flatland is a multi-agent pathfinding problem; several agents cooperate to complete their goals while managing limited resources within a shared, finite environment.  Outside of pathfinding, Flatland is, in essence, a vehicle rescheduling problem—derived from the vehicle scheduling problem.  An understanding of how each of these problems influences Flatland is a critical piece of finding ideal methods of producing solutions.
 
 \subsubsection{Multi-agent Pathfinding}
-Multi-agent pathfinding (MAPF) is a planning problem in which agents in a shared environment must find routes to their respective destinations without incurring collisions \cite{silver05a}.  MAPF has many applications, including in robotics, aviation, and vehicle routing \cite{standley10a}.  Many of the conflicts imposed on agents in MAPF problems are also imposed on agents within the Flatland framework, such as that they may not occupy the same cell at the same time step, or that two agents may not swap positions.  These are to model collisions that would occur in real life.  
+Multi-agent pathfinding (MAPF) is a planning problem in which agents in a shared environment must find routes to their respective destinations without incurring collisions \citep{silver05a}.  MAPF has many applications, including in robotics, aviation, and vehicle routing \citep{standley10a}.  Many of the conflicts imposed on agents in MAPF problems are also imposed on agents within the Flatland framework, such as that they may not occupy the same cell at the same time step, or that two agents may not swap positions.  These are to model collisions that would occur in real life.  
 
-Traditional grid environments seen in many MAPF problems, including in \cite{standley10a}, have cells that are often four- or eight-connected; this means that an agent occupying one cell may move to any of its existing unoccupied neighboring cells.  The Flatland framework is more restrictive in this sense, as agents are not free to move to any unoccupied neighboring cell, but rather may move to neighboring cells according to transitions governed by the track type of that cell and the orientation of the agent at that time step, all of which is further discussed in Section \ref{sec:Environment} and can be seen more clearly in Figure \ref{fig:grids}.
+Traditional grid environments seen in many MAPF problems, including in \citep{standley10a}, have cells that are often four- or eight-connected; this means that an agent occupying one cell may move to any of its existing unoccupied neighboring cells.  The Flatland framework is more restrictive in this sense, as agents are not free to move to any unoccupied neighboring cell, but rather may move to neighboring cells according to transitions governed by the track type of that cell and the orientation of the agent at that time step, all of which is further discussed in Section \ref{sec:Environment} and can be seen more clearly in Figure \ref{fig:grids}.
 
 % Figure: Grids, degrees of freedom
 \begin{figure}[t]
 \label{fig:grids}
 \includegraphics[width=\textwidth]{grids}
-\caption{Examples of the degrees of freedom for agents in four-connected grid environments, eight-connected grid environments, and Flatland environments.}
+\caption{Examples of the degrees of freedom for agents in four-connected grid environments, eight-connected grid environments, and Flatland grid environments. The orientation of the agent in Flatland is necessary to determine which cells are accessible. }
 \centering
 \end{figure}
 
 \subsubsection{Vehicle Scheduling Problem}
-The vehicle scheduling problem (VSP) is a classical optimization problem in the field of operational planning of public transportation systems, consisting of assigning vehicles to trips, in such a way that each trip is associated to one vehicle and a cost function is minimized \cite{bapeukfa00a}.  This problem has been a topic of operational research for decades, but is not the primary focus of Flatland, as each instance already provides a set of agents with pairs of starting and ending positions. Since the agents come pre-assigned to the origin and destination, the importance is shifted from assigning vehicles to trips to actively determining their paths.  However, since Flatland randomly inflicts breakdowns upon its fleet, the task effectively transforms into a vehicle rescheduling problem.
+The vehicle scheduling problem (VSP) is a classical optimization problem in the field of operational planning of public transportation systems, consisting of assigning vehicles to trips, in such a way that each trip is associated to one vehicle and a cost function is minimized \citep{bapeukfa00a}.  This problem has been a topic of operational research for decades, but is not the primary focus of Flatland, as each instance already provides a set of agents with pairs of starting and ending positions. Since the agents come pre-assigned to the origin and destination, the importance is shifted from assigning vehicles to trips to actively determining their paths.  However, since Flatland randomly inflicts breakdowns upon its fleet, the task effectively transforms into a vehicle rescheduling problem.
 
 \subsubsection{Vehicle Rescheduling Problem}
-The vehicle rescheduling problem (VRSP) is an extension of the VSP and arises when a previously-scheduled trip is disrupted due to interruptions such as a medical emergency or a vehicle breakdown \cite{limibo07a}.  Trips in the Flatland environment model this scenario by randomly assigning vehicle breakdowns, each of which stops a train in its current location for an unforeseen duration.  Ideally, scheduled trips that are affected by a breakdown should be rescheduled in such a way that there are minimal impacts to the original plan.  \cite{limibo07a} note the severity of this problem, in that it results not only in direct operational and delay costs for transit providers, but also in inconvenience for passengers.  The lack of automated rescheduling policies, as well as algorithms that address this problem, highlights the importance of the role that Flatland plays in focusing its scenarios on the element of rescheduling disrupted trips.
+The vehicle rescheduling problem (VRSP) is an extension of the VSP and arises when a previously-scheduled trip is disrupted due to interruptions such as a medical emergency or a vehicle breakdown \citep{limibo07a}.  Trips in the Flatland environment model this scenario by randomly assigning vehicle breakdowns, each of which stops a train in its current location for an unforeseen duration.  Ideally, scheduled trips that are affected by a breakdown should be rescheduled in such a way that there are minimal impacts to the original plan.  \citep{limibo07a} note the severity of this problem, in that it results not only in direct operational and delay costs for transit providers, but also in inconvenience for passengers.  The lack of automated rescheduling policies, as well as algorithms that address this problem, highlights the importance of the role that Flatland plays in focusing its scenarios on the element of rescheduling disrupted trips.
 
 
 % Potential approaches
 \section{Approaches}
 AIcrowd hosts a global competition in which participants submit crafted approaches to scenarios in the Flatland environment, which are scored and compared against one another.  The variety of submissions highlights the diverse nature of approaches taken to solve the problem Flatland presents.
-\subsection{Reinforcement Learning}
-There is a separate leaderboard and scoring section for this.
 
-\subsection{Deep Learning}
-This was also the focus of some participants.
+\subsection{Reinforcement Learning}
+Reinforcement learning is a form of machine learning in which an agent with a goal is not told what steps to take, but rather discovers a path to it by determining which actions yield the greatest reward \citep{sutton18a}.  This differs from \textit{supervised learning} in which agents are shown a set of labeled examples of desired outcomes so that it can generalize for unseen situations.  This also differs from \textit{unsupervised learning} in which agents seek to uncover structures or patterns within a set of unlabeled examples.  A typical reinforcement learning approach in a Flatland scenario would include many iterations of agents relying on past actions that have yielded success and exploring new actions that aim to get them closer to the goal.
+
+Although the competition is open to approaches from any domain, it has branded itself as a competition for multi-agent reinforcement learning.  In the latest two iterations of the competition, separate leaderboards were posted for those pursuing the reinforcement learning track and those pursuing all other approaches.  Despite this focus, the highest any participant has placed with a reinforcement learning solution has been seventh place.
+
+\subsection{Operations Research}
+Operations research is a broader field pertaining to the application of scientific methods to problems involving the operations of a system, such as by using the theories of probability, linear programming, queuing theory, or other methods \citep{gupta92a}.  The winners of the 2020 iteration of the competition were a team led by professors Daniel Harabor and Peter J. Stuckey of Monash University.  \textbf{under construction} The team [utilized an conflict-based search (CBS) approach… it splits the search tasks into low-level pathfinding for individual agents and high-level conflict detection to prevent collisions for all agents] \citep{lichzhchhastmako21a}.
+
+In each the latest two iterations of the competition, teams with operations research-focused approaches have taken the top four spots.  The winning team members from 2020 explain in \citep{lichzhchhastmako21a} why they believe reinforcement learning approaches have not produced the same level of success as other methods: \textbf{under construction}
+\begin{itemize}
+	\item RL approaches need to predict future deadlocks, which seems difficult without directly reasoning about paths, as optimization approaches do
+	\item as the density of trains grows, the number of situations that can lead to deadlocks increases non-linearly
+	\item optimization approaches rely on global planners and have consistently outperformed RL approaches across all rounds of both the 2019 and 2020 Flat- land Challenges
+\end{itemize}
+
 
 \subsection{Answer Set Programming}
-How is this suitable for this sort of problem?
+Answer set programming (ASP) is a form of declarative programming, based on the stable model semantics of logic programming, oriented toward difficult search problems \citep{lifschitz19a}.  ASP has wide-ranging applications in technology and science, with a particular inclination toward NP-hard\footnotemark problems.
 
+\footnotetext{NP-hard represents a category of problems in computer science whose answers can neither be solved quickly nor verified quickly. \textit{Quickly} is a relative term for the speed of an algorithm that can solve problems in polynomial time, a duration considered reasonably efficient.}
+
+The pathfinding problem that is present in Flatland scenarios is, at its core, an NP-hard search problem.  ASP presents itself as a particularly suitable approach to solving pathfinding problems in Flatland for several reasons:
+\begin{itemize}
+	\item as a declarative language, encodings are constructed in terms of their goals, not their intermediate steps
+	\item solutions are entirely transparent and can be clearly explained
+	\item encodings can be easily adapted to changing conditions, such as by adding more agents or including additional constraints
+\end{itemize}
+
+\noindent \textbf{under construction} Text. \medskip
+
+[Concerns or drawbacks about traditional machine learning methods compared to ASP]
 
 % The problem workflow
 \section{Building Blocks}
@@ -90,8 +116,17 @@ The various rail types can be grouped into two categories: non-switches and swit
 
 Each rail type determines the possible transitions for the agents, meaning which neighboring cells are accessible positions following a single move.  Crucially, neighboring cells that are accessible from one location, may in some cases not be accessible had the train approached this same location from another direction.  For this reason, recording both the position and orientation of each agents at every time step is necessary for determining its legal paths.  A diagram explaining this quality is shown in Figure \ref{fig:transitions}.
 
+% Figure: Grids, degrees of freedom
+\label{fig:transitions}
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.60\textwidth]{transitions}
+\caption{The switch on cell $(1,1)$ is only accessible from one side.  In environment (a), the agent is facing east on cell $(0,1)$.  When it reaches cell $(1,1)$, it will have the option to continue to the east or follow the switch to the north.  In environment (b), the agent is facing west on cell $(2,1)$ and does not have access to the switch.  Therefore, when it reaches cell $(1,1)$, it will only have the option to continue moving west.}
+\end{figure}
+
+
 \subsubsection{Points of Interest}
-[Stations and cities]
+\textbf{under construction} [Stations and cities]
 
 
 \subsection{Agents}
@@ -121,10 +156,10 @@ For simplicity, trains are not recognized by the environment until they are acti
 \label{sec:Conflicts}
 Consistent with core tenets of any MAPF problem, any two trains must avoid a collision with each other.  Agents, as with trains in real life, may not physically pass through one another.  This prevents one train from overtaking a stopped train on the same set of tracks; it also prevents two trains facing each other from swapping positions.
 
-Furthermore, agents in Flatland may have different speeds, depending on their train types, such as passenger trains or freight trains.  This speed profile determines how quickly agents are capable of traversing the environment, and ultimately influences how they interact with one another.  [This means] that a train cannot travel faster than another train traveling immediately before it.
+Furthermore, agents in Flatland may have different speeds, depending on their train types, such as passenger trains or freight trains.  This speed profile determines how quickly agents are capable of traversing the environment, and ultimately influences how they interact with one another.  \textbf{under construction} [This means] that a train cannot travel faster than another train traveling immediately before it.
 
 
 
-\bibliographystyle{plain}
+\bibliographystyle{plainnat}
 \bibliography{references}
 \end{document}
