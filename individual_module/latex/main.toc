@@ -3,7 +3,7 @@
 \contentsline {subsection}{\numberline {1.2}Related Works}{3}{subsection.1.2}%
 \contentsline {subsubsection}{\numberline {1.2.1}Multi-agent Pathfinding}{3}{subsubsection.1.2.1}%
 \contentsline {subsubsection}{\numberline {1.2.2}Vehicle Scheduling Problem}{4}{subsubsection.1.2.2}%
-\contentsline {subsubsection}{\numberline {1.2.3}Vehicle Rescheduling Problem}{5}{subsubsection.1.2.3}%
+\contentsline {subsubsection}{\numberline {1.2.3}Vehicle Rescheduling Problem}{4}{subsubsection.1.2.3}%
 \contentsline {section}{\numberline {2}Approaches}{5}{section.2}%
 \contentsline {subsection}{\numberline {2.1}Reinforcement Learning}{5}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}Operations Research}{6}{subsection.2.2}%

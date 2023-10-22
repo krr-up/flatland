@@ -3,8 +3,15 @@
 
 % custom code
 \usepackage[dvipsnames]{xcolor}
-\definecolor{light-gray}{gray}{0.75}
+\definecolor{light-gray}{gray}{0.90}
 \newcommand{\code}[1]{\colorbox{light-gray}{\texttt{#1}}}
+
+\usepackage[most]{tcolorbox}
+\tcbset{on line, 
+        boxsep=1pt, left=1pt,right=1pt,top=1pt,bottom=1pt,
+        colframe=white,colback=light-gray,  
+        highlight math style={enhanced}
+        }
 
 \usepackage{tikz}
 \def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}  %checkmark
@@ -18,6 +25,10 @@
 
 % bibliography
 \usepackage[round]{natbib}
+
+% additional symbols
+\usepackage{amsmath}
+\usepackage{amssymb}
 
 % document links
 \usepackage{hyperref}
@@ -64,8 +75,8 @@ Traditional grid environments seen in many MAPF problems, including in \citep{st
 % Figure: Grids, degrees of freedom
 \begin{figure}[t]
 \centering
-\includegraphics[width=\textwidth]{grids}
-\caption{Examples of the degrees of freedom for agents in four-connected grid environments, eight-connected grid environments, and Flatland grid environments. The orientation of the agent in Flatland is necessary to determine which cells are accessible. }
+\includegraphics[width=\textwidth]{chess2}
+\caption{Examples of the degrees of freedom for agents in four-connected grid environments, eight-connected grid environments, and Flatland grid environments. The red agent in grid segment (a) can move to any of its neighboring cells to the north, east, south, or west.  The blue agent in grid segment (b) can move like its red counterpart, but has additional access to diagonal neighbors as well.  The green train in the Flatland grid segment (c) is bound to the tracks.  The orientation of the agent in Flatland is necessary to determine which cells are accessible. }
 \label{fig:grids}
 
 \begin{center}
@@ -104,7 +115,7 @@ In each the last two competitions, teams with operations research-focused approa
 \subsection{Answer Set Programming}
 Answer set programming (ASP) is a form of declarative programming, based on the stable model semantics of logic programming, oriented toward difficult search problems \citep{lifschitz19a}.  ASP has wide-ranging applications in technology and science, with a particular inclination toward NP-hard\footnotemark problems.
 
-\footnotetext{NP-hard represents a category of problems in computer science whose answers can neither be solved quickly nor verified quickly. \textit{Quickly} is a relative term for the speed of an algorithm that can solve problems in polynomial time, a duration considered reasonably efficient.}
+\footnotetext{NP-hard represents a category of problems in computer science whose answers can't be solved quickly. \textit{Quickly} is a relative term for the speed of an algorithm that can solve problems in polynomial time, a duration considered reasonably efficient.}
 
 The pathfinding problem that is present in Flatland scenarios is, at its core, an NP-hard search problem.  ASP presents itself as a particularly suitable approach to solving pathfinding problems in Flatland for several reasons:
 \begin{itemize}
@@ -113,7 +124,7 @@ The pathfinding problem that is present in Flatland scenarios is, at its core, a
 	\item encodings can be easily adapted to changing conditions, such as by adding more agents or including additional constraints
 \end{itemize}
 
-\noindent Generally, the flexibility, maintainability, human readability, and verifiability of ASP lends itself well to scalable pathfinding problems. \medskip
+\noindent Generally, due to its flexibility, maintainability, human readability, and verifiability, ASP lends itself well to scalable pathfinding problems. \medskip
 
 [Concerns or drawbacks about traditional machine learning methods compared to ASP]
 
@@ -151,8 +162,8 @@ Each rail type determines the possible transitions for the agents, meaning which
 % Figure: Grids, degrees of freedom
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.60\textwidth]{transitions}
-\caption{The switch on cell \texttt{(1,1)} is only accessible from one side.  In environment (a), the agent is facing east on cell \texttt{(0,1)}.  When it reaches cell \texttt{(1,1)}, it will have the option to continue to the east or follow the switch to the north.  In environment (b), the agent is facing west on cell \texttt{(2,1)} and does not have access to the switch.  Therefore, when it reaches cell \texttt{(1,1)}, it will only have the option to continue moving west.}
+\includegraphics[width=\textwidth]{transitions}
+\caption{The siding track up north is only accessible via the switch from one direction.  The switch is shown in the dashed box.  In environment (a), the red agent is traveling from the west.  When it reaches the switch, it will have the option to continue moving to the east or follow the switch into the siding.  In environment (b), the blue agent is traveling from the east and does not have access to the siding.  Therefore, when it reaches the switch, it will have to continue moving to the west.}
 
 \begin{center}
 {\color{lightgray} \rule{\linewidth}{0.15mm}}
@@ -164,7 +175,7 @@ Each rail type determines the possible transitions for the agents, meaning which
 
 
 \subsubsection{Points of Interest}
-The Flatland framework offers several parameters when generating novel environments.  Namely, the \code{sparse\_rail\_generator} allows users to specify:
+The Flatland framework offers several parameters when generating novel environments.  Namely, the \tcbox{\textcolor{WildStrawberry}{\texttt{sparse\_rail\_generator}}} allows users to specify:
 \begin{itemize}
 	\item the number of cities
 	\item the number of intersections
@@ -187,11 +198,11 @@ Additionally, agents in Flatland may have different speeds, depending on their t
 \label{sec:Actions}
 Within the environment, agents follow a series of actions.  Since Flatland is a discrete time simulation, the duration of each action conforms to a constant amount of time.    At each time step, agents must choose from one of the following five actions: 
 \begin{enumerate}
-  \item \code{MOVE\_FORWARD}: this action moves the train forward, provided there is a legal transition that allows this; this is also the appropriate action along curved track with no switch
-  \item \code{MOVE\_LEFT}: this action moves the train along a switch to the left, provided there is a legal transition that allows this
-  \item \code{MOVE\_RIGHT}: this action moves the train along a switch to the right, provided there is a legal transition that allows this
-  \item \code{STOP\_MOVING}: this action stops the train, resulting in its remaining in the current cell
-  \item \code{DO\_NOTHING}: this action compels the train to adhere to a continuation of its previous action; the one exception is that while stopped in a dead end, this reverses the direction of the train
+  \item \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_FORWARD}}}: this action moves the train forward, provided there is a legal transition that allows this; this is also the appropriate action along curved track with no switch
+  \item \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_LEFT}}}: this action moves the train along a switch to the left, provided there is a legal transition that allows this
+  \item \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_RIGHT}}}: this action moves the train along a switch to the right, provided there is a legal transition that allows this
+  \item \tcbox{\textcolor{WildStrawberry}{\texttt{STOP\_MOVING}}}: this action stops the train, resulting in its remaining in the current cell
+  \item \tcbox{\textcolor{WildStrawberry}{\texttt{DO\_NOTHING}}}: this action compels the train to adhere to a continuation of its previous action; the one exception is that while stopped in a dead end, this reverses the direction of the train
 \end{enumerate} \smallskip
 
 \noindent So long as a valid action has been selected, the position and orientation of the agent will be updated in the following time step. \medskip
@@ -204,7 +215,9 @@ Within the environment, agents follow a series of actions.  Since Flatland is a 
 \begin{table}[]
 \centering
 \begin{tabular}{rcccc}
+						& $ \Lsh  $ 	& 			& $ \Rsh  $ 	& $\curvearrowright$ \\
                                       		& -90º 		& 0º 			& 90º 		& 180º \\
+
 \hline % ————————————————————————————————————————
 \texttt{MOVE\_FORWARD} 	& \checkmark  	& \checkmark 	& \checkmark  	& \\
 \texttt{MOVE\_LEFT}    		& \checkmark 	& 			& 			& \\
@@ -222,7 +235,8 @@ Within the environment, agents follow a series of actions.  Since Flatland is a 
 
 \endgroup
 
-As shown in \autoref{tbl:actions}, different actions are capable of affecting subsequent agent orientation in various ways.  The typical effect that \code{MOVE\_FORWARD} imposes is no change on the agent orientation in the following time step.  The exception to this is on curved track (Type 9 in \autoref{fig:tracks}) which can rotate the agent by 90º counterclockwise or clockwise, depending on the direction of the curve.   \code{MOVE\_LEFT} and \code{MOVE\_RIGHT} will always alter the current orientation of the agent by 90º counterclockwise or clockwise, respectively.  As the \code{DO\_NOTHING} command repeats the previously-invoked action, the change in orientation would typically mimic the change of the previous action.  The notable exception to this is when the agent is in a stopped position in a dead end (Type 7 in \autoref{fig:tracks}), in which case it will reverse its direction, altering the current orientation by 180º.  \code{STOP\_MOVING} will never alter the current orientation of the agent.
+
+As shown in \autoref{tbl:actions}, different actions are capable of affecting subsequent agent orientation in various ways.  The typical effect that \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_FORWARD}}} imposes is no change on the agent orientation in the following time step.  The exception to this is on curved track (Type 9 in \autoref{fig:tracks}) which can rotate the agent by 90º counterclockwise or clockwise, depending on the direction of the curve.   \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_LEFT}}} and \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_RIGHT}}} will always alter the current orientation of the agent by 90º counterclockwise or clockwise, respectively.  As the \tcbox{\textcolor{WildStrawberry}{\texttt{DO\_NOTHING}}} command repeats the previously-invoked action, the change in orientation would typically mimic the change of the previous action.  The notable exception to this is when the agent is in a stopped position in a dead end (Type 7 in \autoref{fig:tracks}), in which case it will reverse its direction, altering the current orientation by 180º.  \tcbox{\textcolor{WildStrawberry}{\texttt{STOP\_MOVING}}} will never alter the current orientation of the agent.
 
 \subsubsection{Starting and Ending Positions}
 \label{sec:Positions}
