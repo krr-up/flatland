@@ -22,6 +22,7 @@
 
 % background
 \pagecolor{white}
+\usepackage[normalem]{ulem}
 
 % bibliography
 \usepackage[round]{natbib}
@@ -115,7 +116,7 @@ In each the last two competitions, teams with operations research-focused approa
 \subsection{Answer Set Programming}
 Answer set programming (ASP) \citep{lifschitz19a} is a form of declarative programming, based on the stable model semantics of logic programming, oriented toward combinatorial search problems.  ASP has wide-ranging applications in technology and science, with a particular inclination toward NP-hard\footnotemark problems.
 
-\footnotetext{NP-hard represents a category of problems in computer science whose answers can't be solved quickly. \textit{Quickly} is a relative term for the speed of an algorithm that can solve problems in polynomial time, a duration considered reasonably efficient.}
+\footnotetext{NP-hard represents a category of problems in computer science that are hard to solve quickly \citep{black21a}. \textit{Quickly} is a relative term for the speed of an algorithm that can solve problems in polynomial time, a duration considered reasonably efficient.}
 
 The pathfinding problem that is present in Flatland scenarios is, at its core, an NP-hard search problem.  ASP presents itself as a particularly suitable approach to solving pathfinding problems in Flatland for several reasons:
 \begin{itemize}
@@ -195,13 +196,13 @@ Additionally, agents in Flatland may have different speeds, depending on their t
 
 \subsubsection{Actions}
 \label{sec:Actions}
-Within the environment, agents follow a series of actions.  Since Flatland is a discrete time simulation, the duration of each action conforms to a constant amount of time.    At each time step, agents must choose from one of the following five actions: 
+Within the environment, agents follow a series of actions.  Since Flatland is a discrete time simulation, the duration of each action conforms to a constant amount of time.    At each time step, agents must choose from one of the following five actions, provided there is a legal transition: 
 \begin{enumerate}
-  \item \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_FORWARD}}}: this action moves the train forward, provided there is a legal transition that allows this; this is also the appropriate action along curved track with no switch
-  \item \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_LEFT}}}: this action moves the train along a switch to the left, provided there is a legal transition that allows this
-  \item \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_RIGHT}}}: this action moves the train along a switch to the right, provided there is a legal transition that allows this
-  \item \tcbox{\textcolor{WildStrawberry}{\texttt{STOP\_MOVING}}}: this action stops the train, resulting in its remaining in the current cell
-  \item \tcbox{\textcolor{WildStrawberry}{\texttt{DO\_NOTHING}}}: this action compels the train to adhere to a continuation of its previous action; an exception to this is that while stopped, this reverses the direction of the train
+  \item \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_FORWARD}}}: along a straight track, this action moves the train forward; over a switch, this action moves the train along the straight edge; along non-switch curved track, this action moves the train along the curve; in dead ends, this reverses the direction of the train
+  \item \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_LEFT}}}: this action moves the train along the left edge of a switch
+  \item \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_RIGHT}}}: this action moves the train along the right edge of a switch
+   \item \tcbox{\textcolor{WildStrawberry}{\texttt{STOP\_MOVING}}}: this action stops the train in its current cell
+  \item \sout{\tcbox{\textcolor{WildStrawberry}{\texttt{DO\_NOTHING}}}: this action compels the train to adhere to a continuation of its previous action; an exception to this is that while stopped, this reverses the direction of the train}
 \end{enumerate} \smallskip
 
 \noindent So long as a valid action has been selected, the position and orientation of the agent will be updated in the following time step. \medskip
@@ -218,7 +219,7 @@ Within the environment, agents follow a series of actions.  Since Flatland is a 
                                       		& -90º 		& 0º 			& 90º 		& 180º \\
 
 \hline % ————————————————————————————————————————
-\texttt{MOVE\_FORWARD} 	& \checkmark  	& \checkmark 	& \checkmark  	& \\
+\texttt{MOVE\_FORWARD} 	& \checkmark  	& \checkmark 	& \checkmark  	& \checkmark \\
 \texttt{MOVE\_LEFT}    		& \checkmark 	& 			& 			& \\
 \texttt{MOVE\_RIGHT}   		& 			& 			& \checkmark 	& \\
 \texttt{STOP\_MOVING}  		& 			& \checkmark 	& 			& \\
@@ -235,7 +236,7 @@ Within the environment, agents follow a series of actions.  Since Flatland is a 
 \endgroup
 
 
-As shown in \autoref{tbl:actions}, different actions are capable of affecting subsequent agent orientation in various ways.  The typical effect that \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_FORWARD}}} imposes is no change on the agent orientation in the following time step.  The exception to this is on curved track (Type 9 in \autoref{fig:tracks}) which can rotate the agent by 90º counterclockwise or clockwise, depending on the direction of the curve.   \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_LEFT}}} and \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_RIGHT}}} will always alter the current orientation of the agent by 90º counterclockwise or clockwise, respectively.  As the \tcbox{\textcolor{WildStrawberry}{\texttt{DO\_NOTHING}}} command repeats the previously-invoked action, the change in orientation would typically mimic the change of the previous action.  The notable exception to this is when the agent is in a stopped position on a straight track or in a dead end (Type 1 or Type 7 in \autoref{fig:tracks}), in which case it will reverse its direction, altering the current orientation by 180º.  \tcbox{\textcolor{WildStrawberry}{\texttt{STOP\_MOVING}}} will never alter the current orientation of the agent.
+As shown in \autoref{tbl:actions}, different actions are capable of affecting subsequent agent orientation in various ways.  When on a non-curved track, \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_FORWARD}}} imposes is no change on the agent orientation in the following time step.  When on curved track (Type 9 in \autoref{fig:tracks}) which can rotate the agent by 90º counterclockwise or clockwise, depending on the direction of the curve.   \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_LEFT}}} and \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_RIGHT}}} will always alter the current orientation of the agent by 90º counterclockwise or clockwise, respectively.  As the \tcbox{\textcolor{WildStrawberry}{\texttt{DO\_NOTHING}}} command repeats the previously-invoked action, the change in orientation would typically mimic the change of the previous action.  The notable exception to this is when the agent is in a stopped position on a straight track or in a dead end (Type 1 or Type 7 in \autoref{fig:tracks}), in which case it will reverse its direction, altering the current orientation by 180º.  \tcbox{\textcolor{WildStrawberry}{\texttt{STOP\_MOVING}}} will never alter the current orientation of the agent.
 
 \subsubsection{Starting and Ending Positions}
 \label{sec:Positions}
