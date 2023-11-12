@@ -36,7 +36,7 @@ Two notes:
 1. `MOVE_LEFT` occurs when the rotation is -90º, whereas `MOVE_RIGHT` occurs when the rotation is +90º
 2. `MOVE_FORWARD` only results in a 180º rotation when the cell at time step `T₀` is a dead end
 
-The way the logic in Clingo can be encoded is as follows.
+### Examples in Clingo
 
 `STOP_MOVING`
 The atom fires for a time step if the location and orientation remain the same.  There is a provision for ensuring the time steps are consecutive.
