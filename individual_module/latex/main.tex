@@ -30,6 +30,7 @@
 % additional symbols
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{gensymb}
 
 % document links
 \usepackage{hyperref}
@@ -66,7 +67,7 @@ The Flatland framework addresses the problem of automated train scheduling and r
 for modern railway systems. It does so by providing a simplified two-dimensional grid world environment to allow for fast experimentation of new approaches to this problem \citep{monylascscbhwaegeibavistsasp20a}. 
 
 \subsection{Related Works}
-Scenarios in Flatland exist at the intersection of several well-explored problems.  At its core, Flatland is a multi-agent pathfinding problem \citep{silver05a}; several agents cooperate to complete their goals while managing limited resources within a shared, finite environment.  Outside of pathfinding, Flatland is, in essence, a vehicle rescheduling problem \citep{limibo07a}—derived from the vehicle scheduling problem \citep{bapeukfa00a}.  An understanding of how each of these problems influences Flatland is a critical piece of finding ideal methods of producing solutions.
+Scenarios in Flatland exist at the intersection of several well-explored problems.  At its core, Flatland is a multi-agent pathfinding problem \citep{silver05a}; several agents cooperate to complete their goals while managing limited resources within a shared, finite environment.  Outside of pathfinding, Flatland is, in essence, a vehicle scheduling problem \citep{bapeukfa00a}.  An understanding of how each of these problems influences Flatland is a critical piece of finding ideal methods of producing solutions.
 
 \subsubsection{Multi-agent Pathfinding}
 Multi-agent pathfinding (MAPF) \citep{silver05a} is a planning problem in which agents in a shared environment must find routes to their respective destinations without incurring collisions.  MAPF has many applications, including in robotics, aviation, and vehicle routing \citep{standley10a}.  Many of the conflicts imposed on agents in MAPF problems are also imposed on agents within the Flatland framework, such as that they may not occupy the same cell at the same time step, or that two agents may not swap positions.  These are to model collisions that would occur in real life.  
@@ -87,15 +88,12 @@ Traditional grid environments seen in many MAPF problems, including in \citep{st
 \end{figure}
 
 \subsubsection{Vehicle Scheduling Problem}
-The vehicle scheduling problem (VSP) \citep{bapeukfa00a} is a classical optimization problem in the field of operational planning of public transportation systems, consisting of assigning vehicles to trips, in such a way that each trip is associated to one vehicle and a cost function is minimized.  This problem has been a topic of operational research for decades, but is not the primary focus of Flatland, as each instance already provides a set of agents with pairs of starting and ending positions. Since the agents come pre-assigned to the origin and destination, the importance is shifted from assigning vehicles to trips to actively determining their paths.  However, Flatland provides an option to randomly inflict breakdowns upon its fleet.  When this option is selected, the task effectively transforms into a vehicle rescheduling problem.
-
-\subsubsection{Vehicle Rescheduling Problem}
-The vehicle rescheduling problem (VRSP) \citep{limibo07a} is an extension of the VSP and arises when a previously-scheduled trip is disrupted due to interruptions such as a medical emergency or a vehicle breakdown.  Trips in Flatland model this scenario by randomly assigning vehicle breakdowns, each of which stops a train in its current location for an unforeseen duration.  Ideally, scheduled trips that are affected by a breakdown should be rescheduled in such a way that there are minimal impacts to the original plan.  \citep{limibo07a} note the severity of this problem, in that it results not only in direct operational and delay costs for transit providers, but also in inconvenience for passengers.  The lack of automated rescheduling policies, as well as algorithms that address this problem, highlights the importance of the role that Flatland plays in focusing its scenarios on the element of rescheduling disrupted trips.
+The vehicle scheduling problem (VSP) \citep{bapeukfa00a} is a classical optimization problem in the field of operational planning of public transportation systems, consisting of assigning vehicles to trips, in such a way that each trip is associated to one vehicle and a cost function is minimized.  In Flatland, each instance already provides a set of agents with pairs of starting and ending positions.  However, determining the specific paths agents should follow is the problem participants are tasked with solving.  Furthermore, although not a focus of this research, Flatland provides an option to randomly inflict breakdowns upon its fleet.  When this option is selected, the task effectively extends into the realm of the vehicle rescheduling problem (VRSP) \citep{limibo07a}, as the recalculation of paths must take place once the trains have begun moving.
 
 
 % Potential approaches
 \section{Approaches}
-AIcrowd \citep{baeiegljmomonyspwaaggo21a} hosts a global competition in which participants submit crafted approaches to scenarios in the Flatland environment, which are scored and compared against one another.  The variety of submissions highlights the diverse nature of approaches taken to solve the problem Flatland presents.
+AIcrowd \citep{baeiegljmomonyspwaaggo21a} hosts a global competition in which participants submit crafted approaches to scenarios in Flatland, which are scored and compared with one another.  The variety of submissions highlights the diverse nature of approaches taken to solve the problem Flatland presents.
 
 \subsection{Reinforcement Learning}
 Reinforcement learning is a form of machine learning in which an agent with a goal is not told what steps to take, but rather discovers a path to it by determining which actions yield the greatest reward \citep{sutton18a}.  This differs from \textit{supervised learning} in which agents are shown a set of labeled examples of desired outcomes so that it can generalize for unseen situations.  This also differs from \textit{unsupervised learning} in which agents seek to uncover structures or patterns within a set of unlabeled examples.  A typical reinforcement learning approach in a Flatland scenario would include many iterations of agents relying on past actions that have yielded success and exploring new actions that aim to get them closer to the goal.
@@ -114,9 +112,8 @@ In each the last two competitions, teams with operations research-focused approa
 
 
 \subsection{Answer Set Programming}
-Answer set programming (ASP) \citep{lifschitz19a} is a form of declarative programming, based on the stable model semantics of logic programming, oriented toward combinatorial search problems.  ASP has wide-ranging applications in technology and science, with a particular inclination toward NP-hard\footnotemark problems.
+Answer set programming (ASP) \citep{lifschitz19a} is a form of declarative programming, based on the stable model semantics of logic programming, oriented toward combinatorial search problems.  ASP has wide-ranging applications in technology and science, with a particular inclination toward NP-complete problems.
 
-\footnotetext{NP-hard represents a category of problems in computer science that are hard to solve quickly \citep{black21a}. \textit{Quickly} is a relative term for the speed of an algorithm that can solve problems in polynomial time, a duration considered reasonably efficient.}
 
 The pathfinding problem that is present in Flatland scenarios is, at its core, an NP-hard search problem.  ASP presents itself as a particularly suitable approach to solving pathfinding problems in Flatland for several reasons:
 \begin{itemize}
@@ -136,7 +133,7 @@ Further components include the scope of observation, the presence of breakdowns,
 
 \subsection{Environment}
 \label{sec:Environment}
-An environment in Flatland is a grid that consists of cells that are either empty or contain tracks.  A track may belong to one of nine types shown in \autoref{fig:tracks}, and may be rotated in increments of 90º.  Cells must be arranged in such a way that they form a network that adheres to rules of consistency, such that that each connection out of a cell must be joined by a connection of a neighboring cell \citep{baeiegljmomonyspwaaggo21a}.  Furthermore, each cell may only be occupied by a single agent at any given time step.
+An environment in Flatland is a grid that consists of cells that are either empty or contain tracks.  A track may belong to one of nine types shown in \autoref{fig:tracks}, and may be rotated in increments of 90\degree.  Cells must be arranged in such a way that they form a network that adheres to rules of consistency, such that that each connection out of a cell must be joined by a connection of a neighboring cell \citep{baeiegljmomonyspwaaggo21a}.  Furthermore, each cell may only be occupied by a single agent at any given time step.
 
 \subsubsection{Track Types and Transitions}
 \label{sec:Track}
@@ -146,7 +143,7 @@ Flatland documentation \citep{baeiegljmomonyspwaaggo21a} considers seven track t
 \begin{figure}[t]
 \centering
 \includegraphics[width=\textwidth]{tracks}
-\caption{Visual representation of all available track types.  Each type may be rotated in increments of 90º.  Type 8 and Type 9 are variations on Type 1 and Type 2, respectively, which cannot be attained through rotation alone.}
+\caption{Visual representation of all available track types.  Each type may be rotated in increments of 90\degree.  Type 8 and Type 9 are variations on Type 1 and Type 2, respectively, which cannot be attained through rotation alone.}
 \label{fig:tracks}
 
 \begin{center}
@@ -157,7 +154,7 @@ Flatland documentation \citep{baeiegljmomonyspwaaggo21a} considers seven track t
 
 The various rail types can be grouped into two categories: non-switches and switches.  Non-switches include tracks such as straight tracks, curved tracks, and dead ends.  These tracks do not allow an agent to make a navigation decision, meaning that on such tracks, agents are restricted to moving forward, coming to a stop, or turning around.  Conversely, switches represent decision points, as they compel agents to choose between alternative transitions, such as traveling to the left or to the right.  A switch never presents more than two options.
 
-Each rail type determines the possible transitions for the agents, meaning which neighboring cells are accessible positions following a single move.  Crucially, neighboring cells that are accessible from one location, may in some cases not be accessible had the train approached this same location from another direction.  This is a fundamental underlying quality of the Flatland environment.  For this reason, recording both the position and orientation of each agent at every time step is necessary for determining its legal paths.  A diagram explaining this quality is shown in \autoref{fig:transitions}.
+Each rail type determines the possible transitions for the agents, meaning which neighboring cells are accessible positions following a single move.  Crucially, neighboring cells that are accessible from one location, may in some cases not be accessible had the train approached this same location from another direction.  This is a fundamental underlying quality of Flatland.  For this reason, recording both the position and orientation of each agent at every time step is necessary for determining its legal paths.  A diagram explaining this quality is shown in \autoref{fig:transitions}.
 
 % Figure: Grids, degrees of freedom
 \begin{figure}[t]
@@ -196,16 +193,15 @@ Additionally, agents in Flatland may have different speeds, depending on their t
 
 \subsubsection{Actions}
 \label{sec:Actions}
-Within the environment, agents follow a series of actions.  Since Flatland is a discrete time simulation, the duration of each action conforms to a constant amount of time.    At each time step, agents must choose from one of the following five actions, provided there is a legal transition: 
+Within the environment, agents follow a series of actions.  Since Flatland is a discrete time simulation, the duration of each action conforms to a constant amount of time.    At each time step, agents must choose from one of the following four actions, provided there is a legal transition: 
 \begin{enumerate}
   \item \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_FORWARD}}}: along a straight track, this action moves the train forward; over a switch, this action moves the train along the straight edge; along non-switch curved track, this action moves the train along the curve; in dead ends, this reverses the direction of the train
   \item \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_LEFT}}}: this action moves the train along the left edge of a switch
   \item \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_RIGHT}}}: this action moves the train along the right edge of a switch
    \item \tcbox{\textcolor{WildStrawberry}{\texttt{STOP\_MOVING}}}: this action stops the train in its current cell
-  \item \sout{\tcbox{\textcolor{WildStrawberry}{\texttt{DO\_NOTHING}}}: this action compels the train to adhere to a continuation of its previous action; an exception to this is that while stopped, this reverses the direction of the train}
 \end{enumerate} \smallskip
 
-\noindent So long as a valid action has been selected, the position and orientation of the agent will be updated in the following time step. \medskip
+\noindent So long as a valid action has been selected, the position and orientation of the agent will be updated in the following time step.  A fifth action in Flatland, \tcbox{\textcolor{WildStrawberry}{\texttt{DO\_NOTHING}}}, is ignored as it is superfluous and any Flatland solution can be executed without using this action.  \medskip
 
 \begingroup
 
@@ -216,16 +212,15 @@ Within the environment, agents follow a series of actions.  Since Flatland is a 
 \centering
 \begin{tabular}{rcccc}
 						& $ \Lsh  $ 	& 			& $ \Rsh  $ 	& $\curvearrowright$ \\
-                                      		& -90º 		& 0º 			& 90º 		& 180º \\
+                                      		& -90\degree 	& 0\degree 	& 90\degree 	& 180\degree \\
 
 \hline % ————————————————————————————————————————
 \texttt{MOVE\_FORWARD} 	& \checkmark  	& \checkmark 	& \checkmark  	& \checkmark \\
 \texttt{MOVE\_LEFT}    		& \checkmark 	& 			& 			& \\
 \texttt{MOVE\_RIGHT}   		& 			& 			& \checkmark 	& \\
-\texttt{STOP\_MOVING}  		& 			& \checkmark 	& 			& \\
-\texttt{DO\_NOTHING}  	 	& \checkmark	& \checkmark	& \checkmark 	& \checkmark   
+\texttt{STOP\_MOVING}  		& 			& \checkmark 	& 			& 
 \end{tabular}
-\caption{How each action can change the orientation of an agent in the following time step.  A change of 0º is analogous to no change.}
+\caption{How each action can change the orientation of an agent in the following time step.  A change of 0\degree is analogous to no change.}
 \label{tbl:actions}
 \begin{center}
 {\color{lightgray} \rule{\linewidth}{0.15mm}}
@@ -236,7 +231,7 @@ Within the environment, agents follow a series of actions.  Since Flatland is a 
 \endgroup
 
 
-As shown in \autoref{tbl:actions}, different actions are capable of affecting subsequent agent orientation in various ways.  When on a non-curved track, \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_FORWARD}}} imposes is no change on the agent orientation in the following time step.  When on curved track (Type 9 in \autoref{fig:tracks}) which can rotate the agent by 90º counterclockwise or clockwise, depending on the direction of the curve.   \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_LEFT}}} and \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_RIGHT}}} will always alter the current orientation of the agent by 90º counterclockwise or clockwise, respectively.  As the \tcbox{\textcolor{WildStrawberry}{\texttt{DO\_NOTHING}}} command repeats the previously-invoked action, the change in orientation would typically mimic the change of the previous action.  The notable exception to this is when the agent is in a stopped position on a straight track or in a dead end (Type 1 or Type 7 in \autoref{fig:tracks}), in which case it will reverse its direction, altering the current orientation by 180º.  \tcbox{\textcolor{WildStrawberry}{\texttt{STOP\_MOVING}}} will never alter the current orientation of the agent.
+As shown in \autoref{tbl:actions}, different actions are capable of affecting subsequent agent orientation in various ways.  When on a non-curved track, \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_FORWARD}}} imposes is no change on the agent orientation in the following time step.  When on curved track (Type 9 in \autoref{fig:tracks}) this action can rotate the agent by 90\degree counterclockwise or clockwise, depending on the direction of the curve.   When in a dead end (Type 7 in \autoref{fig:tracks}), this action reverses its direction, rotating the agent by 180\degree .  \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_LEFT}}} and \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_RIGHT}}} are valid actions for switches and always alter the current orientation of the agent by 90\degree counterclockwise or clockwise, respectively.  \tcbox{\textcolor{WildStrawberry}{\texttt{STOP\_MOVING}}} never alters the current orientation of the agent.
 
 \subsubsection{Starting and Ending Positions}
 \label{sec:Positions}

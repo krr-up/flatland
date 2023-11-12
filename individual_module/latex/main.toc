@@ -3,16 +3,15 @@
 \contentsline {subsection}{\numberline {1.2}Related Works}{3}{subsection.1.2}%
 \contentsline {subsubsection}{\numberline {1.2.1}Multi-agent Pathfinding}{3}{subsubsection.1.2.1}%
 \contentsline {subsubsection}{\numberline {1.2.2}Vehicle Scheduling Problem}{4}{subsubsection.1.2.2}%
-\contentsline {subsubsection}{\numberline {1.2.3}Vehicle Rescheduling Problem}{5}{subsubsection.1.2.3}%
 \contentsline {section}{\numberline {2}Approaches}{5}{section.2}%
 \contentsline {subsection}{\numberline {2.1}Reinforcement Learning}{5}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Operations Research}{6}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.2}Operations Research}{5}{subsection.2.2}%
 \contentsline {subsection}{\numberline {2.3}Answer Set Programming}{6}{subsection.2.3}%
-\contentsline {section}{\numberline {3}Building Blocks}{7}{section.3}%
+\contentsline {section}{\numberline {3}Building Blocks}{6}{section.3}%
 \contentsline {subsection}{\numberline {3.1}Environment}{7}{subsection.3.1}%
 \contentsline {subsubsection}{\numberline {3.1.1}Track Types and Transitions}{7}{subsubsection.3.1.1}%
-\contentsline {subsubsection}{\numberline {3.1.2}Points of Interest}{8}{subsubsection.3.1.2}%
-\contentsline {subsection}{\numberline {3.2}Agents}{10}{subsection.3.2}%
-\contentsline {subsubsection}{\numberline {3.2.1}Actions}{10}{subsubsection.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.1.2}Points of Interest}{9}{subsubsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.2}Agents}{9}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Actions}{9}{subsubsection.3.2.1}%
 \contentsline {subsubsection}{\numberline {3.2.2}Starting and Ending Positions}{11}{subsubsection.3.2.2}%
-\contentsline {subsubsection}{\numberline {3.2.3}Conflict Restrictions}{12}{subsubsection.3.2.3}%
+\contentsline {subsubsection}{\numberline {3.2.3}Conflict Restrictions}{11}{subsubsection.3.2.3}%
