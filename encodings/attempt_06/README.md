@@ -21,7 +21,7 @@ In order to do this conversion, the logic must first be well documented and unde
 * whether the train is moving or stationary (whether the cell at `T₀` differs from the cell at `T₁`), _{stationary, moving}_
 * the change in orientation from `T₀` to `T₁`, _{0º, 90º, 180º}_
 
-This yields 12 possible combinations, of which 5 are invalid and can be immediately discarded.  The following table shows the appropriate action in each of the described scenarios:
+This yields 12 possible combinations, of which 5 are invalid and can be immediately discarded.  The following table shows the appropriate action in each of the remaining valid scenarios:
 | Type | Movement | Orientation | Action |
 | ---- | -------- | ----------- | ------ |
 | non-switch | stationary | 0º | `STOP_MOVING` |
