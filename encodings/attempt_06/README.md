@@ -35,3 +35,19 @@ This yields 12 possible combinations, of which 5 are invalid and can be immediat
 Two notes:
 1. `MOVE_LEFT` occurs when the rotation is -90º, whereas `MOVE_RIGHT` occurs when the rotation is +90º
 2. `MOVE_FORWARD` only results in a 180º rotation when the cell at time step `T₀` is a dead end
+
+The way the logic in Clingo can be encoded is as follows.
+
+`STOP_MOVING`
+The atom fires for a time step if the location and orientation remain the same.  There is a provision for ensuring the time steps are consecutive.
+```
+% path
+at(cell(0,0),0,e).
+at(cell(1,0),1,e).
+at(cell(1,1),2,n).
+at(cell(1,1),3,n).
+at(cell(2,1),4,e).
+
+#show stop_moving(T0) : at(C,T0,D), at(C,T1,D), T1-T0=1.
+```
+Here we would see `stop_moving(2)` as this would be the appropriate action for the train to take, as the conditions during time step 3 are identical to those in time step 2.
