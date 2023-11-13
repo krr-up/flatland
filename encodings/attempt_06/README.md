@@ -1,3 +1,13 @@
+## Files
+
+* `test_env.lp` a small environment for testing simple scenarios
+* `types.lp` a reference file describing possible transitions per track type
+* `encoding.lp` logic that computes valid paths
+* `actions.lp` the new file that converts a path (solution from `encoding.lp`) into a sequence of Flatland actions
+
+**Note**: the logic contained within `types.lp` has changed.  In former attempts, a cell was described by its type and rotation, e.g. `cell((1,0), (21,270))`, but is now described by its unique ID, e.g. `cell((1,0), 3089)`.  This is more consistent with how Flatland identifies its tracks.
+
+
 # Attempt 6
 
 `Attempt 5` had the goal of creating a full pipeline in which:
