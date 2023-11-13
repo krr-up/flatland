@@ -5,7 +5,8 @@
 * `encoding.lp` logic that computes valid paths
 * `actions.lp` the new file that converts a path (solution from `encoding.lp`) into a sequence of Flatland actions
 
-**Note**: the logic contained within `types.lp` has changed.  In former attempts, a cell was described by its type and rotation, e.g. `cell((1,0), (21,270))`, but is now described by its unique ID, e.g. `cell((1,0), 3089)`.  This is more consistent with how Flatland identifies its tracks.
+**Note**: 
+> The logic contained within `types.lp` has changed.  In former attempts, a cell was described by its type and rotation, e.g. `cell((1,0), (21,270))`, but is now described by its unique ID, e.g. `cell((1,0), 3089)`.  This is more consistent with how Flatland identifies the tracks in its cells.
 
 
 # Attempt 6
