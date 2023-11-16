@@ -17,7 +17,7 @@ rotation(T0,R) :- orient(T0,M0), orient(T1,M1), T1>T0, T1-T0=1, R=M1-M0\4.
 % TRACK TYPE
 type(T,switch) :- at(cell(X,Y),T,_), cell((X,Y),ID), ID = (37408;17411;32872;3089;49186;1097;34864;5633;38433;50211;33897;35889;38505;52275;20994;16458;2136;6672).
 type(T,deadend) :- at(cell(X,Y),T,_), cell((X,Y),ID), ID = (8192;4;128;256).
-type(T,nonswitch) :- at(cell(X,Y),T,_), not type(T,switch), not type(T,deadend).
+type(T,nonswitch) :- at(cell(X,Y),T,_), not type(T,switch), not type(T,deadend). % may not need this
     
 % MOVEMENT
 movement(T0,M) :- at(cell(X0,Y0), T0, _), at(cell(X1,Y1), T1, _), T1>T0, T1-T0=1, M=|(X1+Y1)-(X0+Y0)|.
