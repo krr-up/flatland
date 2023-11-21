@@ -1,0 +1,93 @@
+\begin{thebibliography}{11}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Baita et~al.(2000)Baita, Pesenti, Ukovich, and Favaretto]{bapeukfa00a}
+F.~Baita, R.~Pesenti, W.~Ukovich, and D.~Favaretto.
+\newblock A comparison of different solution approaches to the vehicle
+  scheduling problem in a practical case.
+\newblock \emph{Computers \& Operations Research}, 27\penalty0 (13):\penalty0
+  1249--1269, 2000.
+\newblock ISSN 0305-0548.
+\newblock \doi{https://doi.org/10.1016/S0305-0548(99)00073-8}.
+\newblock URL
+  \url{https://www.sciencedirect.com/science/article/pii/S0305054899000738}.
+
+\bibitem[Baumberger et~al.()Baumberger, Eichenberger, Egli, Ljungstr{\"o}m,
+  Mohanty, Mollard, Nygren, Spigler, Watson, Agrawal, and
+  Ghosh]{baeiegljmomonyspwaaggo21a}
+Christian Baumberger, Christian Eichenberger, Adrian Egli, Mattias
+  Ljungstr{\"o}m, Sharada Mohanty, Guillaume Mollard, Erik Nygren, Giacomo
+  Spigler, Jeremy Watson, Vaibhav Agrawal, and Anurag Ghosh.
+\newblock Flatland - flatland 3.0.15 documentation.
+\newblock URL \url{https://flatlandrl-docs.aicrowd.com/01_readme.html}.
+
+\bibitem[Black(2021)]{black21a}
+Paul~E. Black.
+\newblock \emph{Algorithms and Theory of Computation Handbook}.
+\newblock Dictionary of Algorithms and Data Structures. CRC Press LLC, 5
+  edition, 01 2021.
+\newblock URL \url{https://www.nist.gov/dads/HTML/nphard.html}.
+
+\bibitem[Gupta(1992)]{gupta92a}
+RK~Gupta.
+\newblock \emph{Operations research}.
+\newblock Krishna Prakashan Media, 1992.
+
+\bibitem[Li et~al.(2021)Li, Chen, Zheng, Chan, Harabor, Stuckey, Ma, and
+  Koenig]{lichzhchhastmako21a}
+Jiaoyang Li, Zhe Chen, Yi~Zheng, Shao-Hung Chan, Daniel Harabor, Peter~J.
+  Stuckey, Hang Ma, and Sven Koenig.
+\newblock Scalable rail planning and replanning: Winning the 2020 flatland
+  challenge.
+\newblock \emph{Proceedings of the International Conference on Automated
+  Planning and Scheduling}, 31\penalty0 (1):\penalty0 477--485, May 2021.
+\newblock \doi{10.1609/icaps.v31i1.15994}.
+\newblock URL \url{https://ojs.aaai.org/index.php/ICAPS/article/view/15994}.
+
+\bibitem[Li et~al.(2007)Li, Mirchandani, and Borenstein]{limibo07a}
+Jing-Quan Li, Pitu~B. Mirchandani, and Denis Borenstein.
+\newblock The vehicle rescheduling problem: Model and algorithms.
+\newblock \emph{Networks}, 50\penalty0 (3):\penalty0 211--229, July 2007.
+\newblock \doi{https://doi.org/10.1002/net.20199}.
+\newblock URL \url{https://onlinelibrary.wiley.com/doi/abs/10.1002/net.20199}.
+
+\bibitem[Lifschitz(2019)]{lifschitz19a}
+Vladimir Lifschitz.
+\newblock \emph{Answer set programming}.
+\newblock Springer Heidelberg, 2019.
+
+\bibitem[Mohanty et~al.(2020)Mohanty, Nygren, Laurent, Schneider, Scheller,
+  Bhattacharya, Watson, Egli, Eichenberger, Baumberger, Vienken, Sturm,
+  Sartoretti, and Spigler]{monylascscbhwaegeibavistsasp20a}
+Sharada Mohanty, Erik Nygren, Florian Laurent, Manuel Schneider, Christian
+  Scheller, Nilabha Bhattacharya, Jeremy Watson, Adrian Egli, Christian
+  Eichenberger, Christian Baumberger, Gereon Vienken, Irene Sturm, Guillaume
+  Sartoretti, and Giacomo Spigler.
+\newblock Flatland-rl : Multi-agent reinforcement learning on trains, December
+  2020.
+
+\bibitem[Silver(2005)]{silver05a}
+David Silver.
+\newblock Cooperative pathfinding.
+\newblock In \emph{Proceedings of the aaai conference on artificial
+  intelligence and interactive digital entertainment}, volume~1, pages
+  117--122, 2005.
+
+\bibitem[Standley(2010)]{standley10a}
+Trevor Standley.
+\newblock Finding optimal solutions to cooperative pathfinding problems.
+\newblock \emph{Proceedings of the AAAI Conference on Artificial Intelligence},
+  24\penalty0 (1):\penalty0 173--178, Jul. 2010.
+\newblock \doi{10.1609/aaai.v24i1.7564}.
+\newblock URL \url{https://ojs.aaai.org/index.php/AAAI/article/view/7564}.
+
+\bibitem[Sutton and Barto(2018)]{sutton18a}
+Richard~S Sutton and Andrew~G Barto.
+\newblock \emph{Reinforcement learning: An introduction}.
+\newblock MIT press, 2018.
+
+\end{thebibliography}
