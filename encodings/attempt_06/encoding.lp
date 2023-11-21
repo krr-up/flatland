@@ -10,8 +10,7 @@ at(cell(X+DX,Y+DY), T, DD) :- do(A,T), at(cell(X,Y), T-1, D), swap(D,From), cell
 :- end(cell(X,Y)), not at(cell(X,Y), _, _).
 
 % must be a valid cell
-invalid(X,Y) :- at(cell(X,Y), T, D), not cell((X,Y), _).
-:- invalid(X,Y).
+:- at(cell(X,Y), T, D), not cell((X,Y), _).
 
 %#show at/3.
 %#show invalid/2.
