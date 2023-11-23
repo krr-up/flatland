@@ -5,8 +5,6 @@ Generate custom Flatland environments in batch
 # import libraries
 from flatland.envs.rail_generators import sparse_rail_generator
 from flatland.envs.line_generators import sparse_line_generator
-from flatland.envs.observations import TreeObsForRailEnv
-from flatland.envs.predictions import ShortestPathPredictorForRailEnv
 from flatland.envs.rail_env import RailEnv
 import numpy as np
 
@@ -39,11 +37,11 @@ def build_env(width, height, num_agents, num_cities, max_rails_between_cities, m
         height=height,
         rail_generator=gen,
         line_generator=sparse_line_generator(),
-        number_of_agents=num_agents,
-        obs_builder_object=TreeObsForRailEnv(max_depth=3, predictor=ShortestPathPredictorForRailEnv())
+        number_of_agents=num_agents
     )
 
-    initial_obs, initial_info = env.reset()
+    _, _ = env.reset()
+    print()
     return env
 
 # convert rail grid array to Clingo string
