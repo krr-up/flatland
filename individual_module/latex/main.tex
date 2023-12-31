@@ -64,7 +64,7 @@
 \section{Introduction}
 \subsection{Problem Background}
 The Flatland framework addresses the problem of automated train scheduling and rescheduling, a major challenge
-for modern railway systems. It does so by providing a simplified two-dimensional grid world environment to allow for fast experimentation of new approaches to this problem \citep{monylascscbhwaegeibavistsasp20a}. 
+for modern railway systems. It does so by providing a simplified two-dimensional grid world environment to allow for fast experimentation on scenarios of varying complexities \citep{monylascscbhwaegeibavistsasp20a}. 
 
 \subsection{Related Works}
 Scenarios in Flatland exist at the intersection of several well-explored problems.  At its core, Flatland is a multi-agent pathfinding problem \citep{silver05a}; several agents cooperate to complete their goals while managing limited resources within a shared, finite environment.  Outside of pathfinding, Flatland is, in essence, a vehicle scheduling problem \citep{bapeukfa00a}.  An understanding of how each of these problems influences Flatland is a critical piece of finding ideal methods of producing solutions.
@@ -88,7 +88,7 @@ Traditional grid environments seen in many MAPF problems, including in \citep{st
 \end{figure}
 
 \subsubsection{Vehicle Scheduling Problem}
-The vehicle scheduling problem (VSP) \citep{bapeukfa00a} is a classical optimization problem in the field of operational planning of public transportation systems, consisting of assigning vehicles to trips, in such a way that each trip is associated to one vehicle and a cost function is minimized.  In Flatland, each instance already provides a set of agents with pairs of starting and ending positions.  However, determining the specific paths agents should follow is the problem participants are tasked with solving.  Furthermore, although not a focus of this research, Flatland provides an option to randomly inflict breakdowns upon its fleet.  When this option is selected, the task effectively extends into the realm of the vehicle rescheduling problem (VRSP) \citep{limibo07a}, as the recalculation of paths must take place once the trains have begun moving.
+The vehicle scheduling problem (VSP) \citep{bapeukfa00a} is a classical optimization problem in the field of operational planning of public transportation systems, consisting of assigning vehicles to trips, in such a way that each trip is associated to one vehicle and a cost function is minimized.  In Flatland, each instance already provides a set of agents with pairs of starting and ending positions.  However, determining the specific paths agents should follow is the problem participants are tasked with solving.  Furthermore, although not a focus of this research, Flatland provides an option to randomly inflict breakdowns upon its fleet.  When this option is selected, the task effectively extends into the realm of the vehicle rescheduling problem (VRSP) \citep{limibo07a}, as the recalculation of paths to accommodate for such breakdowns must take place once the trains have begun moving.
 
 
 % Potential approaches
@@ -154,7 +154,7 @@ Flatland documentation \citep{baeiegljmomonyspwaaggo21a} considers seven track t
 
 The various rail types can be grouped into two categories: non-switches and switches.  Non-switches include tracks such as straight tracks, curved tracks, and dead ends.  These tracks do not allow an agent to make a navigation decision, meaning that on such tracks, agents are restricted to moving forward, coming to a stop, or turning around.  Conversely, switches represent decision points, as they compel agents to choose between alternative transitions, such as traveling to the left or to the right.  A switch never presents more than two options.
 
-Each rail type determines the possible transitions for the agents, meaning which neighboring cells are accessible positions following a single move.  Crucially, neighboring cells that are accessible from one location, may in some cases not be accessible had the train approached this same location from another direction.  This is a fundamental underlying quality of Flatland.  For this reason, recording both the position and orientation of each agent at every time step is necessary for determining its legal paths.  A diagram explaining this quality is shown in \autoref{fig:transitions}.
+Each rail type determines the possible legal transitions for the agents, meaning which neighboring cells are accessible positions following a single move.  A neighboring cell is any physically adjacent cell one unit to the north, east, south, or west.  Crucially, neighboring cells that are accessible from one location, may in some cases not be accessible had the train approached this same location from another direction.  This is a fundamental underlying characteristic of Flatland.  For this reason, recording both the position and orientation of each agent at every time step is necessary for determining its legal paths.  A diagram explaining this quality is shown in \autoref{fig:transitions}.
 
 % Figure: Grids, degrees of freedom
 \begin{figure}[t]
@@ -172,28 +172,27 @@ Each rail type determines the possible transitions for the agents, meaning which
 
 
 \subsubsection{Points of Interest}
-The Flatland framework offers several parameters when generating novel environments.  Namely, the \tcbox{\textcolor{WildStrawberry}{\texttt{sparse\_rail\_generator}}} allows users to specify:
+Cities and train stations are effectively synonymous in Flatland.  Cities are esthetic regions of the environment that host stations; stations are designated track cells that represent potential starting or ending points for trains.  Trains must start and end their journeys at train stations.  A single train station may have multiple tracks passing through it, in which case a train with some city as a destination may successfully reach it via any of the tracks of its train station. \medskip
+
+\subsubsection{Generating New Environments}
+\noindent The Flatland framework offers several parameters when generating novel environments.  Among others, the \tcbox{\textcolor{WildStrawberry}{\texttt{sparse\_rail\_generator}}} allows users to specify:
 \begin{itemize}
+	\item the environment size
+	\item the number of trains
 	\item the number of cities
-	\item the number of intersections
-	\item the number of train stations
-	\item the minimal distance between nodes
-	\item the proximity of stations to their associated cities
 	\item the number of connections between cities
 \end {itemize}
-
-\noindent From the perspective of the trains, cities play no functional role; they are purely esthetic. Train stations, however, play a crucial role, as the journey of any train may only begin and end at designated train stations.  The remaining parameters offer flexibility in defining the degree of connectedness and overall character of the track layout. \medskip
 
 
 \subsection{Agents}
 \label{sec:Agents}
-Agents in Flatland represent the trains of a railway network.  They can choose from a set of actions, are given starting locations and specified destinations, must avoid collisions and other conflicts with agents present throughout the environment, and have various speed profiles.  The terms \textit{agent} and \textit{train} are used interchangeably.
+Agents in Flatland represent the trains of a railway network.  At any time step, each agent can perform one of four unique actions, is given a starting location and specified destination, and must avoid collisions and other conflicts with agents present throughout the environment.  The primary goal of an agent is to follow a path from its origin to its destination without incurring a collision.  The terms \textit{agent} and \textit{train} are used interchangeably.
 
-Additionally, agents in Flatland may have different speeds, depending on their train types, such as passenger trains or freight trains.  This speed profile determines how quickly agents are capable of traversing the environment, and ultimately influences how they interact with one another.  The scope of this research recognizes only a uniform speed profile and does not distinguish between train types.  Trains in motion are capable of traversing the environment at a rate of one cell per time step \citep{baeiegljmomonyspwaaggo21a}.
+Additionally, agents in Flatland may have different speeds, depending on their train types, such as passenger trains or freight trains.  This speed profile determines how quickly agents are capable of traversing the environment, and ultimately influences how they interact with one another.  For simplicity, the scope of this research recognizes only a uniform speed profile and does not distinguish between train types.  Trains in motion are capable of traversing the environment at a rate of one cell per time step \citep{baeiegljmomonyspwaaggo21a}.
 
 \subsubsection{Actions}
 \label{sec:Actions}
-Within the environment, agents follow a series of actions.  Since Flatland is a discrete time simulation, the duration of each action conforms to a constant amount of time.    At each time step, agents must choose from one of the following four actions, provided there is a legal transition: 
+Within the environment, agents follow a series of actions.  Flatland is a discrete time simulation, and the duration of each action conforms to a constant amount of time.    At each time step, agents must choose from one of the following four actions, provided there is a legal transition: 
 \begin{enumerate}
   \item \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_FORWARD}}}: along a straight track, this action moves the train forward; over a switch, this action moves the train along the straight edge; along non-switch curved track, this action moves the train along the curve; in dead ends, this reverses the direction of the train
   \item \tcbox{\textcolor{WildStrawberry}{\texttt{MOVE\_LEFT}}}: this action moves the train along the left edge of a switch

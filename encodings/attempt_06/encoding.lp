@@ -1,3 +1,5 @@
+maxTime(54).
+
 % determine first two cells
 at(cell(X0,Y0), 0, D) :- start(cell(X0,Y0), dir(D)).
 at(cell(X1,Y1), 1, DD) :- at(cell(X0,Y0), 0, D), swap(D,From), offset((From,f), (DX,DY), DD), X1=X0+DX, Y1=Y0+DY.
