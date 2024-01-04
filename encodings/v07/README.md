@@ -1,6 +1,14 @@
 # Version 07: multiple agents and simplifying the environment
 > In this version, we include support for multiple agents.  We also introduce a new representation of the environment by eliminating groups of cells known as _straightaways_ which are long stretches of track, wherein no decision can be made by the agent because it is only permitted to move forward.
 
+## Files
+* `test_env.lp` a small environment for testing simple scenarios
+* `transitions.lp` a reference file describing possible transitions per track type
+* `class.lp` a reference file classifying track types and allowable moves (see below)
+* `encoding.lp` computes valid paths
+* `actions.lp` converts paths (solution from `encoding.lp`) into sequences of Flatland actions
+* `class.lp` a reference file describing 
+
 ## Track classes
 Tracks can belong to one of three classes: **junction**, **wait**, or **simple**.
 
