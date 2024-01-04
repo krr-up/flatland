@@ -14,7 +14,7 @@ A **junction** is any cell of type 2, 4, 5, or 6 that presents a choice for the 
 ### Wait
 `Possible actions: wait, move forward`
 
-A **wait** is any non-switch cell that precedes a **junction**.  This allows the agent to complete a partial path before reaching a **junction**, without blocking the **junction** and therefore potentially interfering with paths of other agents.  Furthermore, starting and ending cells are including in this class.  Because of this, the first and last cell of any complete path will be a **wait**.
+A **wait** is any non-switch cell that precedes a **junction** or a diamond crossing.  This allows the agent to complete a partial path before reaching a **junction**, without blocking the **junction** and therefore potentially interfering with paths of other agents.  Furthermore, starting and ending cells are including in this class.  Because of this, the first and last cell of any complete path will be a **wait**.
 <br>
 
 ### Simple
