@@ -2,27 +2,25 @@
 > In this version, we introduce a new representation of the environment by eliminating groups of cells known as _straightaways_ which are long stretches of track, wherein no decision can be made by the agent because it is only permitted to move forward.
 
 ## Track classes
-From the perspective of an agent, tracks can belong to one (and only one) of three classes: **switch**, **wait**, or **simple**.
+Tracks can belong to one of three classes: **junction**, **wait**, or **simple**.
 
 
+### Junction
+`Possible actions: move forward, turn left, turn right`
 
-### Switch
-`Possible actions: move forward, turn left, **turn right**`
-
-A **switch** is any cell of type 2, 4, 5, or 6 that presents a choice for the agent from its orientation.  When an agent encounters a **switch**, it will always be faced with exactly two decisions.
-If an agent approaches this type of cell from a direction which does not provide a choice for the agent, it would be considered **simple**.
+A **junction** is any cell of type 2, 4, 5, or 6 that presents a choice for the agent from at least one direction.  Waiting is not allowed here, as this may interfere with other agents' paths.
 <br>
 
 ### Wait
 `Possible actions: wait, move forward`
 
-A **wait** is any non-switch cell that precedes a **switch**.  This allows the agent to complete a path before reaching a switch, without blocking the **switch** and therefore potentially interfering with paths of other agents.  Furthermore, starting and ending cells are including in this class.  Because of this, the first and last cell of any path will be a **wait**.
+A **wait** is any non-switch cell that precedes a **junction**.  This allows the agent to complete a partial path before reaching a **junction**, without blocking the **junction** and therefore potentially interfering with paths of other agents.  Furthermore, starting and ending cells are including in this class.  Because of this, the first and last cell of any complete path will be a **wait**.
 <br>
 
 ### Simple
 `Possible actions: move forward`
 
-A **simple** is any remaining cell of any track type which permits the agent to make no directional decision other than moving forward.
+A **simple** is any remaining cell of the remaining track types which permits the agent to make no directional decision other than moving forward.
 <br>
 
 ### State diagram
@@ -35,17 +33,17 @@ stateDiagram-v2
     direction LR
     [*] --> wait
     wait --> [*]
-    switch --> simple
+    junction --> simple
 
-    switch --> wait
+    junction --> wait
     simple --> wait
 
-    wait --> switch
+    wait --> junction
     wait --> simple
 
 
     wait --> wait
-    switch --> switch
+    junction --> junction
     simple --> simple
 ```
 
