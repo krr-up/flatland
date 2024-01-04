@@ -7,7 +7,6 @@
 * `class.lp` a reference file classifying track types and allowable moves (see below)
 * `encoding.lp` computes valid paths
 * `actions.lp` converts paths (solution from `encoding.lp`) into sequences of Flatland actions
-* `class.lp` a reference file describing 
 
 ## Track classes
 Tracks can belong to one of three classes: **junction**, **wait**, or **simple**.
