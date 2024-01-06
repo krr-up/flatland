@@ -54,3 +54,7 @@ stateDiagram-v2
     simple --> simple
 ```
 
+## Multiple agents
+
+At the moment, support for multiple agents is introduced by including an `agent` predicate where applicable.  Additional constraints for swapping and vertex conflicts have been included to eliminate invalid moves.
+
