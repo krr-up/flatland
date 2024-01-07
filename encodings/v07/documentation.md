@@ -21,10 +21,14 @@ Below are details of the files necessary for running an instance of Flatland in 
 * `offset((D,M), (Dx,Dy), D')` the resulting one-cell offset for any transition (e.g. one cell to the right is `(1,0)`) and its resulting direction
 
 ## `class.lp`
-> !
+> the file that provides an abstracted view of the environment by assigning classes to tracks, and reduces the possible choices for a given class
+
+* `class((X,Y), Class)` the class of track at a given cell
+* `class_action(Class, M)` the allowable actions for a given class
 
 ## `actions.lp`
 > !
+
 
 ## `encoding.lp`
 > !
