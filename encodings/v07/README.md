@@ -76,6 +76,7 @@ At the moment, support for multiple agents is introduced by including an `agent`
 ### What should be included when heading toward the finish line?
 * Breakdowns?
 * Custom environment builder (from the Flatland course)
+* Event with Michel
 
 ---
 
