@@ -77,5 +77,16 @@ At the moment, support for multiple agents is introduced by including an `agent`
 * Breakdowns?
 * Custom environment builder (from the Flatland course)
 
+---
+
+### Multiple agents
+Three changes were made:
+* including additional `agent` predicate
+* vertex conflict and swap conflict resolution
+* wait actions
+
+### Eliminating straightaways
+Each track gets a class: `simple`, `wait`, `junction`
+
 ### Diagram
 ![Flatland test environment](https://github.com/krr-up/flatland/blob/7ad60d628be33f52cc1142cb14c88aa0ab2b399d/encodings/v07/test_env.png)
