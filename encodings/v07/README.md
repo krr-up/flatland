@@ -58,3 +58,24 @@ stateDiagram-v2
 
 At the moment, support for multiple agents is introduced by including an `agent` predicate where applicable.  Additional constraints for swapping and vertex conflicts have been included to eliminate invalid moves.
 
+---
+---
+
+## Meeting
+
+`2024-01-11`
+
+### What have I been working on?
+* Multiple agents
+* Eliminating straightaways
+
+### What needs to happen with those?
+* Support for multiple agents in the visualizer — should be done by next week
+* Effective approach for handling MAPF
+
+### What should be included when heading toward the finish line?
+* Breakdowns?
+* Custom environment builder (from the Flatland course)
+
+### Diagram
+![Flatland test environment](https://github.com/krr-up/flatland/blob/7ad60d628be33f52cc1142cb14c88aa0ab2b399d/encodings/v07/test_env.png)
