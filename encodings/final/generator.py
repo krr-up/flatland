@@ -51,7 +51,7 @@ for idx in range(args.num_envs):
     clingo_env = convert_rail_to_clingo(env, args.height)
     save_clingo(clingo_env, idx, file_location)
 
-    # (env.lp) save the image
+    # (env.png) save the image
     save_render(env, idx, file_location)
 
     # (env.p) save the env object
