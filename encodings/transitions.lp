@@ -3,12 +3,17 @@
 % only certain transitions are allowed - this file provides
 % a reference check to ensure that all moves are legal
 
-% possible actions and directions
+% possible actions
 move(f). 	
 move(l). 	
 move(r).	
 move(wait).
-dir(e). 	dir(w). 	dir(n). 	dir(s).
+
+% possible directions
+dir(e).
+dir(w).
+dir(n).
+dir(s).
 
 
 %% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
@@ -140,7 +145,3 @@ offset((n,f), ( 0, 1), n). 	offset((e,l), ( 0, 1), n).	offset((w,r), ( 0, 1), n)
 
 % -- heading east  -- %
 offset((e,f), ( 1, 0), e). 	offset((s,l), ( 1, 0), e).	offset((n,r), ( 1, 0), e).
-
-
-% directional swaps
-swap(s,s). swap(n,n). swap(w,w). swap(e,e).
