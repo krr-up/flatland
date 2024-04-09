@@ -1,0 +1,56 @@
+have environment generator
+
+someone else could make "new_generator" that either inherits from my generator or uses it as an API
+
+1. inherit
+2. use as API
+
+re-read this: building your own ASP system
+
+use the code to create a custom solution
+
+danger that it adds but it could be future work — you could do it and keep it for PhD
+
+when we talk about the design, we keep these options on the radar
+
+ask Roland for help with this, to talk about software architecture -- bene can help as well
+
+compile a to-do list in a file called "future work"
+
+thesis
+framework that supports solutions to Flatland problems
+the framework is "it's not hard-wired, it's plug and play"
+there are limits (no acceleration, etc)
+here, the idea is to have generic problem representations
+in thesis this is on the ASP level, in the future at the level of python
+
+first priority should be to complete the thesis
+
+you procrastinate in a productive way
+
+rico
+> make generator with ASP support
+
+
+easy in acceptance 
+thesis - you just have to find people, and acceptance from exam board
+
+
+
+what's expected for thesis ---
+framework
+idea is you can do flatland with different "approaches" alternative encodings, etc.
+demonstrate that it's general, you have two different ways to solve it.
+then you can plug and play, afterward evaluate them
+
+
+keep a good note about what we want 
+
+
+
+phd
+you need a solid workbench - my master's thesis
+work on approaches, scalability
+
+large neighborhood search -- look into this later (the technique is not fancy, but we need it in our tool belt) 
+
