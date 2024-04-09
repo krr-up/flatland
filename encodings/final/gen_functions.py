@@ -53,6 +53,7 @@ def convert_rail_to_clingo(env, height):
     """
     
     rail_map = env.rail.grid
+    print(rail_map)
     clingo_str = ""
     mapping = {}
 
@@ -81,6 +82,7 @@ def convert_rail_to_clingo(env, height):
         clingo_str += "start(agent({}),cell({},{}),dir({})). ".format(agent_num+1, init_x, init_y, direction)
         clingo_str += "end(agent({}),cell({},{})). ".format(agent_num+1, goal_x, goal_y)
         
+    #print(mapping)
     return(clingo_str)
 
 def save_render(env, env_num, file_location):
@@ -112,3 +114,5 @@ def save_clingo(env, env_num, file_location):
     f = open("{}env_{:01d}/env_{:01d}.lp".format(file_location, env_num, env_num), 'w')
     f.write(env)
     f.close()
+
+convert_rail_to_clingo(generate(),30)
