@@ -1,4 +1,4 @@
-# Attempt 03
+# Version 03: track types and transitions
 
 ## Summary
 In the previous attempt, every possible arrangement of all track types was given a unique matrix representation that describes possible movements.  These matrices were fed into an algorithm that builds out all possible connections, forming a hypergraph comprised edges with three vertices each.  However, including hypergraphs in our constraint-checking step led to a loss of performance.

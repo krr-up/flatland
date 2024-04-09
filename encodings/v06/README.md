@@ -1,3 +1,4 @@
+# Version 06: Full pipeline and path-to-actions conversion
 ## Files
 
 * `test_env.lp` a small environment for testing simple scenarios
