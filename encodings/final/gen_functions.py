@@ -102,7 +102,7 @@ def save_env(env, env_num, file_location):
     save a given rail environment metadata as a pickle file to be loaded later
     """
 
-    pickle.dump(env, open("{}env_{:01d}/env_{}.p".format(file_location, env_num, env_num), "wb"))
+    pickle.dump(env, open("{}env_{:01d}/env_{}.pickle".format(file_location, env_num, env_num), "wb"))
 
 def save_clingo(env, env_num, file_location):
     """
