@@ -16,6 +16,8 @@ is necessary to integrate Python and ASP.
 
 ### Prerequisites
 
+Please refer to requirements.txt for information about necessary Python packages.
+
 ### Installation
 
 ### Front-end user interface
@@ -32,7 +34,7 @@ The front-end was created using Streamlit, whose installation steps can be found
 ## Project structure
 
 
-- `doc` which contains thorough documentation about each module
-- `encodings`
-- `envs`
-- `modules`
+- `doc` which contains thorough documentation about the framekwork
+- `encodings` which contains examples of ASP encodings that can be used to generate paths in Flatland
+- `envs` which contains pre-fabricated Flatland environments for development and testing
+- `modules` which contains scripts that assist in bridging the gap between Python and clingo
