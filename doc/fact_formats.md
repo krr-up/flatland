@@ -19,7 +19,7 @@ Input from Flatland environments into ASP encodings.
 
 `start(agent(A), (X,Y), dir(D)). end(agent(A), (X,Y)).`
 
-**Allowable values** for for `D` are the cardinal directions—east, west, north, south:
+**Allowable values** for `D` are the cardinal directions—east, west, north, south:
 `e` `w` `n` `s`
 
 <br>
