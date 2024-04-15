@@ -1,19 +1,18 @@
 # function for generating an environment given a set of user-defined parameters
 
 from flatland.envs.rail_env import RailEnv
-from flatland.envs.rail_env import RailEnvActions
+from flatland.envs.rail_env import RailEnvActions # do we still need this?
 from flatland.envs.rail_generators import sparse_rail_generator
 from flatland.envs.line_generators import sparse_line_generator
 from flatland.envs.observations import GlobalObsForRailEnv
-from flatland.utils.rendertools import RenderTool, AgentRenderVariant
 
-def generate_env(width=30, height=30, nr_trains=2, cities_in_map=2, seed=1, grid_distribution_of_cities=True, max_rails_between_cities=2, max_rail_in_cities=2):
+def generate_env(width=30, height=30, nr_trains=2, cities_in_map=2, seed=1, grid_distribution_of_cities=1, max_rails_between_cities=2, max_rail_in_cities=2):
     """
     generate a rail environment using Flatland libraries
     """
     rail_generator = sparse_rail_generator(max_num_cities=cities_in_map,
                         seed=seed, #omitting this for now
-                        grid_mode=grid_distribution_of_cities,
+                        grid_mode={1:True,0:False}[grid_distribution_of_cities],
                         max_rails_between_cities=max_rails_between_cities,
                         max_rail_pairs_in_city=max_rail_in_cities,
                         )

@@ -18,9 +18,9 @@ def get_args():
     parser.add_argument('width', type=int, default=30, nargs='?', help='the width of each environment')
     parser.add_argument('num_trains', type=int, default=2, nargs='?', help='the number of trains placed in each environment')
     parser.add_argument('num_cities', type=int, default=2, nargs='?', help='the number of cities in each environment, where trains can begin or end their journeys')
-    parser.add_argument('grid_mode', type=bool, default=True, nargs='?', help='if true, cities will be arranged in a grid-like fashion')
+    parser.add_argument('grid_mode', type=int, default=1, nargs='?', help='if 1, cities will be arranged in a grid-like fashion;\nif 0, cities will be arranged unevenly throughout')
     parser.add_argument('max_rails_between', type=int, default=2, nargs='?', help='the maximum number of rails connecting any two cities')
-    parser.add_argument('max_rails_within', type=int, default=2, nargs='?', help='the maximum number of parallel tracks within one city')
+    parser.add_argument('max_rails_within', type=int, default=2, nargs='?', help='the maximum number of pairs of parallel tracks within one city')
 
     return(parser.parse_args())
 
@@ -29,6 +29,9 @@ def main():
     # create directory
     file_location = '../envs/'
     os.makedirs(file_location, exist_ok=True)
+    os.makedirs(file_location + 'lp/', exist_ok=True)
+    os.makedirs(file_location + 'png/', exist_ok=True)
+    os.makedirs(file_location + 'pkl/', exist_ok=True)
     
     # capture arguments
     args: Namespace = get_args()
@@ -43,3 +46,7 @@ def main():
         save_lp(convert_to_clingo(env), idx, file_location)
         save_png(env, idx, file_location)
         save_pkl(env, idx, file_location)
+
+
+if __name__ == "__main__":
+    main()
