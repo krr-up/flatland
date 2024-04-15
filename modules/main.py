@@ -1,5 +1,6 @@
 # Python libraries --
 import os
+import re
 from argparse import ArgumentParser, Namespace
 
 # Custom functions --
@@ -25,6 +26,18 @@ def get_args():
     return(parser.parse_args())
 
 
+def find_max_env(dir):
+    """
+    find the maximum environment number in the current directory
+    """
+    max_env = -1
+    for f in os.listdir(dir + 'pkl/'):
+        env_num = int(re.match('.*?(\d+)\.pkl', f)[1])
+        if env_num > max_env:
+            max_env = env_num
+    return(max_env)
+
+
 def main():
     # create directory
     file_location = '../envs/'
@@ -32,12 +45,15 @@ def main():
     os.makedirs(file_location + 'lp/', exist_ok=True)
     os.makedirs(file_location + 'png/', exist_ok=True)
     os.makedirs(file_location + 'pkl/', exist_ok=True)
+
+    # find maximum env number
+    start_idx = find_max_env(file_location) + 1
     
     # capture arguments
     args: Namespace = get_args()
 
     # generate environments
-    for idx in range(args.num_envs):
+    for idx in range(start_idx, args.num_envs + start_idx):
         env = generate_env(width=args.width, height=args.height, nr_trains=args.num_trains, 
                     cities_in_map=args.num_cities, seed=1, grid_distribution_of_cities=args.grid_mode, 
                     max_rails_between_cities=args.max_rails_between, max_rail_in_cities=args.max_rails_within)

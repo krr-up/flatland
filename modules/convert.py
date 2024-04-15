@@ -38,5 +38,6 @@ def convert_to_clingo(env) -> str:
         for col, cval in enumerate(row):
             clingo_str += f"cell(({col+0},{row_num+0}), {cval}).\n"
         row_num -= 1
+        clingo_str+="\n"
         
     return(clingo_str)

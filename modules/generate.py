@@ -11,7 +11,7 @@ def generate_env(width=30, height=30, nr_trains=2, cities_in_map=2, seed=1, grid
     generate a rail environment using Flatland libraries
     """
     rail_generator = sparse_rail_generator(max_num_cities=cities_in_map,
-                        seed=seed, #omitting this for now
+                        #seed=seed, #omitting this for now
                         grid_mode={1:True,0:False}[grid_distribution_of_cities],
                         max_rails_between_cities=max_rails_between_cities,
                         max_rail_pairs_in_city=max_rail_in_cities,
