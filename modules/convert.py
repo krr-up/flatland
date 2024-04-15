@@ -16,13 +16,6 @@ def convert_to_clingo(env) -> str:
     height, width, agents = env.height, env.width, env.agents
     clingo_str = f"% clingo representation of a Flatland environment\n% height: {height}, width: {width}, agents: {len(agents)}\n"
 
-    # create an atom for each cell in the environment
-    row_num = len(rail_map) - 1
-    for row in rail_map:
-        for col, cval in enumerate(row):
-            clingo_str += f"cell(({col+0},{row_num+0}), {cval}).\n"
-        row_num -= 1
-
     # save start and end positions for each agent
     dir_map = {0:"n", 1:"e", 2:"s", 3:"w"}
     
@@ -38,5 +31,12 @@ def convert_to_clingo(env) -> str:
         clingo_str += f"\nagent({agent_num+1}). "
         clingo_str += f"start(agent({agent_num+1}),({init_x},{init_y}),dir({direction})). "
         clingo_str += f"end(agent({agent_num+1}),({goal_x},{goal_y})). "
+
+    # create an atom for each cell in the environment
+    row_num = len(rail_map) - 1
+    for row in rail_map:
+        for col, cval in enumerate(row):
+            clingo_str += f"cell(({col+0},{row_num+0}), {cval}).\n"
+        row_num -= 1
         
     return(clingo_str)
