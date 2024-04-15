@@ -40,7 +40,7 @@ def find_max_env(dir):
 
 def main():
     # create directory
-    file_location = '../envs/'
+    file_location = '../../envs/'
     os.makedirs(file_location, exist_ok=True)
     os.makedirs(file_location + 'lp/', exist_ok=True)
     os.makedirs(file_location + 'png/', exist_ok=True)
