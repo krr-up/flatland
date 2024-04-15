@@ -14,13 +14,13 @@ def convert_to_clingo(env) -> str:
     # environment properties
     rail_map = env.rail.grid
     height, width, agents = env.height, env.width, env.agents
-    clingo_str = f"% clingo representation of a Flatland environment\n% height: {height}, width: {width}, agents {len(agents)}"
+    clingo_str = f"% clingo representation of a Flatland environment\n% height: {height}, width: {width}, agents: {len(agents)}\n"
 
     # create an atom for each cell in the environment
     row_num = len(rail_map) - 1
     for row in rail_map:
         for col, cval in enumerate(row):
-            clingo_str += f"cell(({col+0},{row_num+0}), {cval}). "
+            clingo_str += f"cell(({col+0},{row_num+0}), {cval}).\n"
         row_num -= 1
 
     # save start and end positions for each agent
@@ -35,8 +35,8 @@ def convert_to_clingo(env) -> str:
         goal_y = flip_y(height, goal_y)
 
         direction = dir_map[agent_info.initial_direction]
-        clingo_str += f"agent({agent_num+1}). "
-        clingo_str += f"start(agent({agent_num+1}),cell({init_x},{init_y}),dir({direction})). "
-        clingo_str += f"end(agent({agent_num+1}),cell({goal_x},{goal_y})). "
+        clingo_str += f"\nagent({agent_num+1}). "
+        clingo_str += f"start(agent({agent_num+1}),({init_x},{init_y}),dir({direction})). "
+        clingo_str += f"end(agent({agent_num+1}),({goal_x},{goal_y})). "
         
     return(clingo_str)
