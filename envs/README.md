@@ -1,9 +1,9 @@
 # Flatland Environments
 
 When environments are created, they are saved in three separate formats:
-* an image, .png
-* a clingo facts file, .lp
-* a metadata file, .pkl
+* an image, `.png`
+* a clingo facts file, `.lp`
+* a metadata file, `.pkl`
 
 The image exists simply as a visual aid, to understand the qualities of the environment. The clingo facts file exists for development of an ASP encoding. The metadata file contains all of the necessary information for formulating a final plan and visualization in Flatland.
 
