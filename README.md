@@ -24,8 +24,8 @@ Please refer to requirements.txt for information about necessary Python packages
 
 A friendly user interface has been created to simplify and expedite the process of creating environments and testing out encodings.  The **create tab** allows users to specify specific parameters about the desired environments, such as the height, width, and number of trains.  Several environments that adhere to the same set of parameters can be created simulatenously.  It outputs:
 * an image, `.png`
-* a metadata file, `.p`
 * a clingo facts file, `.lp`
+* a metadata file, `.pkl`
 
 The **generate tab** allows users to test various encodings on existing environments.  The selected encodings will be processed through clingo, and their action outputs will be passed into the Flatland visualizer to render an animation of the trains in the environment.
 
