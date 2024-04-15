@@ -1,27 +1,16 @@
-# Python libraries
-import os
-import json
-import pickle
-import re
-import numpy as np
-
-# Flatland libraries
-from flatland.envs.rail_env import RailEnv
-from flatland.envs.rail_env import RailEnvActions
-from flatland.envs.rail_generators import sparse_rail_generator
-from flatland.envs.line_generators import sparse_line_generator
-from flatland.envs.observations import GlobalObsForRailEnv
-from flatland.utils.rendertools import RenderTool, AgentRenderVariant
-
+# function for converting Flatland environment into a string of clingo-readable ASP facts
 
 def flip_y(height, y) -> int:
-    """ flips the value of the y along the axis for a given environment """
+    """
+    flips the value of the y along the axis for a given environment
+    """
     return(height - y - 1)
 
 
-def convert_rail_to_clingo(env) -> str:
-    """ convert Flatland environment to clingo facts """
-    
+def convert_to_clingo(env) -> str:
+    """
+    converts Flatland environment to clingo facts
+    """
     # environment properties
     rail_map = env.rail.grid
     height, width, agents = env.height, env.width, env.agents
