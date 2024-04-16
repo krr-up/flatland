@@ -46,7 +46,6 @@ def render(env,actions):
     controller = ClingoAgent(env,actions)
     action_dict = dict()
     images = []
-    action_plan = ""
 
     # Reset the rendering system
     env_renderer = RenderTool(env, gl="PILSVG")
@@ -67,10 +66,9 @@ def render(env,actions):
     for step in range(max_actions):
         # Chose an action for each agent in the environment
         for a in range(env.get_num_agents()):
-            #print("a:", a+1, step)
+            print("a:", a+1, step)
             action = controller.act((a+1,step))
             action_dict.update({a: action})
-            action_plan += f"Timestep {step}: Agent #{a+1} performs {action}\n"
             
         #print(action_dict)
 
@@ -92,10 +90,7 @@ def render(env,actions):
         #print('Episode: Steps {}\t Score = {}'.format(step, score))
    
     # combine images into gif
-    current_time = time.time()
-    imageio.mimsave(f"output/{current_time}.gif", images, format='GIF', loop=0, duration=0.9)
-    with open(f"{current_time}.txt", "w") as f:
-        f.write(action_plan)
+    imageio.mimsave(f"output/{time.time()}.gif", images, format='GIF', loop=0, duration=0.9)
 
     # close the renderer / rendering window
     if env_renderer is not None:
