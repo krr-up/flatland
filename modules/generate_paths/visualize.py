@@ -38,7 +38,7 @@ class ClingoAgent:
         return mapping[current_action]
     
 
-def render(env,actions):
+def render(env, actions):
     """
     render the visualization
     """
