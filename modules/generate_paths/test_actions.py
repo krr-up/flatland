@@ -1,0 +1,6 @@
+import pickle
+
+action_list = [(1,'move_forward',0),(1,'move_forward',1),(1,'move_forward',2),(1,'move_forward',3),(1,'move_forward',4),(1,'move_forward',5),(1,'move_left',6),(1,'move_forward',7),(1,'move_forward',8),(1,'move_right',9),(1,'move_forward',10),(1,'move_left',11),(1,'move_forward',12),(1,'move_forward',13),(1,'move_forward',14),(1,'move_forward',15),(1,'move_forward',16),(1,'move_forward',17),(1,'move_forward',18),(1,'move_forward',19),(1,'move_forward',20),(1,'move_forward',21),(1,'move_forward',22),(1,'move_forward',23),(1,'move_forward',24),(1,'move_forward',25),(1,'move_forward',26),(1,'move_forward',27),(1,'move_forward',28),(1,'move_forward',29),(1,'move_forward',30),(1,'move_forward',31),(1,'move_forward',32),(1,'move_forward',33),(1,'move_forward',34),(1,'move_forward',35),(1,'move_forward',36),(1,'move_forward',37),(1,'move_forward',38),(1,'move_forward',39),(1,'move_forward',40),(1,'move_forward',41),(1,'move_forward',42),(1,'move_forward',43),(1,'move_forward',44),(1,'move_right',45),(1,'move_forward',46),(1,'move_forward',47)] # this needs to be input up to 43
+
+with open('actions.pkl', 'wb') as file: 
+    pickle.dump(action_list, file) 

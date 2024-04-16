@@ -17,15 +17,15 @@ class Flatland(Application):
     def main(self, ctl, files):
 
         # load files
-        for filepath in files: 
-            if os.path.splitext(filepath)[1] == '.lp':
-                ctl.load(filepath)
-            if re.search('(env_\d+)', filepath):
-                print(True)
-                # find files within env folder              
-                env_pkl = pickle.load(open(filepath, "rb"))
-                env_lp = convert_to_clingo(env_pkl)
-                ctl.load(env_lp)
+        # for filepath in files: 
+        #     if os.path.splitext(filepath)[1] == '.lp':
+        #         ctl.load(filepath)
+        #     if re.search('(env_\d+)', filepath):
+        #         print(True)
+        #         # find files within env folder              
+        #         env_pkl = pickle.load(open(filepath, "rb"))
+        #         env_lp = convert_to_clingo(env_pkl)
+        #         ctl.load(env_lp)
 
         if not files: ctl.load("-")
 
@@ -51,11 +51,17 @@ class Flatland(Application):
     #Popen(['python', './visualize.py', env_pkl, action_list])
     # call visualize - pass in env and action list
 
-      
+def dummy(self, env, actions):
+    """
+    a dummy method to mimic the behavior of main but with predefined actions
+    """
+    visualize.render(env,actions)
+
 
 if __name__ == "__main__":
-    main(Flatland(), sys.argv[1:])
-
+    #main(Flatland(), sys.argv[1:])
+    print(sys.argv[1:])
+    dummy(sys.argv[1:])
 
 
 
