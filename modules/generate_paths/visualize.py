@@ -14,7 +14,7 @@ from flatland.utils.rendertools import RenderTool, AgentRenderVariant
 # arbitrary action list and environment
 #action_list = [(1,'move_forward',0),(1,'move_forward',1),(1,'move_forward',2),(1,'move_forward',3),(2,'move_forward',0),(2,'move_forward',1),(2,'move_forward',2),(2,'move_forward',3),(1,'move_forward',4),(2,'move_forward',4),(1,'move_forward',5),(2,'move_forward',5),(1,'move_forward',6),(2,'move_forward',6),(1,'move_forward',7),(2,'move_forward',7),(1,'move_forward',8),(2,'move_forward',8)] # this needs to be input
 #action_list = [(1,'move_forward',0),(1,'move_forward',1),(1,'move_forward',2),(1,'move_forward',3),(1,'move_forward',4),(1,'move_forward',5),(1,'move_forward',6),(1,'move_forward',7),(1,'move_forward',8),(1,'move_forward',9),(1,'move_forward',10),(1,'move_forward',11),(1,'move_forward',12),(1,'move_forward',13),(1,'move_forward',14),(1,'move_forward',15),(1,'move_forward',16),(1,'move_forward',17),(1,'move_forward',18),(1,'move_forward',19),(1,'move_forward',20),(1,'move_forward',21),(1,'move_forward',22),(1,'move_forward',23),(1,'move_forward',24),(1,'move_forward',25),(1,'move_forward',26),(1,'move_forward',27),(1,'move_forward',28),(1,'move_forward',29),(1,'move_forward',30),(1,'move_forward',31),(1,'move_forward',32),(1,'move_forward',33),(1,'move_forward',34),(1,'move_forward',35),(1,'move_forward',36),(1,'move_forward',37),(1,'move_forward',38),(1,'move_forward',39),(1,'move_forward',40),(1,'move_forward',41),(1,'move_forward',42),(1,'move_forward',43),(1,'move_forward',44),(1,'move_right',45),(1,'move_forward',46),(1,'move_forward',47)] # this needs to be input up to 43
-action_list = [(1,'move_forward',0),(1,'move_forward',1),(1,'move_forward',2),(1,'move_forward',3),(1,'move_forward',4),(1,'move_forward',5),(1,'move_left',6),(1,'move_forward',7),(1,'move_forward',8),(1,'move_right',9),(1,'move_forward',10),(1,'move_forward',11),(1,'move_left',12),(1,'move_forward',13),(1,'move_forward',14),(1,'move_forward',15),(1,'move_forward',16),(1,'move_forward',17),(1,'move_forward',18),(1,'move_forward',19),(1,'move_forward',20)] #,(1,'move_forward',21),(1,'move_forward',22),(1,'move_forward',23),(1,'move_forward',24),(1,'move_forward',25),(1,'move_forward',26),(1,'move_forward',27),(1,'move_forward',28),(1,'move_forward',29),(1,'move_forward',30),(1,'move_forward',31),(1,'move_forward',32),(1,'move_forward',33),(1,'move_forward',34),(1,'move_forward',35),(1,'move_forward',36),(1,'move_forward',37),(1,'move_forward',38),(1,'move_forward',39),(1,'move_forward',40),(1,'move_forward',41),(1,'move_forward',42),(1,'move_forward',43),(1,'move_forward',44),(1,'move_right',45),(1,'move_forward',46),(1,'move_forward',47)] # this needs to be input up to 43
+action_list = [(1,'move_forward',0),(1,'move_forward',1),(1,'move_forward',2),(1,'move_forward',3),(1,'move_forward',4),(1,'move_forward',5),(1,'move_left',6),(1,'move_forward',7),(1,'move_forward',8),(1,'move_right',9),(1,'move_forward',10),(1,'move_left',11),(1,'move_forward',12),(1,'move_forward',13),(1,'move_forward',14),(1,'move_forward',15),(1,'move_forward',16),(1,'move_forward',17),(1,'move_forward',18),(1,'move_forward',19),(1,'move_forward',20),(1,'move_forward',21),(1,'move_forward',22),(1,'move_forward',23),(1,'move_forward',24),(1,'move_forward',25),(1,'move_forward',26),(1,'move_forward',27),(1,'move_forward',28),(1,'move_forward',29),(1,'move_forward',30),(1,'move_forward',31),(1,'move_forward',32),(1,'move_forward',33),(1,'move_forward',34),(1,'move_forward',35),(1,'move_forward',36),(1,'move_forward',37),(1,'move_forward',38),(1,'move_forward',39),(1,'move_forward',40),(1,'move_forward',41),(1,'move_forward',42),(1,'move_forward',43),(1,'move_forward',44),(1,'move_right',45),(1,'move_forward',46),(1,'move_forward',47)] # this needs to be input up to 43
 env = pickle.load(open("../../envs/pkl/env_10.pkl", "rb")) # this needs to be input
 
 #env_path, action_list = sys.argv[1:]
@@ -46,6 +46,7 @@ def render(env,actions):
     controller = ClingoAgent(env,actions)
     action_dict = dict()
     images = []
+    action_plan = ""
 
     # Reset the rendering system
     env_renderer = RenderTool(env, gl="PILSVG")
@@ -66,9 +67,10 @@ def render(env,actions):
     for step in range(max_actions):
         # Chose an action for each agent in the environment
         for a in range(env.get_num_agents()):
-            print("a:", a+1, step)
+            #print("a:", a+1, step)
             action = controller.act((a+1,step))
             action_dict.update({a: action})
+            action_plan += f"Timestep {step}: Agent #{a+1} performs {action}\n"
             
         #print(action_dict)
 
@@ -90,7 +92,10 @@ def render(env,actions):
         #print('Episode: Steps {}\t Score = {}'.format(step, score))
    
     # combine images into gif
-    imageio.mimsave(f"output/{time.time()}.gif", images, format='GIF', duration=2.0)
+    current_time = time.time()
+    imageio.mimsave(f"output/{current_time}.gif", images, format='GIF', loop=0, duration=0.9)
+    with open(f"{current_time}.txt", "w") as f:
+        f.write(action_plan)
 
     # close the renderer / rendering window
     if env_renderer is not None:
