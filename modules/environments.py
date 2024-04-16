@@ -4,9 +4,9 @@ import re
 from argparse import ArgumentParser, Namespace
 
 # Custom functions --
-from save import save_lp, save_png, save_pkl
-from generate import generate_env
-from convert import convert_to_clingo
+from create_environments.save import save_lp, save_png, save_pkl
+from create_environments.generate import generate_env
+from create_environments.convert import convert_to_clingo
 
 def get_args():
     """
@@ -32,7 +32,7 @@ def find_max_env(dir):
     """
     max_env = -1
     for f in os.listdir(dir + 'pkl/'):
-        env_num = int(re.match('.*?(\d+)\.pkl', f)[1])
+        env_num = int(re.match('env_(\d+)\.pkl', f)[1])
         if env_num > max_env:
             max_env = env_num
     return(max_env)
@@ -40,7 +40,7 @@ def find_max_env(dir):
 
 def main():
     # create directory
-    file_location = '../../envs/'
+    file_location = '../envs/'
     os.makedirs(file_location, exist_ok=True)
     os.makedirs(file_location + 'lp/', exist_ok=True)
     os.makedirs(file_location + 'png/', exist_ok=True)
