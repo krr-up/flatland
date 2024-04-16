@@ -3,6 +3,9 @@ import os.path
 import re
 from subprocess import Popen, PIPE
 from clingo.application import Application, clingo_main
+import pickle
+from create_environments.convert import convert_to_clingo
+import generate_paths.visualize
 
 class Flatland(Application):
     program_name = "flatland"
@@ -19,11 +22,9 @@ class Flatland(Application):
                 ctl.load(filepath)
             if re.search('(env_\d+)', filepath):
                 print(True)
-                # find files within env folder
-                x = re.search('(env_\d+)', filepath)
-                env = filepath[x.start():x.end()]
-                env_pkl = filepath + "/{}.p".format(env)
-                env_lp = filepath + "/{}.lp".format(env)
+                # find files within env folder              
+                env_pkl = pickle.load(open(filepath, "rb"))
+                env_lp = convert_to_clingo(env_pkl)
                 ctl.load(env_lp)
 
         if not files: ctl.load("-")
@@ -47,11 +48,13 @@ class Flatland(Application):
                 agent, timestep = func.arguments
                 action_list.append((agent.number,action,timestep.number))
 
-    Popen(['python', './visualize.py', env_pkl, action_list])
+    #Popen(['python', './visualize.py', env_pkl, action_list])
+    # call visualize - pass in env and action list
+
       
 
 if __name__ == "__main__":
-    clingo_main(Flatland(), sys.argv[1:])
+    main(Flatland(), sys.argv[1:])
 
 
 
