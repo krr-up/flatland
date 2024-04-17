@@ -50,6 +50,6 @@ This would create a single Flatland environment of size 45 x 45, with 2 agents a
 * `~/flatland/envs/pkl` where a metadata encoding will be stored
 * `~/flatland/envs/png` where an image will be stored
 
-The `.lp` format can be used for developing an ASP encoding.  See more information regarding the consistent [fact formats]().
+The `.lp` format can be used for developing an ASP encoding.  See more information regarding the consistent [fact formats](https://github.com/krr-up/flatland/blob/6f7d5c193b5c464a63d3d66fb7f191788257a291/doc/fact_formats.md).
 The `.pkl` encoding stores all information about the environment that is necessary for interfacing with Flatland.  It can be passed as input to [paths.py]() when testing an encoding on an environment.
 The `.png` is for human readability, to have a visual representation of what the environment looks like.
