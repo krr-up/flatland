@@ -52,9 +52,11 @@ The front-end was created using Streamlit, whose installation steps can be found
 
 ## Using the framework
 
-### Creating environments
+### Command line
 
-From the command line, `cd` into `~/flatland/modules`, and then call `python3 environments.py` with the [desired parameters](https://github.com/krr-up/flatland/blob/f7c8829c4b95b73e8f43504698d0d9b35c9e2b5c/doc/environments.md).
+#### Creating environments
+
+From the command line, `cd` into `~/flatland`, and then call `python3 environments.py` with the [desired parameters](https://github.com/krr-up/flatland/blob/f7c8829c4b95b73e8f43504698d0d9b35c9e2b5c/doc/environments.md).
 ```
 $ python3 environments.py 1 45 45 2 4 1 2 3
 ```
@@ -63,10 +65,21 @@ The ensuing environments will be saved in the `~/flatland/envs` directory.
 
 <br>
 
-### Generating paths
+#### Generating paths
 
-From the command line, `cd` into `~/flatland/modules`, and then call `python3 paths.py` with [two (or more) necessary parameters](): the environment and at least one encoding.
+From the command line, `cd` into `~/flatland`, and then call `python3 paths.py` with [two (or more) necessary parameters](): the environment and at least one encoding.
 ```
 $ python3 paths.py envs/pkl/env.pkl encodings/encoding.lp 
 ```
 Further `.lp` encodings may be passed in; all will be grounded and solved via the `clingo.application` feature.  (! Return) Your encoding may only output one valid path per agent.  Ensuing outputs will be saved in the `~/flatland/output` directory.  
+
+<br>
+
+### Frontend
+
+In order to open the frontend in the browser, first activate the the command line, `cd` into `~/flatland`, and then call `streamlit run frontend.py` 
+```
+$ streamlit run frontend.py
+```
+
+The frontend should open automatically in the browser.  Created environments will be saved in the `~/flatland/envs` directory. Generated paths will be saved in the `~/flatland/output` directory.
