@@ -14,13 +14,14 @@ is necessary to integrate Python and ASP.
 <br>
 
 ## Getting started
-[Under construction]
 
 ### Prerequisites
 
 Please refer to [requirements.txt]() for information about necessary Python packages.
 
 ### Installation
+
+[Under construction]
 
 ### Front-end user interface
 
