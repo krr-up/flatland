@@ -13,6 +13,20 @@ is necessary to integrate Python and ASP.
 
 <br>
 
+## Repository structure
+
+
+- 📁 `doc` which contains thorough documentation about the framework
+- 📁 `encodings` which contains examples of ASP encodings that can be used to generate paths in Flatland
+- 📁 `envs` which contains pre-fabricated Flatland environments for development and testing
+- 📁 `modules` which contains scripts that assist in bridging the gap between Python and clingo</summary></details>
+- 📁 `output` which contains animated visualizations and performance statistics from generated paths
+- 📝 `environments.py` which is used to generate user-specified environments
+- 📝 `frontend.py` which is a frontend interface for using the tools in this framework
+- 📝 `paths.py` which is used to ground and solve encodings, and produce an animated visualization of the resulting paths
+
+<br>
+
 ## Getting started
 
 ### Prerequisites
@@ -53,16 +67,6 @@ The ensuing environments will be saved in the `~/flatland/envs` directory.
 
 From the command line, `cd` into `~/flatland/modules`, and then call `python3 paths.py` with [two (or more) necessary parameters](): the environment and at least one encoding.
 ```
-$ python3 paths.py ../envs/pkl/env.pkl generate_paths/encoding.lp 
+$ python3 paths.py envs/pkl/env.pkl encodings/encoding.lp 
 ```
 Further `.lp` encodings may be passed in; all will be grounded and solved via the `clingo.application` feature.  (! Return) Your encoding may only output one valid path per agent.  Ensuing outputs will be saved in the `~/flatland/?` directory.  
-
-<br>
-
-## Project structure
-
-
-- `doc` which contains thorough documentation about the framework
-- `encodings` which contains examples of ASP encodings that can be used to generate paths in Flatland
-- `envs` which contains pre-fabricated Flatland environments for development and testing
-- `modules` which contains scripts that assist in bridging the gap between Python and clingo
