@@ -3,6 +3,7 @@ import os
 import pandas as pd
 import subprocess 
 import re
+import glob
 from modules.create_environments import save
 
 def create_env():
@@ -41,7 +42,7 @@ with tab1:
     # Generate
     create = st.button("Create environments", key=None, help=None, on_click=None, use_container_width=True, type="primary")
     if create:
-        subprocess.Popen(["python3", "environments.py", str(num_envs), str(width), str(height), str(num_trains), str(num_cities), str({True:1,False:0}[grid_mode]), str(max_rails_between), str(max_rails_within)], shell=False)
+        subprocess.run(["python3", "environments.py", str(num_envs), str(width), str(height), str(num_trains), str(num_cities), str({True:1,False:0}[grid_mode]), str(max_rails_between), str(max_rails_within)], shell=False)
 
         # verification
         success = True # under constrution
@@ -53,6 +54,8 @@ with tab1:
 
 with tab2:
     st.markdown("## Generate paths")
+
+    generated = False
 
     colFiles, colEnv = st.columns(2)
     with colFiles:
@@ -73,13 +76,24 @@ with tab2:
     generate = st.button("Generate paths", key=None, help=None, on_click=None, use_container_width=True, type="primary")
 
     if generate:
-        st.write(selected_env)
-        st.write(selected_files)
+        selected_files_str = ""
+        for file in selected_files: selected_files_str += f"encodings/{str(file)}"
+
+        with st.spinner(text="In progress..."):
+            subprocess.run(["python3", "paths.py", f"envs/pkl/{selected_env}", selected_files_str], shell=False)
+
+        st.success("Process has completed. View results below.")
+        list_of_files = glob.glob('output/*') # * means all if need specific format then *.csv
+        latest_file = max(list_of_files, key=os.path.getctime)
+        generated = True
+
 
     st.markdown("---")
 
     with st.expander("Results"):
-        st.write("Performance results.")
+        #st.write("Performance results.")
+        if generated:
+            output = st.image(latest_file+"/animation.gif")
 
         st.button("Save results")
    

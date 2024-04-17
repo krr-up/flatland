@@ -90,8 +90,9 @@ def render(env, actions):
         #print('Episode: Steps {}\t Score = {}'.format(step, score))
    
     # combine images into gif
-    os.makedirs("../../output/{time.time()}", exist_ok=True)
-    imageio.mimsave(f"../../output/{time.time()}/animation.gif", images, format='GIF', loop=0, duration=0.9)
+    stamp = time.time()
+    os.makedirs(f"output/{stamp}", exist_ok=True)
+    imageio.mimsave(f"output/{stamp}/animation.gif", images, format='GIF', loop=0, duration=0.9)
     try:
         shutil.rmtree("tmp/frames")
         shutil.rmtree("tmp")
