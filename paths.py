@@ -3,8 +3,8 @@ import os.path
 import pickle
 from clingo.symbol import Number
 from clingo.application import Application, clingo_main
-from create_environments.convert import convert_to_clingo
-from generate_paths.visualize import render
+from modules.create_environments.convert import convert_to_clingo
+from modules.generate_paths.visualize import render
 
 
 
@@ -18,9 +18,6 @@ class Flatland(Application):
 
 
     def main(self, ctl, files):
-        # env metadata
-        #env_pkl = None
-
         # parse through files
         for f in files: 
             if os.path.splitext(f)[1] == '.lp':
@@ -57,6 +54,4 @@ class Flatland(Application):
 if __name__ == "__main__":
     app = Flatland([], None)
     clingo_main(app, sys.argv[1:])
-    #print("action list:", app.action_list)
-    #print("env:", app.env_pkl)
     render(app.env_pkl, app.action_list)

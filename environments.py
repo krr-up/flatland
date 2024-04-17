@@ -4,9 +4,9 @@ import re
 from argparse import ArgumentParser, Namespace
 
 # Custom functions --
-from create_environments.save import save_lp, save_png, save_pkl
-from create_environments.generate import generate_env
-from create_environments.convert import convert_to_clingo
+from modules.create_environments.save import save_lp, save_png, save_pkl
+from modules.create_environments.generate import generate_env
+from modules.create_environments.convert import convert_to_clingo
 
 def get_args():
     """
@@ -42,7 +42,7 @@ def find_max_env(dir):
 
 def main():
     # create directory
-    file_location = '../envs/'
+    file_location = './envs/'
     os.makedirs(file_location, exist_ok=True)
     os.makedirs(file_location + 'lp/', exist_ok=True)
     os.makedirs(file_location + 'png/', exist_ok=True)
