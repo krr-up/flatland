@@ -69,4 +69,4 @@ From the command line, `cd` into `~/flatland/modules`, and then call `python3 pa
 ```
 $ python3 paths.py envs/pkl/env.pkl encodings/encoding.lp 
 ```
-Further `.lp` encodings may be passed in; all will be grounded and solved via the `clingo.application` feature.  (! Return) Your encoding may only output one valid path per agent.  Ensuing outputs will be saved in the `~/flatland/?` directory.  
+Further `.lp` encodings may be passed in; all will be grounded and solved via the `clingo.application` feature.  (! Return) Your encoding may only output one valid path per agent.  Ensuing outputs will be saved in the `~/flatland/output` directory.  
