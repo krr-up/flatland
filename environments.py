@@ -31,18 +31,21 @@ def find_max_env(dir):
     find the maximum environment number in the current directory
     """
     max_env = -1
+    print("dir", dir)
     try:
         for f in os.listdir(dir + 'pkl/'):
-            env_num = int(re.match('env_(\d+)\.pkl', f)[1])
-            if env_num > max_env:
-                max_env = env_num
+            if re.match('env_(\d+)\.pkl', f):
+                env_num = int(re.match('env_(\d+)\.pkl', f)[1])
+                if env_num > max_env:
+                    max_env = env_num
         return(max_env)
     except TypeError:
         max_env = -1
 
+
 def main():
     # create directory
-    file_location = './envs/'
+    file_location = os.getcwd() + '/envs/'
     os.makedirs(file_location, exist_ok=True)
     os.makedirs(file_location + 'lp/', exist_ok=True)
     os.makedirs(file_location + 'png/', exist_ok=True)

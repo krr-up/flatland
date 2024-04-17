@@ -1,9 +1,9 @@
 import streamlit as st
 import os
 import pandas as pd
-import subprocess
+import subprocess 
 import re
-from create_environments import save
+from modules.create_environments import save
 
 def create_env():
     pass
@@ -41,8 +41,10 @@ with tab1:
     # Generate
     create = st.button("Create environments", key=None, help=None, on_click=None, use_container_width=True, type="primary")
     if create:
-        subprocess.run(["python3", "environments.py", str(num_envs), str(width), str(height), str(num_trains), str(num_cities), str(grid_mode), str(max_rails_between), str(max_rails_within)], capture_output=True) 
-        st.write(subprocess.STDOUT)
+        #st.write(subprocess.__file__)
+        #print(["python3", "environments.py", str(num_envs), str(width), str(height), str(num_trains), str(num_cities), str({True:1,False:0}[grid_mode]), str(max_rails_between), str(max_rails_within)])
+        subprocess.Popen(["python3", "environments.py", str(num_envs), str(width), str(height), str(num_trains), str(num_cities), str({True:1,False:0}[grid_mode]), str(max_rails_between), str(max_rails_within)], shell=False)
+        #st.write(subprocess.STDOUT)
         
         if os.name == 'nt': # Windows
             arguments = ['cd'] 

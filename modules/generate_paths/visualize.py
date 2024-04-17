@@ -60,7 +60,6 @@ def render(env, actions):
     frame_step = 0
 
     os.makedirs("tmp/frames", exist_ok=True)
-    
 
     max_actions = max([item[2] for item in controller.action_list]) + 1
 
