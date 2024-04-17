@@ -69,8 +69,6 @@ def render(env, actions):
             print("a:", a+1, step)
             action = controller.act((a+1,step))
             action_dict.update({a: action})
-            
-        #print(action_dict)
 
         next_obs, all_rewards, done, _ = env.step(action_dict)
 

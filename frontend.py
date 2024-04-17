@@ -73,6 +73,10 @@ with tab2:
         default_envs = os.listdir(path = 'envs/pkl')
         selected_env = st.selectbox("Environment", default_envs)
 
+    # Advanced options
+    with st.expander("Advanced options", expanded=False):
+        grid_mode = st.checkbox("Spawn adjustment", value=False, help="An optional argument that automatically adjusts agents' actions to account for nuanced behavior in Flatland. For example, since it takes two time steps for an agent to spawn into the world, agent actions would be shifted by two so that they correctly line up with the environment.")
+
     generate = st.button("Generate paths", key=None, help=None, on_click=None, use_container_width=True, type="primary")
 
     if generate:
@@ -81,7 +85,6 @@ with tab2:
 
         with st.spinner(text="In progress..."):
             subprocess.run(["python3", "paths.py", f"envs/pkl/{selected_env}", selected_files_str], shell=False)
-            generate.disabled = True
 
         st.success("Process has completed. View results below.")
         list_of_files = glob.glob('output/*') # * means all if need specific format then *.csv
@@ -89,14 +92,14 @@ with tab2:
         generated = True
 
 
-    st.markdown("---")
+    
 
-    with st.expander("Results"):
-        #st.write("Performance results.")
-        if generated:
+    if generated:
+        st.markdown("---")
+        with st.expander("Results"):
+            #st.write("Performance results.")
             output = st.image(latest_file+"/animation.gif")
-
-        st.button("Save results")
+            #st.button("Save results")
    
     
 
