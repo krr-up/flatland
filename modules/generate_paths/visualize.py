@@ -91,6 +91,7 @@ def render(env, actions):
    
     # combine images into gif
     imageio.mimsave(f"output/{time.time()}.gif", images, format='GIF', loop=0, duration=0.9)
+    os.remove("tmp/frames")
 
     # close the renderer / rendering window
     if env_renderer is not None:
