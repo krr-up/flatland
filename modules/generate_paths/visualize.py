@@ -60,7 +60,7 @@ def render(env, actions):
     frame_step = 0
 
     os.makedirs("tmp/frames", exist_ok=True)
-    os.makedirs("output", exist_ok=True)
+    
 
     max_actions = max([item[2] for item in controller.action_list]) + 1
 
@@ -91,7 +91,8 @@ def render(env, actions):
         #print('Episode: Steps {}\t Score = {}'.format(step, score))
    
     # combine images into gif
-    imageio.mimsave(f"output/{time.time()}.gif", images, format='GIF', loop=0, duration=0.9)
+    os.makedirs("../../output/{time.time()}", exist_ok=True)
+    imageio.mimsave(f"../../output/{time.time()}/animation.gif", images, format='GIF', loop=0, duration=0.9)
     try:
         shutil.rmtree("tmp/frames")
         shutil.rmtree("tmp")
@@ -102,8 +103,3 @@ def render(env, actions):
     # close the renderer / rendering window
     if env_renderer is not None:
         env_renderer.close_window()
-
-
-# if __name__ == "__main__":
-#     #main(Flatland(), sys.argv[1:])
-#     render(env,action_list)
