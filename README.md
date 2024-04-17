@@ -11,6 +11,8 @@ Since the Flatland framework was initially written in Python, a pipeline for:
 
 is necessary to integrate Python and ASP.
 
+<br>
+
 ## Getting started
 
 
@@ -30,6 +32,31 @@ A friendly user interface has been created to simplify and expedite the process 
 The **generate tab** allows users to test various encodings on existing environments.  The selected encodings will be processed through clingo, and their action outputs will be passed into the Flatland visualizer to render an animation of the trains in the environment.
 
 The front-end was created using Streamlit, whose installation steps can be found in the [online documentation](https://docs.streamlit.io/get-started/installation).
+
+<br>
+
+## Using the framework
+
+### Creating environments
+
+From the command line, `cd` into `~/flatland/modules`, and then call `python3 environments.py` with the [desired parameters](https://github.com/krr-up/flatland/blob/f7c8829c4b95b73e8f43504698d0d9b35c9e2b5c/doc/environments.md).
+```
+$ python3 environments.py 1 45 45 2 4 1 2 3
+```
+
+The ensuing environments will be saved in the `~/flatland/envs` directory.
+
+<br>
+
+### Generating paths
+
+From the command line, `cd` into `~/flatland/modules`, and then call `python3 paths.py` with [two (or more) necessary parameters](): the environment and at least one encoding.
+```
+$ python3 paths.py ../envs/pkl/env.pkl generate_paths/encoding.lp 
+```
+Further `.lp` encodings may be passed in; all will be grounded and solved via the `clingo.application` feature.  (! Return) Your encoding may only output one valid path per agent.  Ensuing outputs will be saved in the `~/flatland/?` directory.  
+
+<br>
 
 ## Project structure
 
