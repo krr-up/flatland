@@ -34,7 +34,7 @@ class ClingoAgent:
     def act(self, state):
         mapping = {"move_forward":RailEnvActions.MOVE_FORWARD, "move_right":RailEnvActions.MOVE_RIGHT, "move_left":RailEnvActions.MOVE_LEFT, "wait":RailEnvActions.STOP_MOVING}
         current_agent, current_timestep = state
-        current_action = [item[1] for item in action_list if item[0] == current_agent and item[2] == current_timestep][0]
+        current_action = [item[1] for item in self.action_list if item[0] == current_agent and item[2] == current_timestep][0]
         return mapping[current_action]
     
 
@@ -61,7 +61,7 @@ def render(env, actions):
     os.makedirs("tmp/frames", exist_ok=True)
     os.makedirs("output", exist_ok=True)
 
-    max_actions = max([item[2] for item in action_list]) + 1
+    max_actions = max([item[2] for item in controller.action_list]) + 1
 
     for step in range(max_actions):
         # Chose an action for each agent in the environment
@@ -97,6 +97,6 @@ def render(env, actions):
         env_renderer.close_window()
 
 
-if __name__ == "__main__":
-    #main(Flatland(), sys.argv[1:])
-    render(env,action_list)
+# if __name__ == "__main__":
+#     #main(Flatland(), sys.argv[1:])
+#     render(env,action_list)
