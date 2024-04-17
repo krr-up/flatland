@@ -41,18 +41,7 @@ with tab1:
     # Generate
     create = st.button("Create environments", key=None, help=None, on_click=None, use_container_width=True, type="primary")
     if create:
-        #st.write(subprocess.__file__)
-        #print(["python3", "environments.py", str(num_envs), str(width), str(height), str(num_trains), str(num_cities), str({True:1,False:0}[grid_mode]), str(max_rails_between), str(max_rails_within)])
         subprocess.Popen(["python3", "environments.py", str(num_envs), str(width), str(height), str(num_trains), str(num_cities), str({True:1,False:0}[grid_mode]), str(max_rails_between), str(max_rails_within)], shell=False)
-        #st.write(subprocess.STDOUT)
-        
-        if os.name == 'nt': # Windows
-            arguments = ['cd'] 
-        else: # other (unix)
-            arguments = ['pwd']
-
-        directory = subprocess.check_output(arguments)
-        st.write(directory)
 
         # verification
         success = True # under constrution
@@ -70,23 +59,22 @@ with tab2:
         # Logical files
         st.markdown("### Necessary files")
         st.markdown("Choose pathfinding files")
-        files = os.listdir()
+        files = os.listdir(path = 'encodings')
         default_files = [file for file in files if file[-3:] == ".lp"]
-        st.multiselect("Files", files, default_files)
+        selected_files = st.multiselect("Files", files, default_files)
 
     with colEnv:
     # Environment files
         st.markdown("### Environment")
         st.markdown("Choose the environment")
-        default_envs = [file for file in files if file[:3] == "env"]
+        default_envs = os.listdir(path = 'envs/pkl')
         selected_env = st.selectbox("Environment", default_envs)
 
     generate = st.button("Generate paths", key=None, help=None, on_click=None, use_container_width=True, type="primary")
 
     if generate:
-        test_str = str(selected_env) + '/' + str(selected_env) +'.lp'
-        gen_run = subp.run(['bash', 'test.sh', f'{test_str}'], stdout=subp.PIPE)
-        st.write(gen_run.stdout.decode('utf-8'))
+        st.write(selected_env)
+        st.write(selected_files)
 
     st.markdown("---")
 
