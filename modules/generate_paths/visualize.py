@@ -6,6 +6,7 @@ import os
 import sys
 import imageio.v2 as imageio
 import time
+import shutil
 
 from flatland.envs.rail_env import RailEnv
 from flatland.envs.rail_env import RailEnvActions
@@ -91,7 +92,12 @@ def render(env, actions):
    
     # combine images into gif
     imageio.mimsave(f"output/{time.time()}.gif", images, format='GIF', loop=0, duration=0.9)
-    os.remove("tmp/frames")
+    try:
+        shutil.rmtree("tmp/frames")
+        shutil.rmtree("tmp")
+    except OSError as e:
+        print("Error: %s - %s." % (e.filename, e.strerror))
+
 
     # close the renderer / rendering window
     if env_renderer is not None:
