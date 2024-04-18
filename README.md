@@ -24,6 +24,7 @@ is necessary to integrate Python and ASP.
 - 📝 `environments.py` which is used to generate user-specified environments
 - 📝 `frontend.py` which is a frontend interface for using the tools in this framework
 - 📝 `paths.py` which is used to ground and solve encodings, and produce an animated visualization of the resulting paths
+- 📦 `requirements.txt` which can be used to install necessary packages
 
 <br>
 
@@ -31,11 +32,32 @@ is necessary to integrate Python and ASP.
 
 ### Prerequisites
 
-Please refer to [requirements.txt]() for information about necessary Python packages.
+In accordance with the Flatland competition, it is recommended to install [Anaconda](https://www.anaconda.com/distribution/) and create a new conda environment:
+```
+$ conda create python=3.7 --name flatland-rl
+$ conda activate flatland-rl
+```
+
+Then, install the stable release of Flatland:
+```
+$ pip install flatland-rl
+```
+
+<br>
 
 ### Installation
 
-[Under construction]
+Clone the repository with the following command to save the framework locally:
+```
+$ git clone https://github.com/krr-up/flatland.git
+```
+
+To ensure that the code works as expected, install the required packages:
+```
+$ conda install --yes --file requirements.txt
+```
+
+<br>
 
 ### Front-end user interface
 
@@ -46,7 +68,10 @@ A friendly user interface has been created to simplify and expedite the process 
 
 The **generate tab** allows users to test various encodings on existing environments.  The selected encodings will be processed through clingo, and their action outputs will be passed into the Flatland visualizer to render an animation of the trains in the environment.
 
-The front-end was created using Streamlit, whose installation steps can be found in the [online documentation](https://docs.streamlit.io/get-started/installation).
+The front-end was created using Streamlit, whose installation steps can be found in the [online documentation](https://docs.streamlit.io/get-started/installation).  In order to use it locally, install the package using the following command:
+```
+$ pip install streamlit
+```
 
 <br>
 
