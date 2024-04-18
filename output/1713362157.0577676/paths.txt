@@ -1,7 +1,0 @@
-Agent #1 at time 0 >>> 2
-Agent #1 at time 1 >>> 2
-Agent #1 at time 2 >>> 2
-Agent #1 at time 3 >>> 2
-Agent #1 at time 4 >>> 2
-Agent #1 at time 5 >>> 2
-Agent #1 at time 6 >>> 1
