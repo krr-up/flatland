@@ -48,6 +48,9 @@ def render(env, actions):
     action_dict = dict()
     images = []
 
+    action_log = ""
+    action_map = {1:'move_left',2:'move_forward',3:'move_right',4:'wait'}
+
     # Reset the rendering system
     env_renderer = RenderTool(env, gl="PILSVG")
     env_renderer.reset()
@@ -69,12 +72,11 @@ def render(env, actions):
             print("a:", a+1, step)
             action = controller.act((a+1,step))
             action_dict.update({a: action})
+            action_log += f"Agent #{a+1} at time {step} >>> {action_map[action]}\n"
 
         next_obs, all_rewards, done, _ = env.step(action_dict)
 
         filename = 'tmp/frames/flatland_frame_{:04d}.png'.format(step)
-
-        #env_renderer = None
 
         if env_renderer is not None:
             env_renderer.render_env(show=True, show_observations=False, show_predictions=False)
@@ -84,19 +86,22 @@ def render(env, actions):
         images.append(imageio.imread(filename))
         
         done['__all__'] = False
-            
-        #print('Episode: Steps {}\t Score = {}'.format(step, score))
    
     # combine images into gif
     stamp = time.time()
     os.makedirs(f"output/{stamp}", exist_ok=True)
     imageio.mimsave(f"output/{stamp}/animation.gif", images, format='GIF', loop=0, duration=0.9)
+
+    # remove tmp folder after creating gif
     try:
         shutil.rmtree("tmp/frames")
         shutil.rmtree("tmp")
     except OSError as e:
         print("Error: %s - %s." % (e.filename, e.strerror))
 
+    # save path plans as txt file
+    with open(f"output/{stamp}/paths.txt", "w") as f:
+        f.write(action_log)
 
     # close the renderer / rendering window
     if env_renderer is not None:

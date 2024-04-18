@@ -1,0 +1,7 @@
+Agent #1 at time 0 >>> move_forward
+Agent #1 at time 1 >>> move_forward
+Agent #1 at time 2 >>> move_forward
+Agent #1 at time 3 >>> move_forward
+Agent #1 at time 4 >>> move_forward
+Agent #1 at time 5 >>> move_forward
+Agent #1 at time 6 >>> move_left
