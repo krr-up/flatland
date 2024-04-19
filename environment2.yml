@@ -1,4 +1,4 @@
-name: flatland-rl
+name: flatland
 channels:
   - defaults
 dependencies:
