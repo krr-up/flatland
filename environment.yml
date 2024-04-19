@@ -1,7 +1,0 @@
-name: flatland
-channels:
-  - defaults
-dependencies:
-  - streamlit
-  - clingo
-prefix: /home/murphy2/anaconda3/envs/test
