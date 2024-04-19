@@ -34,8 +34,8 @@ is necessary to integrate Python and ASP.
 
 In accordance with the Flatland competition, it is recommended to install [Anaconda](https://www.anaconda.com/distribution/) and create a new conda environment:
 ```
-$ conda create python=3.7 --name flatland-rl
-$ conda activate flatland-rl
+$ conda create python=3.7 --name flatland
+$ conda activate flatland
 ```
 
 Then, install the stable release of Flatland:
@@ -52,9 +52,9 @@ Clone the repository with the following command to save the framework locally:
 $ git clone https://github.com/krr-up/flatland.git
 ```
 
-To ensure that the code works as expected, install the required packages:
+To have access to clingo, install the required package:
 ```
-$ conda install --yes --file requirements.txt
+$ conda install -c potassco clingo
 ```
 
 <br>
