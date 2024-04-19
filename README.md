@@ -114,3 +114,16 @@ $ python3 paths.py envs/pkl/env.pkl encodings/encoding.lp
 Further `.lp` encodings may be passed in; all will be grounded and solved via the `clingo.application` feature.  our encoding may only produce one valid path per agent. The `paths.py` file will in any case only produce a single model. Ensuing outputs will be saved in the `~/flatland/output` directory.  
 
 </details>
+
+<br>
+
+## Working example
+
+Want to try it out on a test environment first and see how it works?  Check out the environment `test.png` in `~/flatland/envs/png`.  The action list, which is an example of output from an encoding that ultimately gets passed into Flatland, demonstrates the expected output format.
+
+Then, from the `~/flatland` directory, run the following command:
+```
+$ paths.py envs/pkl/test.pkl encodings/test.lp 
+```
+
+The resulting output will be saved as a GIF in the `~/flatland/output` directory.
