@@ -85,6 +85,8 @@ with tab2:
 
         with st.spinner(text="In progress..."):
             subprocess.run(["python3", "paths.py", f"envs/pkl/{selected_env}", selected_files_str], shell=False)
+            arguments = ["python3", "paths.py"]
+            #subprocess.run(arguments, shell=False)
 
         st.success("Process has completed. View results below.")
         list_of_files = glob.glob('output/*') # * means all if need specific format then *.csv

@@ -6,8 +6,6 @@ from clingo.application import Application, clingo_main
 from modules.create_environments.convert import convert_to_clingo
 from modules.generate_paths.visualize import render
 
-
-
 class Flatland(Application):
     program_name = "flatland"
     version = "1.0"
