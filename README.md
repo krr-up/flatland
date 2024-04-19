@@ -24,7 +24,7 @@ is necessary to integrate Python and ASP.
 - 📝 `environments.py` which is used to generate user-specified environments
 - 📝 `frontend.py` which is a frontend interface for using the tools in this framework
 - 📝 `paths.py` which is used to ground and solve encodings, and produce an animated visualization of the resulting paths
-- 📦 `requirements.txt` which can be used to install necessary packages
+- 📦 `environment.yml` which can be used to install necessary packages
 
 <br>
 
@@ -111,6 +111,6 @@ From the command line, `cd` into `~/flatland`, and then call `python3 paths.py` 
 ```
 $ python3 paths.py envs/pkl/env.pkl encodings/encoding.lp 
 ```
-Further `.lp` encodings may be passed in; all will be grounded and solved via the `clingo.application` feature.  (! Return) Your encoding may only output one valid path per agent.  Ensuing outputs will be saved in the `~/flatland/output` directory.  
+Further `.lp` encodings may be passed in; all will be grounded and solved via the `clingo.application` feature.  our encoding may only produce one valid path per agent. The `paths.py` file will in any case only produce a single model. Ensuing outputs will be saved in the `~/flatland/output` directory.  
 
 </details>
