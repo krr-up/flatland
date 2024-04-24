@@ -1,5 +1,5 @@
-maxTime(42).
-
+%maxTime(42).
+maxTime(T) :- tracks(T).
 
 % RULES - - -
 % starting moves
@@ -32,5 +32,5 @@ at(agent(ID), (X1,Y1), D1, T+1) :- at(agent(ID), (X,Y), D0, T), do(ID,M,T), offs
 
 
 % SHOW STATEMENTS ---
-#show at/4.
+%#show at/4.
 %#show action/3.

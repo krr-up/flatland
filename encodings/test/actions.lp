@@ -6,3 +6,7 @@ action(agent(A),move_forward,T+1) :- do(A,M,T), at(agent(A),(X,Y),D,T), cell((X,
 action(agent(A),move_left,   T+1) :- do(A,l,T), at(agent(A),(X,Y),D,T), cell((X,Y),Type), not action(agent(A),move_forward,T),      not nochoice(Type,D).          %moving along a switch
 action(agent(A),move_right,  T+1) :- do(A,r,T), at(agent(A),(X,Y),D,T), cell((X,Y),Type), not action(agent(A),move_forward,T),      not nochoice(Type,D).          %moving along a switch
 action(agent(A),wait,        T+1) :- do(A,wait,T).
+
+%#show.
+#show at/4.
+#show action/3.
