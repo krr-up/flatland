@@ -11,7 +11,7 @@ cell((1,2), 16386).
 cell((2,2), 1025).
 cell((3,2), 1025).
 
-agent(1). start(agent(1), (0,0), dir(e)). end(agent(1), (3,1)).
+agent(1). start(agent(1), (0,0), dir(e)). end(agent(1), (3,2)).
 
 
 % preview

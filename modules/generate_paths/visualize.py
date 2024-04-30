@@ -12,17 +12,6 @@ from flatland.envs.rail_env import RailEnv
 from flatland.envs.rail_env import RailEnvActions
 from flatland.utils.rendertools import RenderTool, AgentRenderVariant
 
-# arbitrary action list and environment
-#action_list = [(1,'move_forward',0),(1,'move_forward',1),(1,'move_forward',2),(1,'move_forward',3),(2,'move_forward',0),(2,'move_forward',1),(2,'move_forward',2),(2,'move_forward',3),(1,'move_forward',4),(2,'move_forward',4),(1,'move_forward',5),(2,'move_forward',5),(1,'move_forward',6),(2,'move_forward',6),(1,'move_forward',7),(2,'move_forward',7),(1,'move_forward',8),(2,'move_forward',8)] # this needs to be input
-#action_list = [(1,'move_forward',0),(1,'move_forward',1),(1,'move_forward',2),(1,'move_forward',3),(1,'move_forward',4),(1,'move_forward',5),(1,'move_forward',6),(1,'move_forward',7),(1,'move_forward',8),(1,'move_forward',9),(1,'move_forward',10),(1,'move_forward',11),(1,'move_forward',12),(1,'move_forward',13),(1,'move_forward',14),(1,'move_forward',15),(1,'move_forward',16),(1,'move_forward',17),(1,'move_forward',18),(1,'move_forward',19),(1,'move_forward',20),(1,'move_forward',21),(1,'move_forward',22),(1,'move_forward',23),(1,'move_forward',24),(1,'move_forward',25),(1,'move_forward',26),(1,'move_forward',27),(1,'move_forward',28),(1,'move_forward',29),(1,'move_forward',30),(1,'move_forward',31),(1,'move_forward',32),(1,'move_forward',33),(1,'move_forward',34),(1,'move_forward',35),(1,'move_forward',36),(1,'move_forward',37),(1,'move_forward',38),(1,'move_forward',39),(1,'move_forward',40),(1,'move_forward',41),(1,'move_forward',42),(1,'move_forward',43),(1,'move_forward',44),(1,'move_right',45),(1,'move_forward',46),(1,'move_forward',47)] # this needs to be input up to 43
-#action_list = [(1,'move_forward',0),(1,'move_forward',1),(1,'move_forward',2),(1,'move_forward',3),(1,'move_forward',4),(1,'move_forward',5),(1,'move_left',6),(1,'move_forward',7),(1,'move_forward',8),(1,'move_right',9),(1,'move_forward',10),(1,'move_left',11),(1,'move_forward',12),(1,'move_forward',13),(1,'move_forward',14),(1,'move_forward',15),(1,'move_forward',16),(1,'move_forward',17),(1,'move_forward',18),(1,'move_forward',19),(1,'move_forward',20),(1,'move_forward',21),(1,'move_forward',22),(1,'move_forward',23),(1,'move_forward',24),(1,'move_forward',25),(1,'move_forward',26),(1,'move_forward',27),(1,'move_forward',28),(1,'move_forward',29),(1,'move_forward',30),(1,'move_forward',31),(1,'move_forward',32),(1,'move_forward',33),(1,'move_forward',34),(1,'move_forward',35),(1,'move_forward',36),(1,'move_forward',37),(1,'move_forward',38),(1,'move_forward',39),(1,'move_forward',40),(1,'move_forward',41),(1,'move_forward',42),(1,'move_forward',43),(1,'move_forward',44),(1,'move_right',45),(1,'move_forward',46),(1,'move_forward',47)] # this needs to be input up to 43
-#env = pickle.load(open("../../envs/pkl/test.pkl", "rb")) # this needs to be input
-
-#env_path, action_list = sys.argv[1:]
-
-# read in the environment file
-#env = pickle.load(open("./{}".format(env_path), "rb"))
-
 
 class ClingoAgent:
     """
@@ -48,7 +37,6 @@ def render(env, actions):
     action_dict = dict()
     images = []
 
-    action_log = ""
     action_map = {1:'move_left',2:'move_forward',3:'move_right',4:'wait'}
 
     # Reset the rendering system
@@ -64,29 +52,40 @@ def render(env, actions):
 
     os.makedirs("tmp/frames", exist_ok=True)
 
-    max_actions = max([item[2] for item in controller.action_list]) + 1
+    #max_actions = max([item[2] for item in controller.action_list]) + 1
 
-    for step in range(max_actions):
-        # Chose an action for each agent in the environment
-        for a in range(env.get_num_agents()):
-            print("a:", a+1, step)
-            action = controller.act((a+1,step))
-            action_dict.update({a: action})
-            action_log += f"Agent #{a+1} at time {step} >>> {action_map[action]}\n"
+    # determine and order all possible states
+    all_states = [(x[0],x[2]) for x in controller.action_list]
+    ordered_states = sorted(all_states, key=lambda x: (x[1], x[0]))
+    
+    max_agents = max([x[0] for x in ordered_states])
+    action_log = [""] * max_agents
 
-        next_obs, all_rewards, done, _ = env.step(action_dict)
+    for a, step in ordered_states:
+        action = controller.act((a,step))
+        action_dict.update({(a-1): action})
+        print(action_dict)
+        #action_log += f"Agent #{a} at time {step} >>> {action_map[action]}\n"
+        action_log[a-1] += f"Agent #{a} at time {step} >>> {action_map[action]}\n"
+        print(a,step,": ",action)
 
-        filename = 'tmp/frames/flatland_frame_{:04d}.png'.format(step)
+        if a == max_agents:
+            print("step\n")
+            next_obs, all_rewards, done, _ = env.step(action_dict)
+            filename = 'tmp/frames/flatland_frame_{:04d}.png'.format(step)
+            if env_renderer is not None:
+                env_renderer.render_env(show=True, show_observations=False, show_predictions=False)
+                env_renderer.gl.save_image(filename)
+                env_renderer.reset()
 
-        if env_renderer is not None:
-            env_renderer.render_env(show=True, show_observations=False, show_predictions=False)
-            env_renderer.gl.save_image(filename)
-            env_renderer.reset()
-
-        images.append(imageio.imread(filename))
+            images.append(imageio.imread(filename))
         
-        done['__all__'] = False
+            done['__all__'] = False
+
+        # if step == 27 and a == 2:
+        #     break
    
+
     # combine images into gif
     stamp = time.time()
     os.makedirs(f"output/{stamp}", exist_ok=True)
@@ -101,7 +100,8 @@ def render(env, actions):
 
     # save path plans as txt file
     with open(f"output/{stamp}/paths.txt", "w") as f:
-        f.write(action_log)
+        for log in action_log:
+            f.write(log)
 
     # close the renderer / rendering window
     if env_renderer is not None:

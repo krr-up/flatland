@@ -7,7 +7,7 @@ fours(F)	:- F = #count{ 1,X,Y : cell((X,Y), (33825;38433;50211;33897;35889;38505
 
 %tracks(X) 	:- twos(T), switches(S), fours(F), X = (T*2) + (S*2) + (F*4).
 
-tracks(100).
+tracks(75).
 
 % the distance between start and end is the minimum time horizon for an agent
 distance(D,ID) :- start(agent(ID), (X1,Y1), _), end(agent(ID), (X2,Y2)), DX=|X2-X1|, DY=|Y2-Y1|, D=DX+DY.
