@@ -1,10 +1,10 @@
 # function for converting Flatland environment into a string of clingo-readable ASP facts
 
-def flip_y(height, y) -> int:
-    """
-    flips the value of the y along the axis for a given environment
-    """
-    return(height - y - 1)
+# def flip_y(height, y) -> int:
+#     """
+#     flips the value of the y along the axis for a given environment
+#     """
+#     return(height - y - 1)
 
 
 def convert_to_clingo(env) -> str:
@@ -22,22 +22,23 @@ def convert_to_clingo(env) -> str:
     for agent_num, agent_info in enumerate(env.agents):
         init_y, init_x = agent_info.initial_position
         goal_y, goal_x = agent_info.target
+        min_start, max_end = agent_info.earliest_departure, agent_info.latest_arrival
 
         # flip the y-axis
-        init_y = flip_y(height, init_y)
-        goal_y = flip_y(height, goal_y)
+        # init_y = flip_y(height, init_y)
+        # goal_y = flip_y(height, goal_y)
 
         direction = dir_map[agent_info.initial_direction]
-        clingo_str += f"\nagent({agent_num+1}). "
-        clingo_str += f"start(agent({agent_num+1}),({init_x},{init_y}),dir({direction})). "
-        clingo_str += f"end(agent({agent_num+1}),({goal_x},{goal_y})). "
+        clingo_str += f"\nagent({agent_num}). "
+        clingo_str += f"start(agent({agent_num}),({init_y},{init_x}),{min_start},dir({direction})). "
+        clingo_str += f"end(agent({agent_num}),({goal_y},{goal_x}),{max_end}).\n"
 
     # create an atom for each cell in the environment
-    row_num = len(rail_map) - 1
-    for row in rail_map:
-        for col, cval in enumerate(row):
-            clingo_str += f"cell(({col+0},{row_num+0}), {cval}).\n"
-        row_num -= 1
+    #row_num = len(rail_map) - 1
+    for row, row_array in enumerate(rail_map):
+        for col, cval in enumerate(row_array):
+            clingo_str += f"cell(({row},{col}), {cval}).\n"
+        #row_num -= 1
         clingo_str+="\n"
         
     return(clingo_str)

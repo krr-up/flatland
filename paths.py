@@ -20,13 +20,11 @@ class Flatland(Application):
         # parse through files
         for f in files: 
             if os.path.splitext(f)[1] == '.lp':
-                #print("file ext: ",os.path.splitext(f)[1] )
                 ctl.load(f)
             if os.path.splitext(f)[1] == '.pkl':
                 self.env_pkl = pickle.load(open(f, "rb"))
                 env_lp = convert_to_clingo(self.env_pkl)
                 ctl.add(env_lp)
-                #ctl.load('generate_paths/test.lp')
         if not files: ctl.load("-")
         
         # ground the program
@@ -53,5 +51,5 @@ class Flatland(Application):
 if __name__ == "__main__":
     app = Flatland([], None)
     clingo_main(app, sys.argv[1:])
-    print(app.action_list)
+    print(app.action_list) #debug
     render(app.env_pkl, app.action_list)

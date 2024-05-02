@@ -3,11 +3,11 @@ maxTime(T) :- tracks(T).
 
 % RULES - - -
 % starting moves
-at(agent(ID), (X,Y), D, 0) :- start(agent(ID), (X,Y), dir(D)).
-at(agent(ID), (X1,Y1), D1, 1) :- at(agent(ID), (X,Y), D, 0), offset((D,f), (DX,DY), D1), X1=X+DX, Y1=Y+DY.
+at(agent(ID), (X,Y), D, 0+Start) :- start(agent(ID), (X,Y), Start, dir(D)).
+at(agent(ID), (X1,Y1), D1, 1+Start) :- at(agent(ID), (X,Y), D, 0), offset((D,f), (DX,DY), D1), X1=X+DX, Y1=Y+DY.
 
 % has an agent reached the goal
-goal(ID,T) :- at(agent(ID),(X,Y),_,T), end(agent(ID),(X,Y)).
+goal(ID,T) :- at(agent(ID),(X,Y),_,T), end(agent(ID),(X,Y),_).
 
 % following moves
 { do(ID,M,T) : move(M) } = 1 :- agent(ID), maxTime(Max), T=1..Max, at(agent(ID), _, _, T-1), not goal(ID,T-1).

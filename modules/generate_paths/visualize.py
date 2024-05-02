@@ -59,15 +59,21 @@ def render(env, actions):
     ordered_states = sorted(all_states, key=lambda x: (x[1], x[0]))
     
     max_agents = max([x[0] for x in ordered_states])
-    action_log = [""] * max_agents
+    print(max_agents)
+    action_log = [""] * (max_agents+1)
+    action_csv = [""] * (max_agents+1)
+
+    print(env.agents)
 
     for a, step in ordered_states:
         action = controller.act((a,step))
-        action_dict.update({(a-1): action})
+        action_dict.update({(a): action})
         print(action_dict)
         #action_log += f"Agent #{a} at time {step} >>> {action_map[action]}\n"
-        action_log[a-1] += f"Agent #{a} at time {step} >>> {action_map[action]}\n"
+        action_log[a] += f"Agent #{a} at time {step} >>> {action_map[action]} - {env.agents[a].position}\n"
+        action_csv[a] += f"{a};{step};{action_map[action]};{env.agents[a].position};{env.agents[a].direction};{env.agents[a].state}\n"
         print(a,step,": ",action)
+        print(f"state of agent {a}:", env.agents[a].state)
 
         if a == max_agents:
             print("step\n")
@@ -82,19 +88,18 @@ def render(env, actions):
         
             done['__all__'] = False
 
-        # if step == 27 and a == 2:
-        #     break
    
 
     # combine images into gif
     stamp = time.time()
     os.makedirs(f"output/{stamp}", exist_ok=True)
-    imageio.mimsave(f"output/{stamp}/animation.gif", images, format='GIF', loop=0, duration=0.9)
+    imageio.mimsave(f"output/{stamp}/animation.gif", images, format='GIF', loop=0, duration=5)
 
     # remove tmp folder after creating gif
     try:
         shutil.rmtree("tmp/frames")
         shutil.rmtree("tmp")
+        pass
     except OSError as e:
         print("Error: %s - %s." % (e.filename, e.strerror))
 
@@ -102,6 +107,12 @@ def render(env, actions):
     with open(f"output/{stamp}/paths.txt", "w") as f:
         for log in action_log:
             f.write(log)
+
+    # save path plans as csv file
+    with open(f"output/{stamp}/paths.csv", "w") as f:
+        f.write("agent;timestep;action;position;direction;status\n")
+        for csv in action_csv:
+            f.write(csv)
 
     # close the renderer / rendering window
     if env_renderer is not None:
