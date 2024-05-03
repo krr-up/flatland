@@ -1,44 +1,45 @@
-%maxTime(42).
-%maxTime(T) :- tracks(T).
+% generate do() --> determine at() --> determine action()
 
-factor(ID,Start,End) :- start(agent(ID), _, Start, _), end(agent(ID), _, End).
+%%% WAITING
+% before the agent is ready, it has to choose wait
+do(ID,wait,T) :- start(agent(ID), _, DepartureTime, _), T = 0..(DepartureTime-1).
 
-% RULES - - -
-% starting moves
-at(agent(ID), (X,Y), D, 0+Start) :- start(agent(ID), (X,Y), Start, dir(D)).
-at(agent(ID), (X1,Y1), D1, 1+Start) :- at(agent(ID), (X,Y), D, 0), offset((D,f), (DX,DY), D1), factor(ID,Start,_), X1=X+DX, Y1=Y+DY.
+%%% READY
+% ready means it can start selecting an idle move: wait or spawn - once it spawns, it becomes active
+ready(ID,T) :- start(agent(ID), _, T, _).
+%{ do(ID,M,Ready) : idle(M) } = 1 :- agent(ID), ready(ID,Ready).
+%{ do(ID,M,T) : idle(M) } = 1 :- do(ID,wait,T-1), ready(ID,Ready), T<Ready+10. %capping this at 10 timesteps
+do(ID,spawn,Ready) :- ready(ID,Ready).
 
-% has an agent reached the goal
-goal(ID,T) :- at(agent(ID),(X,Y),_,T), end(agent(ID),(X,Y),_).
+%%% ACTIVE
+% active means it has selected forward and can then choose forward, left, or right
+active(ID,T+1) :- do(ID,spawn,T).
+at(ID,(X,Y),D,T) :- start(agent(ID), (X,Y), _, dir(D)), active(ID,T).
+timeframe(Start,End) :- active(ID,Start), end(agent(ID),_,End).
+{ do(ID,M,T) : move(M) } = 1 :- timeframe(Start,End), T=Start..End, at(ID, _, _, T), not done(ID,T-1).
+at(ID,(X+Dx,Y+Dy),D,T) :- at(ID,(X,Y),D_old,T-1), do(ID,M,T-1), offset((D_old,M),(Dx,Dy),D).
 
-% following moves
-do(ID,f,Start) :- factor(ID,Start,_).
-{ do(ID,M,T) : move(M) } = 1 :- agent(ID), factor(ID,Start,End), T=Start..End, at(agent(ID), _, _, T-1), not goal(ID,T-1).
-at(agent(ID), (X1,Y1), D1, T+1) :- at(agent(ID), (X,Y), D0, T), do(ID,M,T), offset((D0,M), (DX,DY), D1), X1=X+DX, Y1=Y+DY, end(agent(ID), (EndX,EndY),_), (X,Y) != (EndX,EndY).
+%%% DONE
+% done means it has reached its destination and can no longer make decision
+done(ID,T) :- at(ID,(X,Y),_,T), end(agent(ID),(X,Y),_).
 
 
-% CONSTRAINTS ---
-% each agent must reach its destination
-:- end(agent(ID), (X,Y), _), not at(agent(ID), (X,Y), _, _).
-
-% no illegal transition
-:- do(ID,M,T), at(agent(ID),(X,Y),D,T), cell((X,Y), Type), not transition(Type,(D,M)).
-
-% may only wait in its start position
-%:- do(ID,wait,T), at(agent(ID),(X,Y),_,T), not start(agent(ID),(X,Y),_,_).
+% CONSTRAINTS
+% every agent must reach its destination
+:- agent(ID), not done(ID,_).
 
 % must be a valid cell
 :- at(_, (X,Y), _, _), not cell((X,Y), _).
 
+% no illegal transition
+:- do(ID,M,T), at(ID,(X,Y),D,T), cell((X,Y), Type), not transition(Type,(D,M)).
+
 % no swap conflict
-:- at(agent(A), (X,Y), _, T), at(agent(B), (X,Y), _, T+1), A!=B.
+:- at(A, (X,Y), _, T), at(B, (X,Y), _, T+1), A!=B.
 
 % no vertex conflict
-vertex(T) :- at(agent(A), (X,Y), _, T), at(agent(B), (X,Y), _, T), A!=B.
-%:- vertex(T), at(_,_,_,T).
+vertex(T) :- at(A, (X,Y), _, T), at(B, (X,Y), _, T), A!=B.
 
-% SHOW STATEMENTS ---
-#show at/4.
-%#show action/3.
 %#show do/3.
-%#show vertex/1.
+%#show active/2.
+#show at/4.

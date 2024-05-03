@@ -56,7 +56,7 @@ def render(env, actions):
 
     # determine and order all possible states
     all_states = [(x[0],x[2]) for x in controller.action_list]
-    ordered_states = sorted(all_states, key=lambda x: (x[1], x[0]))
+    ordered_states = sorted(set(all_states), key=lambda x: (x[1], x[0]))
     
     max_agents = max([x[0] for x in ordered_states])
     print(max_agents)
@@ -64,6 +64,7 @@ def render(env, actions):
     action_csv = [""] * (max_agents+1)
 
     print(env.agents)
+    print(ordered_states)
 
     for a, step in ordered_states:
         action = controller.act((a,step))

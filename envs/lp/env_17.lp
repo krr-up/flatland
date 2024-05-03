@@ -3,9 +3,9 @@
 
 agent(0). start(agent(0),(24,7),8,dir(s)). end(agent(0),(7,6),113).
 
-%agent(1). start(agent(1),(6,6),36,dir(e)). end(agent(1),(24,6),84).
+agent(1). start(agent(1),(6,6),36,dir(e)). end(agent(1),(24,6),84).
 
-%agent(2). start(agent(2),(24,23),39,dir(n)). end(agent(2),(7,6),111).
+agent(2). start(agent(2),(24,23),39,dir(n)). end(agent(2),(7,6),111).
 cell((0,0), 0).
 cell((0,1), 0).
 cell((0,2), 0).
