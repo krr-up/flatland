@@ -99,7 +99,6 @@ def render(env, actions):
     try:
         shutil.rmtree("tmp/frames")
         shutil.rmtree("tmp")
-        pass
     except OSError as e:
         print("Error: %s - %s." % (e.filename, e.strerror))
 

@@ -4,6 +4,7 @@
 % a reference check to ensure that all moves are legal
 
 % possible actions
+idle(wait). idle(spawn).
 move(f). 	move(l). 	move(r).	%move(wait).
 
 % possible directions
