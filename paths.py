@@ -1,6 +1,7 @@
 import sys
 import os.path
 import pickle
+import io
 from clingo.symbol import Number
 from clingo.application import Application, clingo_main
 from modules.create_environments.convert import convert_to_clingo
@@ -23,8 +24,7 @@ class Flatland(Application):
             if os.path.splitext(f)[1] == '.pkl':
                 self.env_pkl = pickle.load(open(f, "rb"))
                 env_lp = convert_to_clingo(self.env_pkl)
-                #ctl.load(env_lp)
-                #ctl.load('generate_paths/test.lp')
+                ctl.add(env_lp)
         if not files: ctl.load("-")
         
         # ground the program
@@ -42,14 +42,14 @@ class Flatland(Application):
         for func in models[0]: # only the first model
             prefix = func.name[:6]
             if prefix == "action":
-                #action = func.name
                 action = func.arguments[1].name
-                #print("arguments: ", func.arguments)
                 agent, timestep = func.arguments[0], func.arguments[2]
-                self.action_list.append((agent.number,action,timestep.number))
+                agent_num = agent.arguments[0].number
+                self.action_list.append((agent_num,action,timestep.number))
 
 
 if __name__ == "__main__":
     app = Flatland([], None)
     clingo_main(app, sys.argv[1:])
+    print(app.action_list) #debug
     render(app.env_pkl, app.action_list)

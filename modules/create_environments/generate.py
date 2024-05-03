@@ -29,7 +29,7 @@ def generate_env(width=30, height=30, nr_trains=2, cities_in_map=2, seed=1, grid
                 line_generator=line_generator,
                 number_of_agents=nr_trains,
                 obs_builder_object=observation_builder,
-                remove_agents_at_target=True)
+                remove_agents_at_target=False)
     env.reset()
 
     return(env)
