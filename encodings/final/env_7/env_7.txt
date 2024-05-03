@@ -1,4 +1,0 @@
-env_7
-height/width:	30,30
-trains/cities:	2,2
-rails between/within:	2,2
