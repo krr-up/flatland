@@ -60,6 +60,8 @@ $ conda install -c potassco clingo
 
 ### Front-end user interface
 
+⚠️ The front-end interface is still undergoing testing. For now, please use the command line.
+
 A friendly user interface has been created to simplify and expedite the process of creating environments and testing out encodings.  The **create tab** allows users to specify specific parameters about the desired environments, such as the height, width, and number of trains.  Several environments that adhere to the same set of parameters can be created simulatenously.  It outputs:
 * an image, `.png`
 * a clingo facts file, `.lp`
@@ -76,9 +78,11 @@ $ pip install streamlit
 
 ## Using the framework
 
-<details open>
+<details>
 
 <summary><h3>🖱️ Frontend</h3></summary>
+
+⚠️ The front-end interface is still undergoing testing. For now, please use the command line.
 
 In order to open the frontend in the browser, first activate the the command line, `cd` into `~/flatland`, and then call `streamlit run frontend.py`.
 ```
@@ -89,7 +93,7 @@ The frontend should open automatically in the browser.  Created environments wil
 
 </details>
 
-<details>
+<details open>
 
 <summary><h3>⌨️ Command line</h3></summary>
 
@@ -97,8 +101,9 @@ The frontend should open automatically in the browser.  Created environments wil
 
 From the command line, `cd` into `~/flatland`, and then call `python3 environments.py` with the [desired parameters](https://github.com/krr-up/flatland/blob/f7c8829c4b95b73e8f43504698d0d9b35c9e2b5c/doc/environments.md).
 ```
-$ python3 environments.py 1 45 45 2 4 1 2 3
+$ python environments.py 1 45 45 2 4 1 2 3
 ```
+> Note: if calling `python` doesn't work, try calling `python3`.
 
 The ensuing environments will be saved in the `~/flatland/envs` directory.
 
@@ -108,8 +113,10 @@ The ensuing environments will be saved in the `~/flatland/envs` directory.
 
 From the command line, `cd` into `~/flatland`, and then call `python3 paths.py` with [two (or more) necessary parameters](): the environment and at least one encoding.
 ```
-$ python3 paths.py envs/pkl/env.pkl encodings/encoding.lp 
+$ python paths.py envs/pkl/env.pkl encodings/encoding.lp 
 ```
+> Note: if calling `python` doesn't work, try calling `python3`.
+
 Further `.lp` encodings may be passed in; all will be grounded and solved via the `clingo.application` feature.  our encoding may only produce one valid path per agent. The `paths.py` file will in any case only produce a single model. Ensuing outputs will be saved in the `~/flatland/output` directory.  
 
 </details>
