@@ -108,22 +108,6 @@ transition(Type, (Dir,wait)) :- transition(Type, _), dir(Dir).
 
 
 % Offsets
-% --  not moving   -- %
-%offset((s,wait), (0,0), s). offset((e,wait), (0,0), e).	offset((w,wait), (0,0), w). offset((n,wait), (0,0), n).
-
-% -- heading south -- %
-%offset((s,f), ( 0,-1), s). 	offset((e,r), ( 0,-1), s).	offset((w,l), ( 0,-1), s).
-
-% -- heading west  -- %
-%offset((w,f), (-1, 0), w). 	offset((s,r), (-1, 0), w).	offset((n,l), (-1, 0), w).
-
-% -- heading north -- %
-%offset((n,f), ( 0, 1), n). 	offset((e,l), ( 0, 1), n).	offset((w,r), ( 0, 1), n).
-
-% -- heading east  -- %
-%offset((e,f), ( 1, 0), e). 	offset((s,l), ( 1, 0), e).	offset((n,r), ( 1, 0), e).
-
-
 % -- heading south -- %
 offset((s,f), ( 1, 0), s). 	offset((e,r), ( 1, 0), s).	offset((w,l), ( 1, 0), s).
 

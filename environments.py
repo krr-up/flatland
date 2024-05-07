@@ -22,6 +22,7 @@ def get_args():
     parser.add_argument('grid_mode', type=int, default=1, nargs='?', help='if 1, cities will be arranged in a grid-like fashion;\nif 0, cities will be arranged unevenly throughout')
     parser.add_argument('max_rails_between', type=int, default=2, nargs='?', help='the maximum number of rails connecting any two cities')
     parser.add_argument('max_rails_within', type=int, default=2, nargs='?', help='the maximum number of pairs of parallel tracks within one city')
+    parser.add_argument('remove_at_target', type=int, default=1, nargs='?', help='if 1, agents will be removed when they reach their destination;\nif 0, agents will remain on the map')
 
     return(parser.parse_args())
 
@@ -64,7 +65,8 @@ def main():
     for idx in range(start_idx, args.num_envs + start_idx):
         env = generate_env(width=args.width, height=args.height, nr_trains=args.num_trains, 
                     cities_in_map=args.num_cities, seed=1, grid_distribution_of_cities=args.grid_mode, 
-                    max_rails_between_cities=args.max_rails_between, max_rail_in_cities=args.max_rails_within)
+                    max_rails_between_cities=args.max_rails_between, max_rail_in_cities=args.max_rails_within, 
+                    remove_at_target=args.remove_at_target)
 
         # save files
         save_lp(convert_to_clingo(env), idx, file_location)

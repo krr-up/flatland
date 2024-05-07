@@ -38,6 +38,7 @@ def render(env, actions):
     images = []
 
     action_map = {1:'move_left',2:'move_forward',3:'move_right',4:'wait'}
+    state_map = {0:'waiting', 1:'ready to depart', 2:'malfunction (off map)', 3:'moving', 4:'stopped', 5:'malfunction (on map)', 6:'done'}
 
     # Reset the rendering system
     env_renderer = RenderTool(env, gl="PILSVG")
@@ -72,13 +73,15 @@ def render(env, actions):
         print(action_dict)
         #action_log += f"Agent #{a} at time {step} >>> {action_map[action]}\n"
         action_log[a] += f"Agent #{a} at time {step} >>> {action_map[action]} - {env.agents[a].position}\n"
-        action_csv[a] += f"{a};{step};{action_map[action]};{env.agents[a].position};{env.agents[a].direction};{env.agents[a].state}\n"
+        action_csv[a] += f"{a};{step};{action_map[action]};{env.agents[a].position};{env.agents[a].direction};{state_map[env.agents[a].state]}\n"
         print(a,step,": ",action)
         print(f"state of agent {a}:", env.agents[a].state)
 
         if a == max_agents:
             print("step\n")
             next_obs, all_rewards, done, _ = env.step(action_dict)
+            print("done: ", done)
+            print("rewards: ", all_rewards)
             filename = 'tmp/frames/flatland_frame_{:04d}.png'.format(step)
             if env_renderer is not None:
                 env_renderer.render_env(show=True, show_observations=False, show_predictions=False)
@@ -86,8 +89,10 @@ def render(env, actions):
                 env_renderer.reset()
 
             images.append(imageio.imread(filename))
+
+            #print("done? ", done['__all__'])
         
-            done['__all__'] = False
+            #done['__all__'] = False
 
    
 

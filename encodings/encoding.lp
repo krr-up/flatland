@@ -20,7 +20,7 @@ timeframe(Start,End) :- active(ID,Start), end(agent(ID),_,End).
 at(ID,(X+Dx,Y+Dy),D,T) :- at(ID,(X,Y),D_old,T-1), do(ID,M,T-1), offset((D_old,M),(Dx,Dy),D).
 
 %%% DONE
-% done means it has reached its destination and can no longer make decision
+% done means it has reached its destination and can no longer make decisions
 done(ID,T) :- at(ID,(X,Y),_,T), end(agent(ID),(X,Y),_).
 
 
@@ -38,8 +38,9 @@ done(ID,T) :- at(ID,(X,Y),_,T), end(agent(ID),(X,Y),_).
 :- at(A, (X,Y), _, T), at(B, (X,Y), _, T+1), A!=B.
 
 % no vertex conflict
-vertex(T) :- at(A, (X,Y), _, T), at(B, (X,Y), _, T), A!=B.
+:- at(A, (X,Y), _, T), at(B, (X,Y), _, T), A!=B.
 
 %#show do/3.
 %#show active/2.
 #show at/4.
+#show done/2.
