@@ -54,47 +54,54 @@ def render(env, actions):
     os.makedirs("tmp/frames", exist_ok=True)
 
     #max_actions = max([item[2] for item in controller.action_list]) + 1
-
+    
     # determine and order all possible states
     all_states = [(x[0],x[2]) for x in controller.action_list]
     ordered_states = sorted(set(all_states), key=lambda x: (x[1], x[0]))
-    
+
+    # find max. number of agents and create output logs
     max_agents = max([x[0] for x in ordered_states])
-    print(max_agents)
     action_log = [""] * (max_agents+1)
     action_csv = [""] * (max_agents+1)
-
+    
     print(env.agents)
+    print("max steps: ", env._max_episode_steps)
     print(ordered_states)
 
-    for a, step in ordered_states:
-        action = controller.act((a,step))
-        action_dict.update({(a): action})
-        print(action_dict)
-        #action_log += f"Agent #{a} at time {step} >>> {action_map[action]}\n"
-        action_log[a] += f"Agent #{a} at time {step} >>> {action_map[action]} - {env.agents[a].position}\n"
-        action_csv[a] += f"{a};{step};{action_map[action]};{env.agents[a].position};{env.agents[a].direction};{state_map[env.agents[a].state]}\n"
-        print(a,step,": ",action)
-        print(f"state of agent {a}:", env.agents[a].state)
+    states = {}
 
-        if a == max_agents:
-            print("step\n")
-            next_obs, all_rewards, done, _ = env.step(action_dict)
-            print("done: ", done)
-            print("rewards: ", all_rewards)
-            filename = 'tmp/frames/flatland_frame_{:04d}.png'.format(step)
-            if env_renderer is not None:
-                env_renderer.render_env(show=True, show_observations=False, show_predictions=False)
-                env_renderer.gl.save_image(filename)
-                env_renderer.reset()
+    # one empty list per unique y value
+    for x,y in ordered_states:
+        states[y] = []
 
-            images.append(imageio.imread(filename))
+    # populate the dictionary
+    for x,y in ordered_states:
+        states[y].append(x)
 
-            #print("done? ", done['__all__'])
-        
-            #done['__all__'] = False
+    # iterate through possible steps
+    for step in states:
+        for a in states[step]:
+            action = controller.act((a,step))
+            action_dict.update({(a): action})
+            print(action_dict)
+            action_log[a] += f"Agent #{a} at time {step} >>> {action_map[action]} - {env.agents[a].position}\n"
+            action_csv[a] += f"{a};{step};{action_map[action]};{env.agents[a].position};{env.agents[a].direction};{state_map[env.agents[a].state]}\n"
+            print(a,step,": ",action)
+            print(f"state of agent {a}:", env.agents[a].state)
 
-   
+        print("step\n")
+        next_obs, all_rewards, done, _ = env.step(action_dict)
+        print("done: ", done)
+        filename = 'tmp/frames/flatland_frame_{:04d}.png'.format(step)
+        if env_renderer is not None:
+            env_renderer.render_env(show=True, show_observations=False, show_predictions=False)
+            env_renderer.gl.save_image(filename)
+            env_renderer.reset()
+
+        images.append(imageio.imread(filename))
+
+        if done['__all__'] == True:
+            break            
 
     # combine images into gif
     stamp = time.time()
