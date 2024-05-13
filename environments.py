@@ -22,7 +22,7 @@ def get_args():
     parser.add_argument('grid_mode', type=int, default=1, nargs='?', help='if 1, cities will be arranged in a grid-like fashion;\nif 0, cities will be arranged unevenly throughout')
     parser.add_argument('max_rails_between', type=int, default=2, nargs='?', help='the maximum number of rails connecting any two cities')
     parser.add_argument('max_rails_within', type=int, default=2, nargs='?', help='the maximum number of pairs of parallel tracks within one city')
-    parser.add_argument('remove_at_target', type=int, default=1, nargs='?', help='if 1, agents will be removed when they reach their destination;\nif 0, agents will remain on the map')
+    parser.add_argument('remove_at_target', type=int, default=0, nargs='?', help='if 1, agents will be removed when they reach their destination;\nif 0, agents will remain on the map')
 
     return(parser.parse_args())
 
