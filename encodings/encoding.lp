@@ -21,12 +21,23 @@ do(ID,spawn,1) :- ready(ID,0).
 active(ID,T+1) :- do(ID,spawn,T).
 at(ID,(X,Y),D,T) :- start(agent(ID), (X,Y), _, dir(D)), active(ID,T).
 timeframe(Start,End) :- active(ID,Start), end(agent(ID),_,End).
+
+% optional wait
+%{ do(ID,wait,T) } :- timeframe(Start,End), T=Start..End, at(ID, (X,Y), _, T), cell((X,Y),(4608;16386;72;2064;1025;32800)), not done(ID,T-1).
+%{ do(ID,wait,T) } :- timeframe(Start,End), T=Start..End, at(ID, (X,Y), _, T), cell((X,Y),_), start(agent(ID), (X,Y), _, _), not done(ID,T-1).
+
+% choose moves
 { do(ID,M,T) : move(M) } = 1 :- timeframe(Start,End), T=Start..End, at(ID, _, _, T), not done(ID,T-1).
 at(ID,(X+Dx,Y+Dy),D,T) :- at(ID,(X,Y),D_old,T-1), do(ID,M,T-1), offset((D_old,M),(Dx,Dy),D).
+
 
 %%% DONE
 % done means it has reached its destination and can no longer make decisions
 done(ID,T) :- at(ID,(X,Y),_,T), end(agent(ID),(X,Y),_).
+
+% calculate sum of steps
+sos(S) :- S = #sum{ 1,ID,M,T: do(ID,M,T), not M = wait }.
+makespan(MS) :- MS = #max{ T: do(ID,M,T) }.
 
 
 % CONSTRAINTS
@@ -45,9 +56,12 @@ done(ID,T) :- at(ID,(X,Y),_,T), end(agent(ID),(X,Y),_).
 % no vertex conflict
 :- at(A, (X,Y), _, T), at(B, (X,Y), _, T), A!=B.
 
-%#show do/3.
+#show do/3.
 %#show active/2.
-#show at/4.
+%#show at/4.
+#show sos/1.
+#show makespan/1.
 %#show done/2.
 
-#minimize { T: done(ID,T) }.
+%#minimize { M : makespan(M) }.
+%#minimize { T : done(ID,T) }.

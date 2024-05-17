@@ -22,7 +22,7 @@ def get_args():
     parser.add_argument('grid_mode', type=int, default=1, nargs='?', help='if 1, cities will be arranged in a grid-like fashion;\nif 0, cities will be arranged unevenly throughout')
     parser.add_argument('max_rails_between', type=int, default=2, nargs='?', help='the maximum number of rails connecting any two cities')
     parser.add_argument('max_rails_within', type=int, default=2, nargs='?', help='the maximum number of pairs of parallel tracks within one city')
-    parser.add_argument('remove_at_target', type=int, default=0, nargs='?', help='if 1, agents will be removed when they reach their destination;\nif 0, agents will remain on the map')
+    parser.add_argument('remove_at_target', type=int, default=1, nargs='?', help='if 1, agents will be removed when they reach their destination;\nif 0, agents will remain on the map')
 
     return(parser.parse_args())
 
@@ -35,8 +35,8 @@ def find_max_env(dir):
     print("dir", dir)
     try:
         for f in os.listdir(dir + 'pkl/'):
-            if re.match(r'env_(\d+)\.pkl', f):
-                env_num = int(re.match(r'env_(\d+)\.pkl', f)[1])
+            if re.match('env_(\d+)\.pkl', f):
+                env_num = int(re.match('env_(\d+)\.pkl', f)[1])
                 if env_num > max_env:
                     max_env = env_num
         return(max_env)
@@ -46,7 +46,8 @@ def find_max_env(dir):
 
 def main():
     # create directory
-    file_location = os.getcwd() + '/envs/'
+    #file_location = os.getcwd() + '/envs/' #temp for benchmarking
+    file_location = os.getcwd() + '/benchmarking/envs/'
     os.makedirs(file_location, exist_ok=True)
     os.makedirs(file_location + 'lp/', exist_ok=True)
     os.makedirs(file_location + 'png/', exist_ok=True)
@@ -67,11 +68,16 @@ def main():
                     cities_in_map=args.num_cities, seed=1, grid_distribution_of_cities=args.grid_mode, 
                     max_rails_between_cities=args.max_rails_between, max_rail_in_cities=args.max_rails_within, 
                     remove_at_target=args.remove_at_target)
+        
+        #file_name = "env_{:01d}".format(idx) #temp for benchmarking
+        size = {1600:"small", 2500:"medium", 3600:"large"}
+
+        file_name = f"env_{size[args.width*args.height]}_{args.num_trains}_{args.num_cities}-{idx+1}"
 
         # save files
-        save_lp(convert_to_clingo(env), idx, file_location)
-        save_png(env, idx, file_location)
-        save_pkl(env, idx, file_location)
+        save_lp(convert_to_clingo(env), file_name, file_location)
+        save_png(env, file_name, file_location)
+        save_pkl(env, file_name, file_location)
 
 
 if __name__ == "__main__":

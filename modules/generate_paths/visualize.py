@@ -106,7 +106,7 @@ def render(env, actions):
     # combine images into gif
     stamp = time.time()
     os.makedirs(f"output/{stamp}", exist_ok=True)
-    imageio.mimsave(f"output/{stamp}/animation.gif", images, format='GIF', loop=0, duration=5)
+    imageio.mimsave(f"output/{stamp}/animation.gif", images, format='GIF', loop=0, duration=240)
 
     # remove tmp folder after creating gif
     try:

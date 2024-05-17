@@ -24,6 +24,7 @@ transition(72   , (s,l)).	transition(72   , (w,r)).
 transition(2064 , (e,l)).	transition(2064 , (s,r)).
 
 
+
 % Track Type 2 - Simple switch (left)
 transition(37408, (n,l)).	transition(37408, (e,r)).	transition(37408, (n,f)).	transition(37408, (s,f)).
 transition(17411, (w,l)).	transition(17411, (n,r)).	transition(17411, (w,f)).	transition(17411, (e,f)).
