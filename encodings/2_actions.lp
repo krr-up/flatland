@@ -1,0 +1,4 @@
+%*
+    Convert paths to actions
+*%
+
