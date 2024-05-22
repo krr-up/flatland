@@ -53,30 +53,30 @@
 
 
 % Second, connect internodes to one another
-% edge(node(), node(), ResultingDirection)
+% edge(node(), Facing1, node(), Facing2)
     % N↔S
-    edge(node(A+5,B), node(A-5,B), n) :- cell((Y,X), Type), connection(Type,  1, _, _, _, _, _), A=Y*10, B=X*10.   
-    edge(node(A-5,B), node(A+5,B), s) :- cell((Y,X), Type), connection(Type,  1, _, _, _, _, _), A=Y*10, B=X*10.
+    edge(node(A+5,B), s, node(A-5,B), n) :- cell((Y,X), Type), connection(Type,  1, _, _, _, _, _), A=Y*10, B=X*10.   
+    edge(node(A-5,B), n, node(A+5,B), s) :- cell((Y,X), Type), connection(Type,  1, _, _, _, _, _), A=Y*10, B=X*10.
 
     % W↔E 
-    edge(node(A,B-5), node(A,B+5), e) :- cell((Y,X), Type), connection(Type,  _, 1, _, _, _, _), A=Y*10, B=X*10.
-    edge(node(A,B+5), node(A,B-5), w) :- cell((Y,X), Type), connection(Type,  _, 1, _, _, _, _), A=Y*10, B=X*10.
+    edge(node(A,B-5), w, node(A,B+5), e) :- cell((Y,X), Type), connection(Type,  _, 1, _, _, _, _), A=Y*10, B=X*10.
+    edge(node(A,B+5), e, node(A,B-5), w) :- cell((Y,X), Type), connection(Type,  _, 1, _, _, _, _), A=Y*10, B=X*10.
 
     % N↔E
-    edge(node(A-5,B), node(A,B+5), e) :- cell((Y,X), Type), connection(Type,  _, _, 1, _, _, _), A=Y*10, B=X*10.
-    edge(node(A,B+5), node(A-5,B), n) :- cell((Y,X), Type), connection(Type,  _, _, 1, _, _, _), A=Y*10, B=X*10.
+    edge(node(A-5,B), n, node(A,B+5), e) :- cell((Y,X), Type), connection(Type,  _, _, 1, _, _, _), A=Y*10, B=X*10.
+    edge(node(A,B+5), e, node(A-5,B), n) :- cell((Y,X), Type), connection(Type,  _, _, 1, _, _, _), A=Y*10, B=X*10.
 
     % E↔S
-    edge(node(A,B+5), node(A+5,B), s) :- cell((Y,X), Type), connection(Type,  _, _, _, 1, _, _), A=Y*10, B=X*10.
-    edge(node(A+5,B), node(A,B+5), e) :- cell((Y,X), Type), connection(Type,  _, _, _, 1, _, _), A=Y*10, B=X*10.
+    edge(node(A,B+5), e, node(A+5,B), s) :- cell((Y,X), Type), connection(Type,  _, _, _, 1, _, _), A=Y*10, B=X*10.
+    edge(node(A+5,B), s, node(A,B+5), e) :- cell((Y,X), Type), connection(Type,  _, _, _, 1, _, _), A=Y*10, B=X*10.
 
     % S↔W
-    edge(node(A+5,B), node(A,B-5), w) :- cell((Y,X), Type), connection(Type,  _, _, _, _, 1, _), A=Y*10, B=X*10.
-    edge(node(A,B-5), node(A+5,B), s) :- cell((Y,X), Type), connection(Type,  _, _, _, _, 1, _), A=Y*10, B=X*10.
+    edge(node(A+5,B), s, node(A,B-5), w) :- cell((Y,X), Type), connection(Type,  _, _, _, _, 1, _), A=Y*10, B=X*10.
+    edge(node(A,B-5), w, node(A+5,B), s) :- cell((Y,X), Type), connection(Type,  _, _, _, _, 1, _), A=Y*10, B=X*10.
 
     % W↔N
-    edge(node(A,B-5), node(A-5,B), n) :- cell((Y,X), Type), connection(Type,  _, _, _, _, _, 1), A=Y*10, B=X*10.
-    edge(node(A-5,B), node(A,B-5), w) :- cell((Y,X), Type), connection(Type,  _, _, _, _, _, 1), A=Y*10, B=X*10.    
+    edge(node(A,B-5), w, node(A-5,B), n) :- cell((Y,X), Type), connection(Type,  _, _, _, _, _, 1), A=Y*10, B=X*10.
+    edge(node(A-5,B), n, node(A,B-5), w) :- cell((Y,X), Type), connection(Type,  _, _, _, _, _, 1), A=Y*10, B=X*10.    
 
     % wait
     edge(node(A,B), node(A,B), D)     :- edge(_,node(A,B),D).
@@ -94,12 +94,12 @@
 % Fourth, provide ability to convert nodes into cells
 % node2cell(node(A,B), (Y,X), D).
     node2cell(node(A,B),(Y,X),D) :- edge(_,node(A,B),D), facing(Da,Db,D), Y=(A-Da)/10, X=(B-Db)/10.
+    % ? not sure whether this works
 
 
 % Fifth, provide information about which nodes have two outgoing edges
     %choice(A,D,C) :- C= #count{B: edge(A,B,D), A!=B}, edge(A,_,D).
     %choice(A,C,D) :- edge(A,B,_), C = #count{ D : node2cell(A,(Y,X),D) }. 
-    choice(A,D,C) :- edge(A,_,D), node2cell(A,(Y,X),_), C = #count{ D: node2cell(A, (Y,X), D) }.
+    choice(A,D) :- edge(A,D,_,_), #count{ B: edge(A,D,B,_), A!=B } > 1.
 
-
-#show choice/3.
+%#show choice/1.

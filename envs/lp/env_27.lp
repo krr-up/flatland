@@ -3,7 +3,7 @@
 
 agent(0). start(agent(0),(5,5),0,dir(e)). end(agent(0),(31,6),55).
 
-%agent(1). start(agent(1),(31,5),2,dir(n)). end(agent(1),(6,5),57).
+agent(1). start(agent(1),(31,5),2,dir(n)). end(agent(1),(6,5),57).
 cell((0,0), 0).
 cell((0,1), 0).
 cell((0,2), 0).
