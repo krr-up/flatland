@@ -78,21 +78,6 @@ $ pip install streamlit
 
 ## Using the framework
 
-<details>
-
-<summary><h3>🖱️ Frontend</h3></summary>
-
-⚠️ The front-end interface is still undergoing testing. For now, please use the command line.
-
-In order to open the frontend in the browser, first activate the the command line, `cd` into `~/flatland`, and then call `streamlit run frontend.py`.
-```
-$ streamlit run frontend.py
-```
-
-The frontend should open automatically in the browser.  Created environments will be saved in the `~/flatland/envs` directory. Generated paths will be saved in the `~/flatland/output` directory.
-
-</details>
-
 <details open>
 
 <summary><h3>⌨️ Command line</h3></summary>
@@ -113,9 +98,11 @@ The ensuing environments will be saved in the `~/flatland/envs` directory.
 
 From the command line, `cd` into `~/flatland`, and then call `python3 paths.py` with [two (or more) necessary parameters](): the environment and at least one encoding.
 ```
-$ python paths.py envs/pkl/env.pkl encodings/encoding.lp 
+$ python paths.py {envs/pkl/env.pkl} {encodings/encoding.lp}
 ```
 > Note: if calling `python` doesn't work, try calling `python3`.
+
+Replace with own environment file and encoding file(s).
 
 Further `.lp` encodings may be passed in; all will be grounded and solved via the `clingo.application` feature.  our encoding may only produce one valid path per agent. The `paths.py` file will in any case only produce a single model. Ensuing outputs will be saved in the `~/flatland/output` directory.  
 
