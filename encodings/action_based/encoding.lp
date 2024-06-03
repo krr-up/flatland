@@ -35,6 +35,10 @@ at(ID,(X+Dx,Y+Dy),D,T) :- at(ID,(X,Y),D_old,T-1), do(ID,M,T-1), offset((D_old,M)
 % done means it has reached its destination and can no longer make decisions
 done(ID,T) :- at(ID,(X,Y),_,T), end(agent(ID),(X,Y),_).
 
+% calculate sum of steps
+sos(S) :- S = #sum{ 1,ID,M,T: do(ID,M,T), not M = wait }.
+makespan(MS) :- MS = #max{ T: do(ID,M,T) }.
+
 
 % CONSTRAINTS
 % every agent must reach its destination

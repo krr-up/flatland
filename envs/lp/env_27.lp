@@ -1,4 +1,4 @@
-% clingo representation of a Flatland environment
+% clingo representation of a Flatland environment - ]#:#2QqeM4nYNN3 (brandenburg) M_5m4@8*L?5h'd6 (uckermark)
 % height: 36, width: 36, agents: 2
 
 agent(0). start(agent(0),(5,5),0,dir(e)). end(agent(0),(31,6),55).
