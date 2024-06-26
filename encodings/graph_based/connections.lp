@@ -91,17 +91,5 @@
     ending(ID, node(A+Da,B+Db), N)     :- end(agent(ID),(Y,X),N), A=Y*10, B=X*10, offset(Da,Db).
 
 
-% Fourth, provide ability to convert nodes into cells
-% node2cell(node(A,B), (Y,X), D).
-    node2cell(node(A,B),(Y,X),D) :- edge(_,node(A,B),D), facing(Da,Db,D), Y=(A-Da)/10, X=(B-Db)/10.
-    % ? not sure whether this works
-
-
-% Fifth, provide information about which nodes have two outgoing edges
-    %choice(A,D,C) :- C= #count{B: edge(A,B,D), A!=B}, edge(A,_,D).
-    %choice(A,C,D) :- edge(A,B,_), C = #count{ D : node2cell(A,(Y,X),D) }. 
+% Fourth, provide information about which nodes have two outgoing edges
     choice(A,D) :- edge(A,D,_,_), #count{ B: edge(A,D,B,_), A!=B } > 1.
-
-%#show choice/1.
-
-%#show edge/4.
