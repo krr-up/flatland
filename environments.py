@@ -70,7 +70,7 @@ def main():
                     remove_at_target=args.remove_at_target)
         
         #file_name = "env_{:01d}".format(idx) #temp for benchmarking
-        size = {1600:"small", 2500:"medium", 3600:"large"}
+        size = {10000:"gigantic", 1600:"small", 2500:"medium", 3600:"large"}
 
         file_name = f"env_{size[args.width*args.height]}_{args.num_trains}_{args.num_cities}-{idx+1}"
 

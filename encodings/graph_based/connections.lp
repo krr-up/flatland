@@ -79,7 +79,7 @@
     edge(node(A-5,B), s, node(A,B-5), w) :- cell((Y,X), Type), connection(Type,  _, _, _, _, _, 1), A=Y*10, B=X*10.    
 
     % wait
-    edge(node(A,B), D, node(A,B), D)     :- edge(_,node(A,B),D).
+    %edge(node(A,B), D, node(A,B), D)     :- edge(_,D,node(A,B),D).
 
 
 % Third, transform starting and ending locations

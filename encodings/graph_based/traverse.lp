@@ -20,5 +20,8 @@ finished(ID,T) :- ending(ID,B,_), path(ID,_,B,_,T).
 :- path(ID,A,B,_,T-1), path(ID,B,A,_,T).
 
 % avoid collisions
-:- path(ID1,A,B,_,T), path(ID2,C,B,_,T), not (ID1,A)=(ID2,C).
+%:- path(ID1,A,B,_,T), path(ID2,C,B,_,T), not (ID1,A)=(ID2,C).
+:- path(ID1,_,B,_,T), path(ID2,_,B,_,T), not ID1=ID2.
+% :- #count{ ID,T: path(ID,_,B,_,T) } < 1. %% replacing the first with an aggregate
+
 :- path(ID1,A,B,_,T), path(ID2,C,B,_,T-1), not (ID1,A)=(ID2,C).
