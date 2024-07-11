@@ -29,9 +29,9 @@ def convert_to_clingo(env) -> str:
         # goal_y = flip_y(height, goal_y)
 
         direction = dir_map[agent_info.initial_direction]
-        clingo_str += f"\nagent({agent_num}). "
-        clingo_str += f"start(agent({agent_num}),({init_y},{init_x}),{min_start},dir({direction})). "
-        clingo_str += f"end(agent({agent_num}),({goal_y},{goal_x}),{max_end}).\n"
+        clingo_str += f"\ntrain({agent_num}). "
+        clingo_str += f"start({agent_num},({init_y},{init_x}),{min_start},{direction}). "
+        clingo_str += f"end({agent_num},({goal_y},{goal_x}),{max_end}).\n"
 
     # create an atom for each cell in the environment
     #row_num = len(rail_map) - 1
