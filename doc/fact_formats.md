@@ -10,9 +10,9 @@ Input from Flatland environments into ASP encodings.
 ### Cells
 > Cells correspond to tiles in the Flatland grid.  Each has an (X,Y) coordinate and a track type, based on the internal Flatland ID representation, which captures both the cell type and orientation in a single value.
 
-`cell((X,Y), Track).`
+`cell((Y,X), Track).`
 
-**Allowable values** for `Track` correspond to the IDs found in [this file](https://github.com/krr-up/flatland/blob/0f07de90ce56c90ea9b9ae8fb02f1b2ea1d417eb/doc/track_types.pdf).
+**Allowable values** for `Track` correspond to the ID values found in [this file](https://github.com/krr-up/flatland/blob/0f07de90ce56c90ea9b9ae8fb02f1b2ea1d417eb/doc/track_types.pdf).
 
 ### Agents
 > Agents are defined by where they start and where they end.  Their starting positions are also characterized by corresponding starting directions.  Agents have no specified direction they must face upon reaching their destinations.
