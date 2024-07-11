@@ -44,28 +44,28 @@ connection(6672,    0, 0, 0, 0, 1, 1).
 
 % connect nodes to one another
 % N/S
-edge(node(A+5,B), n, node(A-5,B), n) :- cell((Y,X), Type), connection(Type,  1, _, _, _, _, _), A=Y*10, B=X*10.   
-edge(node(A-5,B), s, node(A+5,B), s) :- cell((Y,X), Type), connection(Type,  1, _, _, _, _, _), A=Y*10, B=X*10.
+edge(node(A+5,B), n, node(A-5,B), n) :- cell((Y,X), Track), connection(Track,  1, _, _, _, _, _), A=Y*10, B=X*10.   
+edge(node(A-5,B), s, node(A+5,B), s) :- cell((Y,X), Track), connection(Track,  1, _, _, _, _, _), A=Y*10, B=X*10.
 
 % W/E 
-edge(node(A,B-5), e, node(A,B+5), e) :- cell((Y,X), Type), connection(Type,  _, 1, _, _, _, _), A=Y*10, B=X*10.
-edge(node(A,B+5), w, node(A,B-5), w) :- cell((Y,X), Type), connection(Type,  _, 1, _, _, _, _), A=Y*10, B=X*10.
+edge(node(A,B-5), e, node(A,B+5), e) :- cell((Y,X), Track), connection(Track,  _, 1, _, _, _, _), A=Y*10, B=X*10.
+edge(node(A,B+5), w, node(A,B-5), w) :- cell((Y,X), Track), connection(Track,  _, 1, _, _, _, _), A=Y*10, B=X*10.
 
 % N/E
-edge(node(A-5,B), s, node(A,B+5), e) :- cell((Y,X), Type), connection(Type,  _, _, 1, _, _, _), A=Y*10, B=X*10.
-edge(node(A,B+5), w, node(A-5,B), n) :- cell((Y,X), Type), connection(Type,  _, _, 1, _, _, _), A=Y*10, B=X*10.
+edge(node(A-5,B), s, node(A,B+5), e) :- cell((Y,X), Track), connection(Track,  _, _, 1, _, _, _), A=Y*10, B=X*10.
+edge(node(A,B+5), w, node(A-5,B), n) :- cell((Y,X), Track), connection(Track,  _, _, 1, _, _, _), A=Y*10, B=X*10.
 
 % E/S
-edge(node(A,B+5), w, node(A+5,B), s) :- cell((Y,X), Type), connection(Type,  _, _, _, 1, _, _), A=Y*10, B=X*10.
-edge(node(A+5,B), n, node(A,B+5), e) :- cell((Y,X), Type), connection(Type,  _, _, _, 1, _, _), A=Y*10, B=X*10.
+edge(node(A,B+5), w, node(A+5,B), s) :- cell((Y,X), Track), connection(Track,  _, _, _, 1, _, _), A=Y*10, B=X*10.
+edge(node(A+5,B), n, node(A,B+5), e) :- cell((Y,X), Track), connection(Track,  _, _, _, 1, _, _), A=Y*10, B=X*10.
 
 % S/W
-edge(node(A+5,B), n, node(A,B-5), w) :- cell((Y,X), Type), connection(Type,  _, _, _, _, 1, _), A=Y*10, B=X*10.
-edge(node(A,B-5), e, node(A+5,B), s) :- cell((Y,X), Type), connection(Type,  _, _, _, _, 1, _), A=Y*10, B=X*10.
+edge(node(A+5,B), n, node(A,B-5), w) :- cell((Y,X), Track), connection(Track,  _, _, _, _, 1, _), A=Y*10, B=X*10.
+edge(node(A,B-5), e, node(A+5,B), s) :- cell((Y,X), Track), connection(Track,  _, _, _, _, 1, _), A=Y*10, B=X*10.
 
 % W/N
-edge(node(A,B-5), e, node(A-5,B), n) :- cell((Y,X), Type), connection(Type,  _, _, _, _, _, 1), A=Y*10, B=X*10.
-edge(node(A-5,B), s, node(A,B-5), w) :- cell((Y,X), Type), connection(Type,  _, _, _, _, _, 1), A=Y*10, B=X*10.    
+edge(node(A,B-5), e, node(A-5,B), n) :- cell((Y,X), Track), connection(Track,  _, _, _, _, _, 1), A=Y*10, B=X*10.
+edge(node(A-5,B), s, node(A,B-5), w) :- cell((Y,X), Track), connection(Track,  _, _, _, _, _, 1), A=Y*10, B=X*10.    
 
 % transform starting and ending locations
 offset(Da,Db) :- Da=(-5;0;5), Db=(-5;0;5), |Da+Db|=5.
