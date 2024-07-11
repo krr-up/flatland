@@ -46,8 +46,7 @@ def find_max_env(dir):
 
 def main():
     # create directory
-    #file_location = os.getcwd() + '/envs/' #temp for benchmarking
-    file_location = os.getcwd() + '/benchmarking/envs/'
+    file_location = os.getcwd() + '/envs/'
     os.makedirs(file_location, exist_ok=True)
     os.makedirs(file_location + 'lp/', exist_ok=True)
     os.makedirs(file_location + 'png/', exist_ok=True)
@@ -68,11 +67,8 @@ def main():
                     cities_in_map=args.num_cities, seed=1, grid_distribution_of_cities=args.grid_mode, 
                     max_rails_between_cities=args.max_rails_between, max_rail_in_cities=args.max_rails_within, 
                     remove_at_target=args.remove_at_target)
-        
-        #file_name = "env_{:01d}".format(idx) #temp for benchmarking
-        size = {10000:"gigantic", 1600:"small", 2500:"medium", 3600:"large"}
 
-        file_name = f"env_{size[args.width*args.height]}_{args.num_trains}_{args.num_cities}-{idx+1}"
+        file_name = f"env_{args.num_trains}_{args.num_cities}-{idx+1}"
 
         # save files
         save_lp(convert_to_clingo(env), file_name, file_location)
