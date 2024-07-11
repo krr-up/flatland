@@ -176,7 +176,7 @@ choice( 6672, e).
 
 % Wait
 % wait action never changes the orientation - allow no change
-transition(Track, (Dir,wait)) :- transition(Track, _), dir(Dir).
+transition(Track, (D,wait)) :- transition(Track, _), dir(D).
 
 % Offsets
 % -- heading south -- %
