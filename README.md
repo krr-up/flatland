@@ -99,7 +99,7 @@ The frontend should open automatically in the browser.  Created environments wil
 
 #### Creating environments
 
-From the command line, `cd` into `~/flatland`, and then call `python3 environments.py` with the [desired parameters](https://github.com/krr-up/flatland/blob/f7c8829c4b95b73e8f43504698d0d9b35c9e2b5c/doc/environments.md).
+From the command line, `cd` into `~/flatland`, and then call `python environments.py` with the [desired parameters](https://github.com/krr-up/flatland/blob/f7c8829c4b95b73e8f43504698d0d9b35c9e2b5c/doc/environments.md).
 ```
 $ python environments.py 1 45 45 2 4 1 2 3
 ```
@@ -111,7 +111,7 @@ The ensuing environments will be saved in the `~/flatland/envs` directory.
 
 #### Generating paths
 
-From the command line, `cd` into `~/flatland`, and then call `python3 paths.py` with [two (or more) necessary parameters](): the environment and at least one encoding.
+From the command line, `cd` into `~/flatland`, and then call `python paths.py` with [two (or more) necessary parameters](): the environment and at least one encoding.
 ```
 $ python paths.py envs/pkl/env.pkl encodings/encoding.lp 
 ```
