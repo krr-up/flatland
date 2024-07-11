@@ -1,5 +1,5 @@
 % choose first path based on starting location
-path(ID,node(A1,B1),node(A2,B2),D,N+2) :- starting(ID,node(A1,B1),N), start(ID, _, _, dir(D)), facing(Da,Db,D), A2=A1-(Da*2), B2=B1-(Db*2).
+path(ID,node(A1,B1),node(A2,B2),D,N+2) :- starting(ID,node(A1,B1),N), start(ID, _, _, D), facing(Da,Db,D), A2=A1-(Da*2), B2=B1-(Db*2).
 
 % choose path based on edges
 { path(ID,A,B,D2,T+1) : edge(A,D1,B,D2), train(ID) } = 1 :- path(ID,_,A,D1,T), starting(ID,_,Start), ending(ID,_,End), T=Start+2..End, not finished(ID,T).
