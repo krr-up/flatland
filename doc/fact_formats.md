@@ -10,14 +10,14 @@ Input from Flatland environments into ASP encodings.
 ### Cells
 > Cells correspond to tiles in the Flatland grid.  Each has an (X,Y) coordinate and a track type, based on the internal Flatland ID representation, which captures both the cell type and orientation in a single value.
 
-`cell((X,Y), Type).`
+`cell((Y,X), Track).`
 
-**Allowable values** for `Type` correspond to the IDs found in [this file](https://github.com/krr-up/flatland/blob/0f07de90ce56c90ea9b9ae8fb02f1b2ea1d417eb/doc/track_types.pdf).
+**Allowable values** for `Track` correspond to the ID values found in [this file](https://github.com/krr-up/flatland/blob/0f07de90ce56c90ea9b9ae8fb02f1b2ea1d417eb/doc/track_types.pdf).
 
 ### Agents
 > Agents are defined by where they start and where they end.  Their starting positions are also characterized by corresponding starting directions.  Agents have no specified direction they must face upon reaching their destinations.
 
-`start(agent(A), (X,Y), dir(D)). end(agent(A), (X,Y)).`
+`start(ID, (Y,X), D). end(ID, (Y,X)).`
 
 **Allowable values** for `D` are the cardinal directions—east, west, north, south:
 `e` `w` `n` `s`
@@ -30,7 +30,7 @@ Output from ASP encodings into the Flatland visualizer.
 ### Actions
 > Since Flatland resolves environments using sets of actions at time points (as opposed to paths), the output must be agent-specific actions.
 
-`action(agent(A), Action, Timestep).`
+`action(train(ID), Action, Timestep).`
 
 **Allowable values** for `Action` correspond to the permissible actions in Flatland itself:
 `move_forward` `move_left` `move_right` `wait`

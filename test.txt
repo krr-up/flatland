@@ -1,0 +1,60 @@
+{
+  "Solver": "clingo version 5.6.2",
+  "Input": [
+    "encodings/encoding.lp","encodings/transitions.lp","encodings/actions.lp","envs/lp/env_27.lp"
+  ],
+  "Call": [
+    {
+      "Witnesses": [
+        {
+          "Value": [
+            "do(1,spawn,2)", "do(0,spawn,1)", "do(0,wait,0)", "do(1,wait,0)", "do(1,wait,1)", "do(1,f,3)", "do(0,f,2)", "do(1,f,4)", "do(0,f,3)", "do(1,f,5)", "do(0,f,4)", "do(1,f,6)", "do(0,f,5)", "do(1,r,7)", "do(0,r,6)", "do(1,f,8)", "do(0,f,7)", "do(1,f,9)", "do(0,f,8)", "do(1,l,10)", "do(0,f,9)", "do(1,f,11)", "do(0,r,10)", "do(1,f,12)", "do(0,f,11)", "do(1,f,13)", "do(0,f,12)", "do(1,f,14)", "do(0,f,13)", "do(1,f,15)", "do(0,l,14)", "do(1,f,16)", "do(0,f,15)", "do(1,f,17)", "do(0,f,16)", "do(1,f,18)", "do(0,f,17)", "do(1,f,19)", "do(0,f,18)", "do(1,f,20)", "do(0,f,19)", "do(1,f,21)", "do(0,f,20)", "do(1,f,22)", "do(0,f,21)", "do(1,f,23)", "do(0,f,22)", "do(1,f,24)", "do(0,f,23)", "do(1,f,25)", "do(0,f,24)", "do(1,f,26)", "do(0,f,25)", "do(1,f,27)", "do(0,f,26)", "do(1,r,28)", "do(0,f,27)", "do(1,l,29)", "do(0,f,28)", "do(1,f,30)", "do(0,f,29)", "do(1,f,31)", "do(0,f,30)", "do(1,f,32)", "do(0,f,31)", "do(1,l,33)", "do(0,f,32)", "do(1,f,34)", "do(0,f,33)", "do(1,l,35)", "do(0,l,34)", "do(1,r,36)", "do(0,r,35)", "do(1,f,37)", "do(0,f,36)", "do(1,f,38)", "do(0,f,37)", "makespan(38)", "sos(74)"
+          ]
+        }
+      ]
+    }
+  ],
+  "Result": "SATISFIABLE",
+  "Models": {
+    "Number": 1,
+    "More": "yes"
+  },
+  "Calls": 1,
+  "Time": {
+    "Total": 5.949,
+    "Solve": 0.012,
+    "Model": 0.012,
+    "Unsat": 0.000,
+    "CPU": 5.948
+  }
+}
+{
+  "Solver": "clingo version 5.6.2",
+  "Input": [
+    "encodings/encoding.lp","encodings/transitions.lp","encodings/actions.lp","envs/lp/env_25.lp"
+  ],
+  "Call": [
+    {
+      "Witnesses": [
+        {
+          "Value": [
+            "do(0,spawn,4)", "do(1,spawn,6)", "do(0,wait,0)", "do(1,wait,0)", "do(0,wait,1)", "do(0,wait,2)", "do(0,wait,3)", "do(1,wait,1)", "do(1,wait,2)", "do(1,wait,3)", "do(1,wait,4)", "do(1,wait,5)", "do(0,f,5)", "do(1,f,7)", "do(0,f,6)", "do(1,f,8)", "do(0,f,7)", "do(1,l,9)", "do(0,f,8)", "do(1,r,10)", "do(0,f,9)", "do(1,f,11)", "do(0,l,10)", "do(1,f,12)", "do(0,f,11)", "do(1,l,13)", "do(0,f,12)", "do(1,f,14)", "do(0,f,13)", "do(1,f,15)", "do(0,f,14)", "do(1,f,16)", "do(0,l,15)", "do(1,f,17)", "do(0,f,16)", "do(1,l,18)", "do(0,f,17)", "do(1,f,19)", "do(0,f,18)", "do(1,f,20)", "do(0,f,19)", "do(1,r,21)", "do(0,f,20)", "do(1,f,22)", "do(0,f,21)", "do(1,f,23)", "do(0,f,22)", "do(1,f,24)", "do(0,f,23)", "do(1,f,25)", "do(0,f,24)", "do(1,f,26)", "do(0,f,25)", "do(1,f,27)", "do(0,f,26)", "do(1,f,28)", "do(0,f,27)", "do(1,f,29)", "do(0,f,28)", "do(1,f,30)", "do(0,f,29)", "do(1,f,31)", "do(0,f,30)", "do(1,f,32)", "do(0,f,31)", "do(1,f,33)", "do(0,f,32)", "do(1,l,34)", "do(0,f,33)", "do(1,f,35)", "do(0,f,34)", "do(1,r,36)", "do(0,f,35)", "do(1,f,37)", "do(0,f,36)", "do(1,l,38)", "do(0,f,37)", "do(1,r,39)", "do(0,f,38)", "do(1,f,40)", "do(0,f,39)", "do(1,f,41)", "do(0,f,40)", "do(1,f,42)", "do(0,f,41)", "do(0,f,42)", "do(0,l,43)", "do(0,f,44)", "do(0,f,45)", "do(0,f,46)", "do(0,f,47)", "do(0,f,48)", "makespan(48)", "sos(82)"
+          ]
+        }
+      ]
+    }
+  ],
+  "Result": "SATISFIABLE",
+  "Models": {
+    "Number": 1,
+    "More": "yes"
+  },
+  "Calls": 1,
+  "Time": {
+    "Total": 7.690,
+    "Solve": 0.016,
+    "Model": 0.016,
+    "Unsat": 0.000,
+    "CPU": 7.689
+  }
+}

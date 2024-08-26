@@ -23,8 +23,8 @@ class ClingoAgent:
 
     def act(self, state):
         mapping = {"move_forward":RailEnvActions.MOVE_FORWARD, "move_right":RailEnvActions.MOVE_RIGHT, "move_left":RailEnvActions.MOVE_LEFT, "wait":RailEnvActions.STOP_MOVING}
-        current_agent, current_timestep = state
-        current_action = [item[1] for item in self.action_list if item[0] == current_agent and item[2] == current_timestep][0]
+        current_train, current_timestep = state
+        current_action = [item[1] for item in self.action_list if item[0] == current_train and item[2] == current_timestep][0]
         return mapping[current_action]
     
 
@@ -84,10 +84,10 @@ def render(env, actions):
             action = controller.act((a,step))
             action_dict.update({(a): action})
             print(action_dict)
-            action_log[a] += f"Agent #{a} at time {step} >>> {action_map[action]} - {env.agents[a].position}\n"
+            action_log[a] += f"Train #{a} at time {step} >>> {action_map[action]} - {env.agents[a].position}\n"
             action_csv[a] += f"{a};{step};{action_map[action]};{env.agents[a].position};{env.agents[a].direction};{state_map[env.agents[a].state]}\n"
             print(a,step,": ",action)
-            print(f"state of agent {a}:", env.agents[a].state)
+            print(f"state of train {a}:", env.agents[a].state)
 
         print("step\n")
         next_obs, all_rewards, done, _ = env.step(action_dict)
@@ -106,7 +106,7 @@ def render(env, actions):
     # combine images into gif
     stamp = time.time()
     os.makedirs(f"output/{stamp}", exist_ok=True)
-    imageio.mimsave(f"output/{stamp}/animation.gif", images, format='GIF', loop=0, duration=5)
+    imageio.mimsave(f"output/{stamp}/animation.gif", images, format='GIF', loop=0, duration=240)
 
     # remove tmp folder after creating gif
     try:
@@ -122,7 +122,7 @@ def render(env, actions):
 
     # save path plans as csv file
     with open(f"output/{stamp}/paths.csv", "w") as f:
-        f.write("agent;timestep;action;position;direction;status\n")
+        f.write("train;timestep;action;position;direction;status\n")
         for csv in action_csv:
             f.write(csv)
 

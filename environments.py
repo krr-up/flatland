@@ -22,7 +22,7 @@ def get_args():
     parser.add_argument('grid_mode', type=int, default=1, nargs='?', help='if 1, cities will be arranged in a grid-like fashion;\nif 0, cities will be arranged unevenly throughout')
     parser.add_argument('max_rails_between', type=int, default=2, nargs='?', help='the maximum number of rails connecting any two cities')
     parser.add_argument('max_rails_within', type=int, default=2, nargs='?', help='the maximum number of pairs of parallel tracks within one city')
-    parser.add_argument('remove_at_target', type=int, default=0, nargs='?', help='if 1, agents will be removed when they reach their destination;\nif 0, agents will remain on the map')
+    parser.add_argument('remove_at_target', type=int, default=1, nargs='?', help='if 1, agents will be removed when they reach their destination;\nif 0, agents will remain on the map')
 
     return(parser.parse_args())
 
@@ -35,8 +35,8 @@ def find_max_env(dir):
     print("dir", dir)
     try:
         for f in os.listdir(dir + 'pkl/'):
-            if re.match(r'env_(\d+)\.pkl', f):
-                env_num = int(re.match(r'env_(\d+)\.pkl', f)[1])
+            if re.match('env_(\d+)\.pkl', f):
+                env_num = int(re.match('env_(\d+)\.pkl', f)[1])
                 if env_num > max_env:
                     max_env = env_num
         return(max_env)
@@ -68,10 +68,12 @@ def main():
                     max_rails_between_cities=args.max_rails_between, max_rail_in_cities=args.max_rails_within, 
                     remove_at_target=args.remove_at_target)
 
+        file_name = f"env_{args.num_trains}_{args.num_cities}-{idx+1}"
+
         # save files
-        save_lp(convert_to_clingo(env), idx, file_location)
-        save_png(env, idx, file_location)
-        save_pkl(env, idx, file_location)
+        save_lp(convert_to_clingo(env), file_name, file_location)
+        save_png(env, file_name, file_location)
+        save_pkl(env, file_name, file_location)
 
 
 if __name__ == "__main__":

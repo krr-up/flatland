@@ -6,7 +6,7 @@ from flatland.envs.rail_generators import sparse_rail_generator
 from flatland.envs.line_generators import sparse_line_generator
 from flatland.envs.observations import GlobalObsForRailEnv
 
-def generate_env(width=30, height=30, nr_trains=2, cities_in_map=2, seed=1, grid_distribution_of_cities=1, max_rails_between_cities=2, max_rail_in_cities=2, remove_at_target=1):
+def generate_env(width=30, height=30, nr_trains=2, cities_in_map=2, seed=1, grid_distribution_of_cities=1, max_rails_between_cities=2, max_rail_in_cities=2, remove_at_target=0):
     """
     generate a rail environment using Flatland libraries
     """
