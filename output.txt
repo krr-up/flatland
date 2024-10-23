@@ -1,2 +1,0 @@
-('benchmarking/envs/lp/small/env_small_4_4-4.lp', [('22.978', '0.00')], [('0.035', '0.00')])
-('benchmarking/envs/lp/small/env_small_2_3-4.lp', [('6.074', '0.01')], [('0.040', '0.00')])
