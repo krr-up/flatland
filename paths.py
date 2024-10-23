@@ -4,8 +4,9 @@ import pickle
 import io
 from clingo.symbol import Number
 from clingo.application import Application, clingo_main
-from modules.create_environments.convert import convert_to_clingo
-from modules.generate_paths.visualize import render
+from modules.convert import convert_to_clingo
+from modules.visualize import render
+from modules.actionlist import build_action_list
 
 class Flatland(Application):
     program_name = "flatland"
@@ -38,18 +39,11 @@ class Flatland(Application):
                 models.append(model.symbols(atoms=True))
 
         # capture output actions for renderer
-        action_list = []
-        for func in models[0]: # only the first model
-            prefix = func.name[:6]
-            if prefix == "action":
-                action = func.arguments[1].name
-                agent, timestep = func.arguments[0], func.arguments[2]
-                agent_num = agent.arguments[0].number
-                self.action_list.append((agent_num,action,timestep.number))
+        self.action_list = build_action_list(models)
 
 
 if __name__ == "__main__":
     app = Flatland([], None)
     clingo_main(app, sys.argv[1:])
     print(app.action_list) #debug
-    render(app.env_pkl, app.action_list)
+    #render(app.env_pkl, app.action_list)

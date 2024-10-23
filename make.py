@@ -100,7 +100,7 @@ def main():
             env.reset()
 
             # save files
-            file_name = f"env_{params.number_of_agents}_{params.max_num_cities}-{i}"
+            file_name = f"env_{i:03d}--{params.number_of_agents}_{params.max_num_cities}"
             save_lp(convert_to_clingo(env), file_name, path)
             save_png(env, file_name, path)
             save_pkl(env, file_name, path)
