@@ -1,4 +1,7 @@
 import sys
+import pickle
+
+from modules.convert import convert_to_clingo
 
 from flatland.envs.rail_env import RailEnv
 from flatland.envs.rail_env import RailEnvActions
@@ -7,7 +10,6 @@ from flatland.utils.rendertools import RenderTool, AgentRenderVariant
 """
 run the simulation
 """
-
 
 class SimulationManager():
 
@@ -24,7 +26,7 @@ class SimulationManager():
         else:
             self.secondary = secondary
         
-    def _call_API(env, encoding, context=None) -> list:
+    def _call_API(self, env, encoding, context=None) -> list:
         """
         calls the clingo API
 
@@ -41,7 +43,7 @@ class SimulationManager():
         """
         pass
 
-    def build_actions() -> None:
+    def build_actions(self) -> None:
         """
         build self.actions for the first time by calling the clingo API
 
@@ -51,9 +53,18 @@ class SimulationManager():
 
         returns -> None
         """
-        self.actions = _call_API(self.env, self.primary)
+        #self.actions = _call_API(self.env, self.primary)
 
-    def _build_context() -> str:
+        # development
+        self.actions = [{0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},
+                        {0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},
+                        {0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},
+                        {0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},
+                        {0:RailEnvActions.MOVE_RIGHT},   {0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD}
+                        ]
+        return(self.actions)
+
+    def _build_context(self) -> str:
         """
         when a malfunction occurs, convert the existing plans to alternative facts
 
@@ -64,7 +75,7 @@ class SimulationManager():
         """
         pass
 
-    def update_actions(timestep, actions) -> None:
+    def update_actions(self, timestep, actions) -> None:
         """
         update self.actions after receiving updated actions from subsequent calls to the clingo API
 
@@ -82,7 +93,7 @@ class SimulationManager():
         self.actions = self.actions[:timestep] # keep list up to current malfunction
         self.actions.append(new_actions)
 
-    def add_new_malfunction(malf) -> None:
+    def add_new_malfunction(self, malf) -> None:
         """
         add a malfunction to the new_malfunction set
 
@@ -95,7 +106,7 @@ class SimulationManager():
         """
         self.new_malfunctions.add(malf)
     
-    def move_malfunction(malf) -> None:
+    def move_malfunction(self, malf) -> None:
         """
         remove a malfunction from the new_malfunction set and add it to the malfunctions set
 
@@ -109,7 +120,7 @@ class SimulationManager():
         self.new_malfunctions.remove(malf)
         self.malfunctions.add(malf)
 
-    def remove_malfunction(malf) -> None:
+    def remove_malfunction(self, malf) -> None:
         """
         remove a malfunction from the malfunctions set when the malfunction is expiring
 
@@ -122,7 +133,7 @@ class SimulationManager():
         """
         self.malfunctions.remove(malf)
 
-    def convert_snapshot() -> str:
+    def convert_snapshot(self) -> str:
         """
         convert most recent snapshot to ASP facts
         
@@ -134,10 +145,15 @@ class SimulationManager():
         """
         pass
 
-    
-update_actions
+#update_actions
 
 #sys.argv[1:]
+
+# development
+f = "/home/murphy2/git/flatland/envs/pkl/env_013--1_2.pkl"
+#env = convert_to_clingo(pickle.load(open(f, "rb")))
+env = pickle.load(open(f, "rb"))
+primary, secondary = "", ""
 
 mgr = SimulationManager(env,primary,secondary)
 
@@ -153,7 +169,13 @@ while timestep < len(actions):
     """
 
     # call env.step() to execute the next step in the simulation
-    obs, rew, done, info = env.step(mgr.actions[timestep])
+    obs, rew, done, info = env.step(actions[timestep])
+    cur_pos = env.agents[0].position
+    print(f"timestep {timestep}:\t",rew, done, info, cur_pos, actions[timestep], env.rail.grid[cur_pos if cur_pos is not None else (0,0)])
+
+    if timestep == 10:
+        print("\n", env.agents, "\n")
+
 
     # check to see whether any agent is malfunctioning
     for a in range(env.get_num_agents()):
@@ -178,9 +200,6 @@ while timestep < len(actions):
         if info['malfunction'][a] == 1:
             mgr.remove_malfunction(a)
 
+    timestep = timestep + 1
 
-# collect environment and encodings
-    # environment
-    # primary encoding
-    # [optional] secondary encoding - if none use primary
 

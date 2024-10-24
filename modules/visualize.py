@@ -24,7 +24,11 @@ class ClingoAgent:
     def act(self, state):
         mapping = {"move_forward":RailEnvActions.MOVE_FORWARD, "move_right":RailEnvActions.MOVE_RIGHT, "move_left":RailEnvActions.MOVE_LEFT, "wait":RailEnvActions.STOP_MOVING}
         current_train, current_timestep = state
-        current_action = [item[1] for item in self.action_list if item[0] == current_train and item[2] == current_timestep][0]
+        current_action = [item[1] fo# capture context and call API to replan
+        mgr.update_actions()
+
+        # update actions list
+        actions = mgr.actionsr item in self.action_list if item[0] == current_train and item[2] == current_timestep][0]
         return mapping[current_action]
     
 
