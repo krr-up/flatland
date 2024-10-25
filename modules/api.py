@@ -1,32 +1,35 @@
 import sys
-import os.path
 import pickle
 import io
 from clingo.symbol import Number
 from clingo.application import Application, clingo_main
 from modules.convert import convert_to_clingo
-from modules.visualize import render
 from modules.actionlist import build_action_list
 
-class Flatland(Application):
+class FlatlandPlan(Application):
+    """ takes an environment and a set of primary encodings """
     program_name = "flatland"
     version = "1.0"
 
-    def __init__(self, action_list, env):
-        self.action_list = action_list
-        self.env_pkl = env
-
+    def __init__(self, env, actions):
+        self.env = env
+        self.actions = actions
+        self.action_list = None
 
     def main(self, ctl, files):
-        # parse through files
+        # add encodings
         for f in files: 
-            if os.path.splitext(f)[1] == '.lp':
-                ctl.load(f)
-            if os.path.splitext(f)[1] == '.pkl':
-                self.env_pkl = pickle.load(open(f, "rb"))
-                env_lp = convert_to_clingo(self.env_pkl)
-                ctl.add(env_lp)
-        if not files: ctl.load("-")
+            ctl.load(f)
+        if not files:
+            raise Exception('No file loaded into clingo.')
+        
+        # add env
+        ctl.add(convert_to_clingo(self.env))
+        
+        # add actions
+        if self.actions is not None:
+            print(f".join(self.actions): {' '.join(self.actions)}")
+            ctl.add('base', [], ' '.join(self.actions))
         
         # ground the program
         ctl.ground([("base", [])], context=self)
@@ -39,11 +42,15 @@ class Flatland(Application):
                 models.append(model.symbols(atoms=True))
 
         # capture output actions for renderer
+        #return(build_action_list(models))
         self.action_list = build_action_list(models)
 
 
-if __name__ == "__main__":
-    app = Flatland([], None)
-    clingo_main(app, sys.argv[1:])
-    print(app.action_list) #debug
-    #render(app.env_pkl, app.action_list)
+
+
+# let's see later whether we even need this
+class FlatlandReplan(Application):
+    """ takes an environment, a set of secondary encodings, and additional context """
+    program_name = "flatland"
+    version = "1.0"
+

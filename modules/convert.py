@@ -1,10 +1,6 @@
-# function for converting Flatland environment into a string of clingo-readable ASP facts
-
-# def flip_y(height, y) -> int:
-#     """
-#     flips the value of the y along the axis for a given environment
-#     """
-#     return(height - y - 1)
+from flatland.envs.rail_env import RailEnv
+from flatland.envs.rail_env import RailEnvActions
+from flatland.utils.rendertools import RenderTool, AgentRenderVariant
 
 
 def convert_to_clingo(env) -> str:
@@ -24,10 +20,6 @@ def convert_to_clingo(env) -> str:
         goal_y, goal_x = agent_info.target
         min_start, max_end = agent_info.earliest_departure, agent_info.latest_arrival
 
-        # flip the y-axis
-        # init_y = flip_y(height, init_y)
-        # goal_y = flip_y(height, goal_y)
-
         direction = dir_map[agent_info.initial_direction]
         clingo_str += f"\ntrain({agent_num}). "
         clingo_str += f"start({agent_num},({init_y},{init_x}),{min_start},{direction}). "
@@ -42,3 +34,53 @@ def convert_to_clingo(env) -> str:
         clingo_str+="\n"
         
     return(clingo_str)
+
+def convert_formers_to_clingo(actions) -> str:
+    # change back to the clingo names
+    mapping = {RailEnvActions.MOVE_FORWARD:"move_forward", RailEnvActions.MOVE_RIGHT:"move_right", RailEnvActions.MOVE_LEFT:"move_left", RailEnvActions.STOP_MOVING:"wait"}
+    for index, dict in enumerate(actions):
+        for key in dict.keys():
+            actions[index][key] = mapping[actions[index][key]]
+
+    facts = []
+    # change from dictionary into facts
+    for index, dict in enumerate(actions):
+        for key in dict.keys():
+            facts.append(f':- not action(train({key}),{actions[index][key]},{index}).\n') #remove: can this be a list of strings or should it be one long string?
+    
+    return(facts)
+
+
+def convert_malfunctions_to_clingo(malfs, timestep) -> str:
+    #mapping = {RailEnvActions.MOVE_FORWARD:"move_forward", RailEnvActions.MOVE_RIGHT:"move_right", RailEnvActions.MOVE_LEFT:"move_left", RailEnvActions.STOP_MOVING:"wait"}
+    facts = []
+    for m in malfs:
+        train, duration = m[0], m[1]
+        facts.append(f'malfunction({train},{duration},{timestep}).\n')
+        for t in range(timestep+1, timestep+1+m[1]): # remove: make sure this duration should be included (aka remove +1 or keep it?)
+            facts.append(f':- not action(train({train}),wait,{t}).\n') #remove: can this be a list of strings or should it be one long string?
+
+    return(facts)
+
+
+def convert_futures_to_clingo(actions) -> str:
+    # change back to the clingo names
+    mapping = {RailEnvActions.MOVE_FORWARD:"move_forward", RailEnvActions.MOVE_RIGHT:"move_right", RailEnvActions.MOVE_LEFT:"move_left", RailEnvActions.STOP_MOVING:"wait"}
+    for index, dict in enumerate(actions):
+        for key in dict.keys():
+            actions[index][key] = mapping[actions[index][key]]
+
+    facts = []
+    # change from dictionary into facts
+    for index, dict in enumerate(actions):
+        for key in dict.keys():
+            facts.append(f'planned_action(train({key}),{actions[index][key]},{index}).\n') #remove: can this be a list of strings or should it be one long string?
+    
+    return(facts)
+
+def convert_actions_to_flatland(actions) -> list:
+    mapping = {"move_forward":RailEnvActions.MOVE_FORWARD, "move_right":RailEnvActions.MOVE_RIGHT, "move_left":RailEnvActions.MOVE_LEFT, "wait":RailEnvActions.STOP_MOVING}
+    for index, dict in enumerate(actions):
+        for key in dict.keys():
+            actions[index][key] = mapping[actions[index][key]]
+    return(actions)

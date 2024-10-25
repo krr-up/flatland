@@ -95,6 +95,7 @@ def main():
                         line_generator= line_generator,
                         number_of_agents= params.number_of_agents,
                         obs_builder_object= observation_builder,
+                        malfunction_generator=ParamMalfunctionGen(stochastic_data),
                         remove_agents_at_target= params.remove_agents_at_target
                         )
             env.reset()

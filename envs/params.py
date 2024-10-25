@@ -13,6 +13,6 @@ remove_agents_at_target=True
 speed_ratio_map={1 : 1}
 
 # malfunctions
-malfunction_rate=0/10000
-min_duration=10
-max_duration=20
+malfunction_rate=1/30
+min_duration=2
+max_duration=6

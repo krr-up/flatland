@@ -1,3 +1,8 @@
+from flatland.envs.rail_env import RailEnv
+from flatland.envs.rail_env import RailEnvActions
+from flatland.utils.rendertools import RenderTool, AgentRenderVariant
+from modules.convert import convert_actions_to_flatland
+
 def to_dicts(action_list):
     """
     convert a list of actions to a list of action_dicts
@@ -16,10 +21,12 @@ def to_dicts(action_list):
         
         current_dict[agent] = command
 
-    # Append the last dictionary after the loop
+    # append the last dictionary after the loop
     result.append(current_dict)
 
-    print(result)
+    # replace actions with RailEnvActions
+    mapping = {"move_forward":RailEnvActions.MOVE_FORWARD, "move_right":RailEnvActions.MOVE_RIGHT, "move_left":RailEnvActions.MOVE_LEFT, "wait":RailEnvActions.STOP_MOVING}
+    return(convert_actions_to_flatland(result))
 
 
 def build_action_list(models):

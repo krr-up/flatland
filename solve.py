@@ -1,205 +1,195 @@
-import sys
+# standard packages
+import warnings
+import os 
+import time
 import pickle
+import json
+from argparse import ArgumentParser, Namespace
 
-from modules.convert import convert_to_clingo
+# custom modules
+from asp import params
+from modules.api import FlatlandPlan, FlatlandReplan
+from modules.convert import convert_malfunctions_to_clingo, convert_formers_to_clingo, convert_futures_to_clingo
 
-from flatland.envs.rail_env import RailEnv
-from flatland.envs.rail_env import RailEnvActions
-from flatland.utils.rendertools import RenderTool, AgentRenderVariant
+# clingo
+import clingo
+from clingo.application import Application, clingo_main
 
-"""
-run the simulation
-"""
+# rendering visualizations
+from flatland.utils.rendertools import RenderTool
+import imageio.v2 as imageio
+
+
+class MalfunctionManager():
+    def __init__(self, num_agents):
+        self.num_agents = num_agents
+        self.malfunctions = []
+
+    def get(self) -> list:
+        """ get the list of malfunctions """
+        return(self.malfunctions)
+
+    def deduct(self) -> None:
+        """ decrease the duration of each malfunction by one and delete expired malfunctions """
+        malfunctions_to_remove = []
+        for i, malf in enumerate(self.malfunctions):
+            self.malfunctions[i] = (self.malfunctions[i][0], self.malfunctions[i][1] - 1)
+            if self.malfunctions[i][1] == 0:
+                malfunctions_to_remove.append(i)
+        
+        # delete expired malfunctions
+        for i in sorted(malfunctions_to_remove, reverse=True):
+            del self.malfunctions[i]
+
+    def check(self, info) -> set:
+        """ check current state of the env for new malfunctions """
+        malfunctioning_info = info['malfunction']
+        malfunctioning_trains = {train for train, duration in malfunctioning_info.items() if duration > 0}
+        existing = {malf[0] for malf in self.malfunctions}
+        new = malfunctioning_trains.difference(existing)
+
+        # add new ones to malfunctions
+        for train in new:
+            self.malfunctions.append((train, malfunctioning_info[train]))
+
+        return(new)
+
 
 class SimulationManager():
-
-    def __init__(self, env, primary, secondary=None):
-        self.actions = []
-        self.snapshots = []
-        self.malfunctions = set()
-        self.new_malfunctions = set()
-
+    def __init__(self,env,primary,secondary=None):
         self.env = env
         self.primary = primary
-        if secondary == None:
-            self.secondary = primary
+        if secondary is None:
+            self.secondary = primary 
         else:
             self.secondary = secondary
-        
-    def _call_API(self, env, encoding, context=None) -> list:
-        """
-        calls the clingo API
 
-        parameters
-        ----------------
-        env : str
-            flatland environment
-        encoding : str
-            a pathfinding encoding
-        context [optional]: str
-            current state information (e.g. existing paths)
+    def build_actions(self) -> list:
+        """ create initial list of actions """
+        # pass env, primary
+        app = FlatlandPlan(self.env, None)
+        clingo_main(app, self.primary)
+        return(app.action_list)
 
-        returns -> list
-        """
-        pass
+    def provide_context(self, actions, timestep, malfunctions) -> str:
+        """ provide additional facts when updating list """
+        # actions that have already been executed
+        # wait actions that are enforced because of malfunctions
+        # future actions that were previously planned
+        past = convert_formers_to_clingo(actions[:timestep+1])
+        present = convert_malfunctions_to_clingo(malfunctions, timestep)
+        future = convert_futures_to_clingo(actions[timestep+1:])
+        return(past + present + future)
 
-    def build_actions(self) -> None:
-        """
-        build self.actions for the first time by calling the clingo API
+    def update_actions(self, context) -> list:
+        """ update list of actions following malfunction """
+        # pass env, secondary, context
+        app = FlatlandPlan(self.env, context)
+        clingo_main(app, self.primary)
+        return(app.action_list)
 
-        parameters
-        ----------------
-        None
 
-        returns -> None
-        """
-        #self.actions = _call_API(self.env, self.primary)
+class OutputLogManager():
+    def __init__(self) -> None:
+        self.logs = []
 
-        # development
-        self.actions = [{0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},
-                        {0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},
-                        {0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},
-                        {0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},
-                        {0:RailEnvActions.MOVE_RIGHT},   {0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD},{0:RailEnvActions.MOVE_FORWARD}
-                        ]
-        return(self.actions)
+    def add(self,info) -> None:
+        """ add info from a timestep to the log """
+        self.logs.append(info)
 
-    def _build_context(self) -> str:
-        """
-        when a malfunction occurs, convert the existing plans to alternative facts
+    def save(self,filename) -> None:
+        """ save output log to local drive """
+        with open(f"output/{filename}/paths.json", "w") as f:
+            f.write(json.dumps(self.logs))
 
-        parameters
-        ----------------
-        
-        returns -> str
-        """
-        pass
-
-    def update_actions(self, timestep, actions) -> None:
-        """
-        update self.actions after receiving updated actions from subsequent calls to the clingo API
-
-        parameters
-        ----------------
-        timestep : int
-            the timestep where the actions are being changed  
-        actions : list
-            a list of updated action dictionaries
-
-        returns -> None
-        """
-        context = _build_context()
-        new_actions = _call_API(self.snapshots[-1], self.secondary, context)
-        self.actions = self.actions[:timestep] # keep list up to current malfunction
-        self.actions.append(new_actions)
-
-    def add_new_malfunction(self, malf) -> None:
-        """
-        add a malfunction to the new_malfunction set
-
-        parameters
-        ----------------
-        malf : int
-            the index of the agent that is malfunctioning
-
-        returns -> None
-        """
-        self.new_malfunctions.add(malf)
-    
-    def move_malfunction(self, malf) -> None:
-        """
-        remove a malfunction from the new_malfunction set and add it to the malfunctions set
-
-        parameters
-        ----------------
-        malf : int
-            the index of the agent that is malfunctioning
-
-        returns -> None
-        """
-        self.new_malfunctions.remove(malf)
-        self.malfunctions.add(malf)
-
-    def remove_malfunction(self, malf) -> None:
-        """
-        remove a malfunction from the malfunctions set when the malfunction is expiring
-
-        parameters
-        ----------------
-        malf : int
-            the index of the agent that is done malfunctioning
-
-        returns -> None
-        """
-        self.malfunctions.remove(malf)
-
-    def convert_snapshot(self) -> str:
-        """
-        convert most recent snapshot to ASP facts
-        
-        parameters
-        ----------------
-        None
-
-        returns -> str
-        """
-        pass
-
-#update_actions
-
-#sys.argv[1:]
-
-# development
-f = "/home/murphy2/git/flatland/envs/pkl/env_013--1_2.pkl"
-#env = convert_to_clingo(pickle.load(open(f, "rb")))
-env = pickle.load(open(f, "rb"))
-primary, secondary = "", ""
-
-mgr = SimulationManager(env,primary,secondary)
-
-actions = mgr.build_actions()
-
-timestep = 0
-while timestep < len(actions):
+def check_params(par):
     """
-    iterate through each set of actions in the list
-    call env.step()
-    for each agent, first determine whether there is a new malfunction
-        if there is a new malfunction, add that agent to the new_malfunctions list
+    verify that all parameters exist before proceedingd
     """
+    required_params = {
+        "primary": list
+        #"secondary": list
+    }
 
-    # call env.step() to execute the next step in the simulation
-    obs, rew, done, info = env.step(actions[timestep])
-    cur_pos = env.agents[0].position
-    print(f"timestep {timestep}:\t",rew, done, info, cur_pos, actions[timestep], env.rail.grid[cur_pos if cur_pos is not None else (0,0)])
-
-    if timestep == 10:
-        print("\n", env.agents, "\n")
-
-
-    # check to see whether any agent is malfunctioning
-    for a in range(env.get_num_agents()):
-        if info['malfunction'][a] > 0: # if a is malfunctioning
-            if a not in mgr.malfunctions: # if this is a new malfunction
-                mgr.add_new_malfunction(a)
+    # check that all required parameters exist and have the correct type
+    for param, expected_type in required_params.items():
+        if not hasattr(par, param):
+            raise ValueError(f"Required parameter '{param}' is missing from the params module")
             
-    # replan if there are new malfunctions
-    if len(mgr.new_malfunctions) > 0:
-        # move from new to existing malfunctions
-        for train in mgr.new_malfunctions:
-            mgr.move_malfunction(train)
+        else:
+            # check for correct types
+            value = getattr(par, param)
+        
+            if not isinstance(value, expected_type):
+                raise TypeError(f"Parameter '{param}' should be of type {expected_type.__name__}, but got {type(value).__name__}")
 
-        # capture context and call API to replan
-        mgr.update_actions()
-
-        # update actions list
-        actions = mgr.actions
-
-    # remove expiring malfunctions
-    for a in range(env.get_num_agents()):
-        if info['malfunction'][a] == 1:
-            mgr.remove_malfunction(a)
-
-    timestep = timestep + 1
+    return True
 
 
+def get_args():
+    """ capture command line inputs """
+    parser = ArgumentParser()
+    parser.add_argument('env', type=str, default='', nargs=1, help='the flatland environment as a .pkl file')
+    return(parser.parse_args())
+
+
+def main():
+    # dev test main
+    if check_params(params):
+        args: Namespace = get_args()
+        env = pickle.load(open(args.env[0], "rb"))
+
+    # create manager objects
+    mal = MalfunctionManager(env.get_num_agents())
+    sim = SimulationManager(env, params.primary, params.secondary)
+    log = OutputLogManager()
+
+    # envrionment rendering
+    env_renderer = RenderTool(env, gl="PILSVG")
+    env_renderer.reset()
+    images = []
+
+    actions = sim.build_actions()
+
+    timestep = 0
+    while len(actions) > timestep:
+        _, _, done, info = env.step(actions[timestep])
+
+        # end if simulation is finished
+        if done['__all__'] and timestep < len(actions)-1:
+            warnings.warn('Simulation has reached its end before actions list has been exhausted.')
+            break
+
+        # check for new malfunctions
+        new_malfs = mal.check(info)
+
+        if len(new_malfs) > 0:
+            context = sim.provide_context(actions, timestep, mal.get())
+            actions = sim.update_actions(context)
+
+        mal.deduct() #??? where in the loop should this go - before context?
+
+        # render an image
+        filename = 'tmp/frames/flatland_frame_{:04d}.png'.format(timestep)
+        if env_renderer is not None:
+            env_renderer.render_env(show=True, show_observations=False, show_predictions=False)
+            env_renderer.gl.save_image(filename)
+            env_renderer.reset()
+        images.append(imageio.imread(filename))
+
+        # add to the log
+        log.add(info)
+
+        timestep = timestep + 1
+
+    # combine images into gif
+    stamp = time.time()
+    os.makedirs(f"output/{stamp}", exist_ok=True)
+    imageio.mimsave(f"output/{stamp}/animation.gif", images, format='GIF', loop=0, duration=240)
+
+    # save output log
+    log.save(stamp)
+
+
+if __name__ == "__main__":
+    main()
