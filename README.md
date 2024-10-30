@@ -83,7 +83,7 @@ When this is called, the attributes of the environment will look to the 📝 `pa
 #### 🧑‍💻 Initial development
 Individual developers are responsible for writing encodings in clingo that are capable of solving Flatland problems.  During the development phase, the `lp` representation of the environment may be beneficial for initial testing and debugging of the encoding or encodings.  Keep in mind that several encodings can be called simulatenously by clingo, for example:
 ```
-clingo envs/lp/test.lp asp/graph-based/graph.lp asp/graph-based/traversal.lp asp/graph-based/actions.lp
+clingo envs/lp/test.lp asp/graph_based/graph.lp asp/graph_based/traverse.lp asp/graph_based/actions.lp
 ```
 
 The order is not important.  What will ultimately be necessary is that the output be appropriately formatted in the following manner:
@@ -148,7 +148,7 @@ Want to try it out on a test environment first and see how it works?
 
 First, from within the 📁 `asp` folder, modify the 📝 `params.py` file to read `primary=['asp/test.lp']`. Then, from the `/flatland` directory, run the following command:
 ```
-solve.py envs/pkl/test.pkl
+python solve.py envs/pkl/test.pkl
 ```
 
 The resulting output will be saved as a `.gif` in the 📁 `output` folder.
