@@ -148,7 +148,7 @@ Want to try it out on a test environment first and see how it works?
 
 First, from within the 📁 `asp` folder, modify the 📝 `params.py` file to read `primary=['asp/test.lp']`. Then, from the `/flatland` directory, run the following command:
 ```
-solve.py envs/pkl/test.pkl
+python solve.py envs/pkl/test.pkl
 ```
 
 The resulting output will be saved as a `.gif` in the 📁 `output` folder.
