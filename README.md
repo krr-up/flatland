@@ -83,7 +83,7 @@ When this is called, the attributes of the environment will look to the 📝 `pa
 #### 🧑‍💻 Initial development
 Individual developers are responsible for writing encodings in clingo that are capable of solving Flatland problems.  During the development phase, the `lp` representation of the environment may be beneficial for initial testing and debugging of the encoding or encodings.  Keep in mind that several encodings can be called simulatenously by clingo, for example:
 ```
-clingo envs/lp/test.lp asp/graph-based/graph.lp asp/graph-based/traversal.lp asp/graph-based/actions.lp
+clingo envs/lp/test.lp asp/graph_based/graph.lp asp/graph_based/traversal.lp asp/graph_based/actions.lp
 ```
 
 The order is not important.  What will ultimately be necessary is that the output be appropriately formatted in the following manner:
