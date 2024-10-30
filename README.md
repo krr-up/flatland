@@ -151,4 +151,4 @@ First, from within the 📁 `asp` folder, modify the 📝 `params.py` file to re
 solve.py envs/pkl/test.pkl
 ```
 
-The resulting output will be saved as a GIF in the 📁 `output` folder.
+The resulting output will be saved as a `.gif` in the 📁 `output` folder.
