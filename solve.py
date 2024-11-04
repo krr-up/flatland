@@ -99,8 +99,12 @@ class OutputLogManager():
 
     def save(self,filename) -> None:
         """ save output log to local drive """
-        with open(f"output/{filename}/paths.json", "w") as f:
-            f.write(json.dumps(self.logs))
+        #with open(f"output/{filename}/paths.json", "w") as f:
+        #    f.write(json.dumps(self.logs))
+        with open(f"output/{filename}/paths.csv", "w") as f:
+            f.write("agent;timestep;position;direction;status;given_command\n")
+            for log in self.logs:
+                f.write(log)
 
 def check_params(par):
     """
@@ -149,6 +153,12 @@ def main():
     env_renderer.reset()
     images = []
 
+    # create directory
+    os.makedirs("tmp/frames", exist_ok=True)
+    action_map = {1:'move_left',2:'move_forward',3:'move_right',4:'wait'}
+    state_map = {0:'waiting', 1:'ready to depart', 2:'malfunction (off map)', 3:'moving', 4:'stopped', 5:'malfunction (on map)', 6:'done'}
+    dir_map = {0:'n', 1:'e', 2:'s', 3:'w'}
+
     actions = sim.build_actions()
 
     timestep = 0
@@ -178,7 +188,8 @@ def main():
         images.append(imageio.imread(filename))
 
         # add to the log
-        log.add(info)
+        for a in actions[timestep]:
+            log.add(f'{a};{timestep};{env.agents[a].position};{dir_map[env.agents[a].direction]};{state_map[env.agents[a].state]};{action_map[actions[timestep][a]]}\n')
 
         timestep = timestep + 1
 
