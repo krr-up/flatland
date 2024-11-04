@@ -35,8 +35,8 @@ def build_action_list(models):
     """
     action_list = []
     for func in models[0]: # only the first model
-        prefix = func.name[:6]
-        if prefix == "action":
+        func_name = func.name
+        if func_name == "action":
             action = func.arguments[1].name
             agent, timestep = func.arguments[0], func.arguments[2]
             agent_num = agent.arguments[0].number
