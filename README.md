@@ -1,4 +1,4 @@
-# Flatland
+# KRR-Flatland
 
 ![Flatland animation](https://i.imgur.com/9cNtWjs.gif)
 
