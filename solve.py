@@ -17,7 +17,7 @@ from clingo.application import Application, clingo_main
 
 # rendering visualizations
 from flatland.utils.rendertools import RenderTool
-import imageio.v2 as imageio
+import imageio.v3 as imageio
 
 
 class MalfunctionManager():
@@ -133,7 +133,8 @@ def check_params(par):
 def get_args():
     """ capture command line inputs """
     parser = ArgumentParser()
-    parser.add_argument('env', type=str, default='', nargs=1, help='the flatland environment as a .pkl file')
+    parser.add_argument('env', type=str, default='', nargs=1, help='the Flatland environment as a .pkl file')
+    parser.add_argument('--no-render', action='store_true', help='if included, run the Flatland simulation but do not render a GIF')
     return(parser.parse_args())
 
 
@@ -142,6 +143,7 @@ def main():
     if check_params(params):
         args: Namespace = get_args()
         env = pickle.load(open(args.env[0], "rb"))
+        no_render = args.no_render
 
     # create manager objects
     mal = MalfunctionManager(env.get_num_agents())
@@ -149,9 +151,11 @@ def main():
     log = OutputLogManager()
 
     # envrionment rendering
-    env_renderer = RenderTool(env, gl="PILSVG")
-    env_renderer.reset()
-    images = []
+    env_renderer = None
+    if not no_render:
+        env_renderer = RenderTool(env, gl="PILSVG")
+        env_renderer.reset()
+        images = []
 
     # create directory
     os.makedirs("tmp/frames", exist_ok=True)
@@ -185,7 +189,8 @@ def main():
             env_renderer.render_env(show=True, show_observations=False, show_predictions=False)
             env_renderer.gl.save_image(filename)
             env_renderer.reset()
-        images.append(imageio.imread(filename))
+            images.append(imageio.imread(filename))
+        # images.append(imageio.imread(filename))
 
         # add to the log
         for a in actions[timestep]:
@@ -193,10 +198,13 @@ def main():
 
         timestep = timestep + 1
 
-    # combine images into gif
+    # get time stamp for gif and output log
     stamp = time.time()
     os.makedirs(f"output/{stamp}", exist_ok=True)
-    imageio.mimsave(f"output/{stamp}/animation.gif", images, format='GIF', loop=0, duration=240)
+    
+    # combine images into gif
+    if not no_render:
+        imageio.mimsave(f"output/{stamp}/animation.gif", images, format='GIF', loop=0, duration=240)
 
     # save output log
     log.save(stamp)
