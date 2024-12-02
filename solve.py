@@ -17,7 +17,7 @@ from clingo.application import Application, clingo_main
 
 # rendering visualizations
 from flatland.utils.rendertools import RenderTool
-import imageio.v3 as imageio
+import imageio.v2 as imageio
 
 
 class MalfunctionManager():
