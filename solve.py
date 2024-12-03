@@ -163,6 +163,18 @@ def main():
 
     timestep = 0
     while len(actions) > timestep:
+        # render an image
+        filename = 'tmp/frames/flatland_frame_{:04d}.png'.format(timestep)
+        if env_renderer is not None:
+            env_renderer.render_env(show=True, show_observations=False, show_predictions=False)
+            env_renderer.gl.save_image(filename)
+            env_renderer.reset()
+        images.append(imageio.imread(filename))
+
+        # add to the log
+        for a in actions[timestep]:
+            log.add(f'{a};{timestep};{env.agents[a].position};{dir_map[env.agents[a].direction]};{state_map[env.agents[a].state]};{action_map[actions[timestep][a]]}\n')
+
         _, _, done, info = env.step(actions[timestep])
 
         # end if simulation is finished
@@ -178,18 +190,6 @@ def main():
             actions = sim.update_actions(context)
 
         mal.deduct() #??? where in the loop should this go - before context?
-
-        # render an image
-        filename = 'tmp/frames/flatland_frame_{:04d}.png'.format(timestep)
-        if env_renderer is not None:
-            env_renderer.render_env(show=True, show_observations=False, show_predictions=False)
-            env_renderer.gl.save_image(filename)
-            env_renderer.reset()
-        images.append(imageio.imread(filename))
-
-        # add to the log
-        for a in actions[timestep]:
-            log.add(f'{a};{timestep};{env.agents[a].position};{dir_map[env.agents[a].direction]};{state_map[env.agents[a].state]};{action_map[actions[timestep][a]]}\n')
 
         timestep = timestep + 1
 
