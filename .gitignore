@@ -1,0 +1,5 @@
+venv
+tmp/frames/*
+output/*
+*/__pycache__
+*env_*
