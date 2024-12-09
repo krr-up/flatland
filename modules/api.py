@@ -46,8 +46,6 @@ class FlatlandPlan(Application):
         self.action_list = build_action_list(models)
 
 
-
-
 # let's see later whether we even need this
 class FlatlandReplan(Application):
     """ takes an environment, a set of secondary encodings, and additional context """
