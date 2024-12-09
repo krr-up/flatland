@@ -167,6 +167,10 @@ def main():
 
     timestep = 0
     while len(actions) > timestep:
+        # add to the log
+        for a in actions[timestep]:
+            log.add(f'{a};{timestep};{env.agents[a].position};{dir_map[env.agents[a].direction]};{state_map[env.agents[a].state]};{action_map[actions[timestep][a]]}\n')
+
         _, _, done, info = env.step(actions[timestep])
 
         # end if simulation is finished
@@ -191,10 +195,6 @@ def main():
             env_renderer.reset()
             images.append(imageio.imread(filename))
         # images.append(imageio.imread(filename))
-
-        # add to the log
-        for a in actions[timestep]:
-            log.add(f'{a};{timestep};{env.agents[a].position};{dir_map[env.agents[a].direction]};{state_map[env.agents[a].state]};{action_map[actions[timestep][a]]}\n')
 
         timestep = timestep + 1
 
