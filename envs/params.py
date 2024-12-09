@@ -1,7 +1,7 @@
 # basic parameters
 width=40
 height=40
-number_of_agents=4
+number_of_agents=2
 max_num_cities=2
 seed=1
 grid_mode=False
