@@ -1,3 +1,5 @@
-primary=['asp/graph_based/actions.lp','asp/graph_based/graph.lp','asp/graph_based/traverse.lp']
+# primary=['asp/graph/0_input.lp','asp/graph/1_path.lp','asp/graph/2_output.lp']
+# primary=['asp/ordered/0_input.lp','asp/ordered/1_path.lp','asp/ordered/2_conflicts.lp']
+primary=['asp/ordered/tmp.lp']
 #primary=['asp/test2.lp']
 secondary=[]
