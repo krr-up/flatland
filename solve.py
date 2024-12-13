@@ -76,7 +76,7 @@ class SimulationManager():
         # actions that have already been executed
         # wait actions that are enforced because of malfunctions
         # future actions that were previously planned
-        past = convert_formers_to_clingo(actions[:timestep+1])
+        past = convert_formers_to_clingo(actions[:timestep])
         present = convert_malfunctions_to_clingo(malfunctions, timestep)
         future = convert_futures_to_clingo(actions[timestep+1:])
         return(past + present + future)
