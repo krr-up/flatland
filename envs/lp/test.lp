@@ -1,3 +1,6 @@
+% clingo representation of a Flatland environment
+% height: 40, width: 40, agents: 2
+
 global(63).
 
 train(0). start(0,(18,7),3,w). end(0,(16,24),59). speed(0,1).
