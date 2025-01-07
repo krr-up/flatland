@@ -18,6 +18,7 @@ from clingo.application import Application, clingo_main
 # rendering visualizations
 from flatland.utils.rendertools import RenderTool
 import imageio.v2 as imageio
+from PIL import Image, ImageDraw, ImageFont
 
 
 class MalfunctionManager():
@@ -186,7 +187,7 @@ def main():
             actions = sim.update_actions(context)
 
         mal.deduct() #??? where in the loop should this go - before context?
-
+        
         # render an image
         filename = 'tmp/frames/flatland_frame_{:04d}.png'.format(timestep)
         if env_renderer is not None:
