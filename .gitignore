@@ -3,3 +3,5 @@ tmp/frames/*
 output/*
 */__pycache__
 *env_*
+*.pyc
+
