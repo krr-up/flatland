@@ -8,8 +8,9 @@ from argparse import ArgumentParser, Namespace
 
 # custom modules
 from asp import params
-from modules.api import FlatlandPlan, FlatlandReplan
+from modules.api import FlatlandPlan
 from modules.convert import convert_malfunctions_to_clingo, convert_formers_to_clingo, convert_futures_to_clingo
+from modules.actionlist import build_context_from_save
 
 # clingo
 import clingo
@@ -65,11 +66,14 @@ class SimulationManager():
         else:
             self.secondary = secondary
 
+        self.save_context = None
+
     def build_actions(self) -> list:
         """ create initial list of actions """
         # pass env, primary
         app = FlatlandPlan(self.env, None)
         clingo_main(app, self.primary)
+        self.save_context = app.save_context
         return(app.action_list)
 
     def provide_context(self, actions, timestep, malfunctions) -> str:
@@ -77,16 +81,18 @@ class SimulationManager():
         # actions that have already been executed
         # wait actions that are enforced because of malfunctions
         # future actions that were previously planned
-        past = convert_formers_to_clingo(actions[:timestep])
-        present = convert_malfunctions_to_clingo(malfunctions, timestep)
-        future = convert_futures_to_clingo(actions[timestep:])
-        return(past + present + future)
+        # past = convert_formers_to_clingo(actions[:timestep])
+        # present = convert_malfunctions_to_clingo(malfunctions, timestep)
+        # future = convert_futures_to_clingo(actions[timestep:])
+        # return(past + present + future)
+        pass
 
     def update_actions(self, context) -> list:
         """ update list of actions following malfunction """
         # pass env, secondary, context
         app = FlatlandPlan(self.env, context)
-        clingo_main(app, self.primary)
+        clingo_main(app, self.secondary)
+        self.save_context = app.save_context
         return(app.action_list)
 
 
@@ -183,8 +189,8 @@ def main():
         new_malfs = mal.check(info)
 
         if len(new_malfs) > 0:
-            context = sim.provide_context(actions, timestep, mal.get())
-            actions = sim.update_actions(context)
+            #context = sim.provide_context(actions, timestep, mal.get())
+            actions = sim.update_actions(sim.save_context)
 
         mal.deduct() #??? where in the loop should this go - before context?
         

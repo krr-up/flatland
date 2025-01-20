@@ -44,3 +44,16 @@ def build_action_list(models):
 
     sorted_list = sorted(action_list, key=lambda x: (x[2], x[0]))
     return(to_dicts(sorted_list))
+
+def build_context_from_save(models):
+    """
+    given a model from clingo, build an python action list
+    """
+    save_list = ""
+    for func in models[0]: # only the first model
+        func_name = func.name
+        if func_name == "save":
+            context = func.arguments[0]
+            save_list += f"{context}.\n"
+
+    return(to_dicts(save_list))
