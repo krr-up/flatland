@@ -28,6 +28,18 @@ def to_dicts(action_list):
     mapping = {"move_forward":RailEnvActions.MOVE_FORWARD, "move_right":RailEnvActions.MOVE_RIGHT, "move_left":RailEnvActions.MOVE_LEFT, "wait":RailEnvActions.STOP_MOVING}
     return(convert_actions_to_flatland(result))
 
+def build_context_from_save(models):
+    """
+    given a model from clingo, build an python action list
+    """
+    save_list = ""
+    for func in models[0]: # only the first model
+        func_name = func.name
+        if func_name == "save":
+            context = func.arguments[0]
+            save_list += f"load({context}).\n"
+
+    return(save_list)
 
 def build_action_list(models):
     """
@@ -43,17 +55,5 @@ def build_action_list(models):
             action_list.append((agent_num,action,timestep.number))
 
     sorted_list = sorted(action_list, key=lambda x: (x[2], x[0]))
-    return(to_dicts(sorted_list))
+    return(to_dicts(sorted_list), build_context_from_save(models))
 
-def build_context_from_save(models):
-    """
-    given a model from clingo, build an python action list
-    """
-    save_list = ""
-    for func in models[0]: # only the first model
-        func_name = func.name
-        if func_name == "save":
-            context = func.arguments[0]
-            save_list += f"{context}.\n"
-
-    return(to_dicts(save_list))
