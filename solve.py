@@ -8,7 +8,7 @@ from argparse import ArgumentParser, Namespace
 
 # custom modules
 from asp import params
-from modules.api import FlatlandPlan, FlatlandReplan
+from modules.api import FlatlandPlan
 from modules.convert import convert_malfunctions_to_clingo, convert_formers_to_clingo, convert_futures_to_clingo
 
 # clingo
@@ -65,28 +65,29 @@ class SimulationManager():
         else:
             self.secondary = secondary
 
+        self.save_context = None
+
     def build_actions(self) -> list:
         """ create initial list of actions """
         # pass env, primary
         app = FlatlandPlan(self.env, None)
         clingo_main(app, self.primary)
+        self.save_context = app.save_context
         return(app.action_list)
 
     def provide_context(self, actions, timestep, malfunctions) -> str:
         """ provide additional facts when updating list """
-        # actions that have already been executed
-        # wait actions that are enforced because of malfunctions
-        # future actions that were previously planned
-        past = convert_formers_to_clingo(actions[:timestep])
-        present = convert_malfunctions_to_clingo(malfunctions, timestep)
-        future = convert_futures_to_clingo(actions[timestep:])
-        return(past + present + future)
+        # provides malfunction information as well as previously saved atoms
+        malfunction = convert_malfunctions_to_clingo(malfunctions, timestep)
+        saved = self.save_context
+        return (malfunction + saved)
 
     def update_actions(self, context) -> list:
         """ update list of actions following malfunction """
         # pass env, secondary, context
         app = FlatlandPlan(self.env, context)
-        clingo_main(app, self.primary)
+        clingo_main(app, self.secondary)
+        self.save_context = app.save_context
         return(app.action_list)
 
 
@@ -148,7 +149,10 @@ def main():
 
     # create manager objects
     mal = MalfunctionManager(env.get_num_agents())
-    sim = SimulationManager(env, params.primary, params.secondary)
+    if hasattr(params,"secondary") and params.secondary != []:
+        sim = SimulationManager(env, params.primary, params.secondary)
+    else:
+        sim = SimulationManager(env, params.primary, None)
     log = OutputLogManager()
 
     # envrionment rendering
@@ -168,6 +172,42 @@ def main():
 
     timestep = 0
     while len(actions) > timestep:
+        
+        # render an image
+        filename = 'tmp/frames/flatland_frame_{:04d}.png'.format(timestep)
+        if env_renderer is not None:
+            env_renderer.render_env(show=True, show_observations=False, show_predictions=False)
+            env_renderer.gl.save_image(filename)
+            env_renderer.reset()
+
+            # add red numbers in the corner
+            with Image.open(filename) as img:
+                draw = ImageDraw.Draw(img)
+                padding = 10
+                font_size = int(min(img.width, img.height) * 0.10)
+                try:
+                    font = ImageFont.truetype("modules/LiberationMono-Regular.ttf", font_size)
+                except IOError:
+                    font = ImageFont.load_default()
+                
+                # prepare text
+                text = f"{timestep}"
+                size = font.getbbox(text)
+                text_width = size[2]-size[0]
+                text_position = (img.width - text_width - padding, padding)
+                
+                # draw text borders
+                x, y = text_position
+                border_color = "black"
+                for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1), (-1, -1), (-1, 1), (1, -1), (1, 1)]:
+                    draw.text((x + dx, y + dy), text, fill=border_color, font=font)
+                
+                # draw text
+                draw.text(text_position, text, fill="red", font=font)
+                img.save(filename)  
+
+            images.append(imageio.imread(filename))
+        # images.append(imageio.imread(filename))
         # add to the log
         for a in actions[timestep]:
             log.add(f'{a};{timestep};{env.agents[a].position};{dir_map[env.agents[a].direction]};{state_map[env.agents[a].state]};{action_map[actions[timestep][a]]}\n')
