@@ -172,26 +172,6 @@ def main():
 
     timestep = 0
     while len(actions) > timestep:
-        # add to the log
-        for a in actions[timestep]:
-            log.add(f'{a};{timestep};{env.agents[a].position};{dir_map[env.agents[a].direction]};{state_map[env.agents[a].state]};{action_map[actions[timestep][a]]}\n')
-
-        _, _, done, info = env.step(actions[timestep])
-
-        # end if simulation is finished
-        if done['__all__'] and timestep < len(actions)-1:
-            warnings.warn('Simulation has reached its end before actions list has been exhausted.')
-            break
-
-        # check for new malfunctions
-        new_malfs = mal.check(info)
-
-        if len(new_malfs) > 0:
-            context = sim.provide_context(actions, timestep, mal.get())
-            actions = sim.update_actions(context)
-
-        mal.deduct() #??? where in the loop should this go - before context?
-        
         # render an image
         filename = 'tmp/frames/flatland_frame_{:04d}.png'.format(timestep)
         if env_renderer is not None:
@@ -226,8 +206,27 @@ def main():
                 img.save(filename)
 
             images.append(imageio.imread(filename))
-        # images.append(imageio.imread(filename))
 
+        # add to the log
+        for a in actions[timestep]:
+            log.add(f'{a};{timestep};{env.agents[a].position};{dir_map[env.agents[a].direction]};{state_map[env.agents[a].state]};{action_map[actions[timestep][a]]}\n')
+
+        _, _, done, info = env.step(actions[timestep])
+
+        # end if simulation is finished
+        if done['__all__'] and timestep < len(actions)-1:
+            warnings.warn('Simulation has reached its end before actions list has been exhausted.')
+            break
+
+        # check for new malfunctions
+        new_malfs = mal.check(info)
+
+        if len(new_malfs) > 0:
+            context = sim.provide_context(actions, timestep, mal.get())
+            actions = sim.update_actions(context)
+
+        mal.deduct() #??? where in the loop should this go - before context?
+        
         timestep = timestep + 1
 
     # get time stamp for gif and output log
