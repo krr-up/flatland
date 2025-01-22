@@ -172,42 +172,6 @@ def main():
 
     timestep = 0
     while len(actions) > timestep:
-        
-        # render an image
-        filename = 'tmp/frames/flatland_frame_{:04d}.png'.format(timestep)
-        if env_renderer is not None:
-            env_renderer.render_env(show=True, show_observations=False, show_predictions=False)
-            env_renderer.gl.save_image(filename)
-            env_renderer.reset()
-
-            # add red numbers in the corner
-            with Image.open(filename) as img:
-                draw = ImageDraw.Draw(img)
-                padding = 10
-                font_size = int(min(img.width, img.height) * 0.10)
-                try:
-                    font = ImageFont.truetype("modules/LiberationMono-Regular.ttf", font_size)
-                except IOError:
-                    font = ImageFont.load_default()
-                
-                # prepare text
-                text = f"{timestep}"
-                size = font.getbbox(text)
-                text_width = size[2]-size[0]
-                text_position = (img.width - text_width - padding, padding)
-                
-                # draw text borders
-                x, y = text_position
-                border_color = "black"
-                for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1), (-1, -1), (-1, 1), (1, -1), (1, 1)]:
-                    draw.text((x + dx, y + dy), text, fill=border_color, font=font)
-                
-                # draw text
-                draw.text(text_position, text, fill="red", font=font)
-                img.save(filename)  
-
-            images.append(imageio.imread(filename))
-        # images.append(imageio.imread(filename))
         # add to the log
         for a in actions[timestep]:
             log.add(f'{a};{timestep};{env.agents[a].position};{dir_map[env.agents[a].direction]};{state_map[env.agents[a].state]};{action_map[actions[timestep][a]]}\n')
