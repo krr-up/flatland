@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the directories to clean
-directories=("envs/pkl" "envs/lp" "envs/png" "output")
+directories=("envs/pkl" "envs/lp" "envs/png" "output" "tmp/frames")
 
 # Loop through each directory and delete files
 for dir in "${directories[@]}"; do
