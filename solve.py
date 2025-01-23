@@ -158,7 +158,7 @@ def main():
     # envrionment rendering
     env_renderer = None
     if not no_render:
-        env_renderer = RenderTool(env, gl="PILSVG")
+        env_renderer = RenderTool(env, gl="PILSVG", screen_width=2000, screen_height=2000)
         env_renderer.reset()
         images = []
 
