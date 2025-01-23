@@ -16,4 +16,4 @@ at(V,A,T') :- load(at(V,A,T')), malfunction(_,_,T), T'<T.
 at(V,A,T+D) :- duration(D), load(at(V,A,T)), malfunction(_,_,T).
 
 % shift later timesteps
-at(V,A,T+D) :- load(at(V,A,T')), malfunction(_,_,T), T'>T, max_duration(D).
+at(V,A,T'+D) :- load(at(V,A,T')), malfunction(_,_,T), T'>T, max_duration(D).
