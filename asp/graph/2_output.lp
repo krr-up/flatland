@@ -13,7 +13,7 @@ a(A,2,T) :- at(V,A,T), not at(V,A,T+1),
 
 
 output(1,move_left).output(2,move_forward).output(3,move_right).output(4,wait).
-action(train(A),wait,T') :- at(_,A,T+1), not at(_,A,T), T'=0..T+1.
+action(train(A),wait,T') :- at(_,A,T+1), not at(_,A,T), T'=0..T-1.
 action(train(A),O',T) :- a(A,O,T), output(O,O').
 #show action/3.
 % #show at/3.
