@@ -22,3 +22,6 @@ action(train(A),O',T) :- a(A,O,T), output(O,O').
 save(at(V,A,T)) :- at(V,A,T).
 save(edge(U,V)) :- edge(U,V).
 save(turn(E,O)) :- turn(E,O).
+save(vertex(P,Q)) :- vertex(P,Q).
+save(shared_resource(A,B)) :- shared_resource(A,B).
+save(time(T)) :- time(T).

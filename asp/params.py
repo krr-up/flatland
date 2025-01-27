@@ -1,6 +1,6 @@
 # primary=['asp/malfunctions_test.lp']
 primary=['asp/graph_reschedule/0_input.lp','asp/graph_reschedule/1_path.lp','asp/graph_reschedule/2_output.lp']
-secondary=['asp/graph_reschedule/3_malfunction.lp','asp/graph_reschedule/2_output.lp']
+secondary=['asp/graph_reschedule/3_malfunction.lp','asp/graph_reschedule/2_output.lp','asp/graph_reschedule/1_path.lp']
 #primary=['asp/test2.lp']
 # primary=['asp/test.lp']
 # secondary=[]
