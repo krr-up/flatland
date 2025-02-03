@@ -8,16 +8,16 @@ edge(U,V) :- load(edge(U,V)).
 turn(E,O) :- load(turn(E,O)).
 shared_resource(A,B) :- load(shared_resource(A,B)).
 vertex(A,B) :- load(vertex(A,B)).
-end(A,B,C+D+5) :- load(end(A,B,C)), D = #max{D': malfunction(_,D',_)}.
+end(A,B,C+D) :- load(end(A,B,C)), D = #max{D': malfunction(_,D',_)}.
 train(A) :- load(train(A)).
 start(A,B,C,D) :- load(start(A,B,C,D)).
 dir_move(A,B) :- load(dir_move(A,B)).
 
 % duration appears to be d+1
-duration(A,2..D+1) :- malfunction(A,D,_).
+duration(A,1..D+1) :- malfunction(A,D,_).
 
 % copy previous ats
-at(V,A,T') :- load(at(V,A,T')), malfunction(_,_,T), T'<=T+1.
+at(V,A,T') :- load(at(V,A,T')), malfunction(_,_,T), T'<=T.
 
 % malfunctionin trains
 % extend malfunction timestep for the duration

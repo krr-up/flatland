@@ -16,4 +16,4 @@ time(0..T) :- end(_,_,T).
 ended(A,T):- at(vertex(P,D),A,T), end(A,P,_).
 :- train(A), not ended(A,_).
 
-#minimize{T,A: ended(A,T)}.
+% #minimize{T,A: ended(A,T)}.
