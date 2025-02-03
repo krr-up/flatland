@@ -11,11 +11,12 @@ class FlatlandPlan(Application):
     program_name = "flatland"
     version = "1.0"
 
-    def __init__(self, env, actions):
+    def __init__(self, env, actions, supress_env=False):
         self.env = env
         self.actions = actions
         self.action_list = None
         self.save_context = None
+        self.supress_env = supress_env
 
     def main(self, ctl, files):
         # add encodings
@@ -25,7 +26,8 @@ class FlatlandPlan(Application):
             raise Exception('No file loaded into clingo.')
         
         # add env
-        ctl.add(convert_to_clingo(self.env))
+        if not self.supress_env:
+            ctl.add(convert_to_clingo(self.env))
         
         # add actions
         if self.actions is not None:
