@@ -1,6 +1,10 @@
 % initial state rules
 time(0..T) :- end(_,_,T).
 
+% spawning
+1 {starttime(A,T'): time(T'), T'>=T, T'>=1} 1 :- start(A,_,T,_).
+at(vertex((X,Y),(X-X',Y-Y')),A,T+1) :- start(A,(X,Y),_,D), dir_move(D,(X',Y')), starttime(A,T).
+
 % movement
 % a train can stay at the same place
 {at( V, A, T)} :- at(V,A,T-1), time(T).
