@@ -1,7 +1,7 @@
 # basic parameters
 width=24
 height=24
-number_of_agents=8
+number_of_agents=20
 max_num_cities=2
 seed=1
 grid_mode=False
@@ -19,6 +19,6 @@ speed_ratio_map={1 : 1}
 #     }
 
 # malfunctions
-malfunction_rate=1/40
+malfunction_rate=1/100
 min_duration=2
 max_duration=2

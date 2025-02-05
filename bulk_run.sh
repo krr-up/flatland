@@ -22,7 +22,8 @@ for instance in "$pkl_folder"/*.pkl; do
 
   # Run the solve.py command
   echo "Running 'python solve.py $instance'"
-  python solve.py "$instance"
+  python solve.py "$instance" > /dev/null 2>&1
+
   
   # Check if the command was successful
   if [ $? -ne 0 ]; then
