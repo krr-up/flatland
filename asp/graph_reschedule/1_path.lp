@@ -15,5 +15,5 @@ at(vertex(end),A,T+1) :- at(vertex(P,D),A,T), end(A,P,_).
 :- at(V1,A,T), at(V2,A,T+1), at(V3,B,T), at(V4,B,T+1), A<B, shared_resource(edge(V1,V2),edge(V3,V4)).
 
 % all trains must have ended their task
-ended(A) :- end(A,_,ET), at(vertex(end),A,T), T<=ET.
+ended(A) :- end(A,_,ET), at(vertex(end),A,T).%, T<=ET.
 :- train(A), not ended(A).
