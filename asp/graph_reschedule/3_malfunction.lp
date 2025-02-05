@@ -17,13 +17,21 @@ mt(T+1) :- malfunction(_,_,T).
 time(T1..T2) :- mt(T1), end(_,_,T2).
 
 
+% determine trains affected by the malfunction
+affected(A) :- malfunction(A,_,_).
+% mark a train which would ram into one affected by the malfunction
+affected(A) :- affected(B), mt(T), load(at(V1,B,T-1)), load(at(V2,A,T)), shared_resource(V1,V2).
+
+
 % copy previous states
-at(V,A,T') :- load(at(V,A,T')), mt(T), T'<=T.
+at(V,A,T') :- load(at(V,A,T')), mt(T), T'<=T, not affected(A).
+% if the train is malfunctioning or affected by it copy one less as the last action failed
+at(V,A,T') :- load(at(V,A,T')), mt(T), T'<=T-1, affected(A).
 % extend state for the malfunctioning train
-at(V,A,T+(1..D)) :- load(at(V,A,T)), malfunction(A,D,T-1).
+at(V,A,T+(1..D+1)) :- load(at(V,A,T)), malfunction(A,D,T).
 
 
-% somehow, whenever a malfunction ended for a non existent train it magically spawned right after that if the starttime allows for it, but with a little more lenience than the actuat start condition ... anyway thats what the following line is for
+% somehow, whenever a malfunction ended for a non existent train it magically spawned right after that, if the starttime allows for it, but with a little more lenience than the actuat start condition ... anyway thats what the following line is for
 at(V,A,T+D+1) :- malfunction(A,D,T-1), load(at(vertex(start),A,T)), first_vertex(A,V), start(A,_,ST,_), T+D+1>=ST.
 
 
