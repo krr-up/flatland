@@ -13,6 +13,7 @@ trackparts(Pos,D1,D2) :- cell(Pos,N), dir_bit(D1,N1), dir_bit(D2,N2),
 
 % generate direction free nodes
 vertex((X,Y),(X-X',Y-Y')) :- trackparts((X,Y),D,_), dir_move(D,(X',Y')).
+vertex(start).vertex(end).
 
 % generate edges
 edge(vertex((X2,Y2),(X1,Y1)),vertex((X3,Y3),(X2,Y2))) :- vertex((X2,Y2),(X1,Y1)), vertex((X3,Y3),(X2,Y2)),
@@ -30,3 +31,7 @@ turn(edge(vertex((X2,Y2),(X1,Y1)),vertex((X3,Y3),(X2,Y2))),3) :- edge(vertex((X2
 shared_resource(vertex(At,From1),vertex(At,From2)) :- vertex(At,From1), vertex(At,From2).
 shared_resource(edge(V1,V2),edge(V3,V4)) :- edge(V1,V2), edge(V3,V4),
     shared_resource(V1,V4), shared_resource(V2,V3).
+
+time(0..T) :- end(_,_,T).
+at(vertex(start),A,0) :- train(A).
+first_vertex(A,vertex((X,Y),(X-X',Y-Y'))) :- start(A,(X,Y),_,D), dir_move(D,(X',Y')).

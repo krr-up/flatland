@@ -1,8 +1,8 @@
 # basic parameters
-width=40
-height=40
+width=24
+height=24
 number_of_agents=4
-max_num_cities=4
+max_num_cities=2
 seed=1
 grid_mode=False
 max_rails_between_cities=2
@@ -19,6 +19,6 @@ speed_ratio_map={1 : 1}
 #     }
 
 # malfunctions
-malfunction_rate=1/100
+malfunction_rate=1/20
 min_duration=2
 max_duration=2

@@ -176,6 +176,7 @@ def main():
         for a in actions[timestep]:
             log.add(f'{a};{timestep};{env.agents[a].position};{dir_map[env.agents[a].direction]};{state_map[env.agents[a].state]};{action_map[actions[timestep][a]]}\n')
 
+        print(timestep)
         _, _, done, info = env.step(actions[timestep])
 
         # end if simulation is finished
