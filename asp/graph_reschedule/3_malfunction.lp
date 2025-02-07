@@ -14,6 +14,8 @@ first_vertex(A,B) :- load(first_vertex(A,B)).
 
 % malfunction time
 mt(T+1) :- malfunction(_,_,T).
+time(T1..T2) :- mt(T1), end(_,_,T2).
+
 
 % determine trains affected by the malfunction
 affected(A) :- malfunction(A,_,_).
