@@ -32,5 +32,12 @@ at(V,A,T):- load(at(V,A,T)),malfunction(_,_,TLast),T< TLast.
 malfunction_custom(A,D-1,T+1):- malfunction(A,D,T), D>1.
 malfunction_custom(A,D-1,T+1):- malfunction_custom(A,D,T), D>1.
 at(V,A,T+1):- malfunction_custom(A,_,T),at(V,A,T) .
+%efficiency rule, adding it here because it takes into account malfuntions
+%at(vertex(P,D),A,T+1):-
+%	at(vertex(_,P),A,T),
+%	vertex(P,D),
+%	{malfunction_custom(A,_,T)}==0,
+%	{vertex(P,_)}==1.
+
 
 #show malfunction/3.

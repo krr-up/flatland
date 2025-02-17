@@ -1,0 +1,176 @@
+flatland version 1.0
+Reading from asp/graph_shared_segments/0_input.lp ...
+Solving...
+Answer: 1
+
+SATISFIABLE
+
+Models       : 1+
+Calls        : 1
+Time         : 11.351s (Solving: 7.26s 1st Model: 7.25s Unsat: 0.00s)
+CPU Time     : 11.322s
+flatland version 1.0
+Reading from asp/graph_shared_segments/0_input.lp ...
+Solving...
+Answer: 1
+malfunction(11,2,0)
+SATISFIABLE
+
+Models       : 1+
+Calls        : 1
+Time         : 5.218s (Solving: 0.99s 1st Model: 0.97s Unsat: 0.00s)
+CPU Time     : 5.208s
+flatland version 1.0
+Reading from asp/graph_shared_segments/0_input.lp ...
+Solving...
+Answer: 1
+malfunction(10,2,10)
+SATISFIABLE
+
+Models       : 1+
+Calls        : 1
+Time         : 7.331s (Solving: 2.94s 1st Model: 2.92s Unsat: 0.00s)
+CPU Time     : 7.315s
+flatland version 1.0
+Reading from asp/graph_shared_segments/0_input.lp ...
+Solving...
+Answer: 1
+malfunction(7,2,17)
+SATISFIABLE
+
+Models       : 1+
+Calls        : 1
+Time         : 5.150s (Solving: 0.74s 1st Model: 0.72s Unsat: 0.00s)
+CPU Time     : 5.141s
+flatland version 1.0
+Reading from asp/graph_shared_segments/0_input.lp ...
+Solving...
+Answer: 1
+malfunction(16,2,26)
+SATISFIABLE
+
+Models       : 1+
+Calls        : 1
+Time         : 4.718s (Solving: 0.38s 1st Model: 0.36s Unsat: 0.00s)
+CPU Time     : 4.708s
+flatland version 1.0
+Reading from asp/graph_shared_segments/0_input.lp ...
+Solving...
+Answer: 1
+malfunction(1,2,31)
+SATISFIABLE
+
+Models       : 1+
+Calls        : 1
+Time         : 4.180s (Solving: 0.12s 1st Model: 0.11s Unsat: 0.00s)
+CPU Time     : 4.173s
+flatland version 1.0
+Reading from asp/graph_shared_segments/0_input.lp ...
+Solving...
+Answer: 1
+malfunction(1,1,32) malfunction(7,2,32)
+SATISFIABLE
+
+Models       : 1+
+Calls        : 1
+Time         : 4.151s (Solving: 0.09s 1st Model: 0.08s Unsat: 0.00s)
+CPU Time     : 4.145s
+flatland version 1.0
+Reading from asp/graph_shared_segments/0_input.lp ...
+Solving...
+Answer: 1
+malfunction(7,1,33) malfunction(13,2,33)
+SATISFIABLE
+
+Models       : 1+
+Calls        : 1
+Time         : 4.081s (Solving: 0.11s 1st Model: 0.09s Unsat: 0.00s)
+CPU Time     : 4.075s
+flatland version 1.0
+Reading from asp/graph_shared_segments/0_input.lp ...
+Solving...
+Answer: 1
+malfunction(9,2,40)
+SATISFIABLE
+
+Models       : 1+
+Calls        : 1
+Time         : 3.884s (Solving: 0.03s 1st Model: 0.02s Unsat: 0.00s)
+CPU Time     : 3.877s
+flatland version 1.0
+Reading from asp/graph_shared_segments/0_input.lp ...
+Solving...
+Answer: 1
+malfunction(19,2,44)
+SATISFIABLE
+
+Models       : 1+
+Calls        : 1
+Time         : 3.753s (Solving: 0.02s 1st Model: 0.01s Unsat: 0.00s)
+CPU Time     : 3.747s
+flatland version 1.0
+Reading from asp/graph_shared_segments/0_input.lp ...
+Solving...
+Answer: 1
+malfunction(7,2,46)
+SATISFIABLE
+
+Models       : 1+
+Calls        : 1
+Time         : 3.751s (Solving: 0.03s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 3.744s
+timestep:0
+timestep:1
+timestep:2
+timestep:3
+timestep:4
+timestep:5
+timestep:6
+timestep:7
+timestep:8
+timestep:9
+timestep:10
+timestep:11
+timestep:12
+timestep:13
+timestep:14
+timestep:15
+timestep:16
+timestep:17
+timestep:18
+timestep:19
+timestep:20
+timestep:21
+timestep:22
+timestep:23
+timestep:24
+timestep:25
+timestep:26
+timestep:27
+timestep:28
+timestep:29
+timestep:30
+timestep:31
+timestep:32
+timestep:33
+timestep:34
+timestep:35
+timestep:36
+timestep:37
+timestep:38
+timestep:39
+timestep:40
+timestep:41
+timestep:42
+timestep:43
+timestep:44
+timestep:45
+timestep:46
+timestep:47
+timestep:48
+timestep:49
+timestep:50
+timestep:51
+timestep:52
+timestep:53
+timestep:54

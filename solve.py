@@ -73,6 +73,8 @@ class SimulationManager():
         app = FlatlandPlan(self.env, None)
         clingo_main(app, self.primary)
         self.save_context = app.save_context
+        #print('------app.action_list------')
+        #print(app.action_list)
         return(app.action_list)
 
     def provide_context(self, actions, timestep, malfunctions) -> str:
@@ -176,9 +178,8 @@ def main():
         for a in actions[timestep]:
             log.add(f'{a};{timestep};{env.agents[a].position};{dir_map[env.agents[a].direction]};{state_map[env.agents[a].state]};{action_map[actions[timestep][a]]}\n')
 
-        print(timestep)
+        print(f'timestep:{timestep}')
         _, _, done, info = env.step(actions[timestep])
-
         # end if simulation is finished
         if done['__all__'] and timestep < len(actions)-1:
             warnings.warn('Simulation has reached its end before actions list has been exhausted.')
@@ -190,6 +191,9 @@ def main():
         if len(new_malfs) > 0:
             context = sim.provide_context(actions, timestep, mal.get())
             actions = sim.update_actions(context)
+            #print(''.join(context))
+            #print(actions)
+            #assert(timestep<1)
 
         mal.deduct() #??? where in the loop should this go - before context?
         
