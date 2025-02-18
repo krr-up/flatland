@@ -1,0 +1,104 @@
+flatland version 1.0
+Reading from asp/graph_shared_segments/0_input.lp ...
+Solving...
+Answer: 1
+
+SATISFIABLE
+
+Models       : 1+
+Calls        : 1
+Time         : 2.671s (Solving: 0.07s 1st Model: 0.06s Unsat: 0.00s)
+CPU Time     : 2.667s
+flatland version 1.0
+Reading from asp/graph_shared_segments/0_input.lp ...
+Solving...
+Answer: 1
+malfunction(2,3,15)
+SATISFIABLE
+
+Models       : 1+
+Calls        : 1
+Time         : 2.881s (Solving: 0.08s 1st Model: 0.07s Unsat: 0.00s)
+CPU Time     : 2.876s
+flatland version 1.0
+Reading from asp/graph_shared_segments/0_input.lp ...
+Solving...
+Answer: 1
+malfunction(1,2,33)
+SATISFIABLE
+
+Models       : 1+
+Calls        : 1
+Time         : 4.240s (Solving: 0.06s 1st Model: 0.05s Unsat: 0.00s)
+CPU Time     : 4.204s
+timestep:0
+timestep:1
+timestep:2
+timestep:3
+timestep:4
+timestep:5
+timestep:6
+timestep:7
+timestep:8
+timestep:9
+timestep:10
+timestep:11
+timestep:12
+timestep:13
+timestep:14
+timestep:15
+timestep:16
+timestep:17
+timestep:18
+timestep:19
+timestep:20
+timestep:21
+timestep:22
+timestep:23
+timestep:24
+timestep:25
+timestep:26
+timestep:27
+timestep:28
+timestep:29
+timestep:30
+timestep:31
+timestep:32
+timestep:33
+timestep:34
+timestep:35
+timestep:36
+timestep:37
+timestep:38
+timestep:39
+timestep:40
+timestep:41
+timestep:42
+timestep:43
+timestep:44
+timestep:45
+timestep:46
+timestep:47
+timestep:48
+timestep:49
+timestep:50
+timestep:51
+timestep:52
+timestep:53
+timestep:54
+timestep:55
+timestep:56
+timestep:57
+timestep:58
+timestep:59
+timestep:60
+timestep:61
+timestep:62
+timestep:63
+timestep:64
+timestep:65
+timestep:66
+timestep:67
+timestep:68
+timestep:69
+timestep:70

@@ -1,0 +1,176 @@
+
+
+
+
+
+
+
+
+
+
+
+
+Answer: 1
+Answer: 1
+Answer: 1
+Answer: 1
+Answer: 1
+Answer: 1
+Answer: 1
+Answer: 1
+Answer: 1
+Answer: 1
+Answer: 1
+CPU Time     : 4.241s
+CPU Time     : 4.272s
+CPU Time     : 4.409s
+CPU Time     : 4.470s
+CPU Time     : 4.540s
+CPU Time     : 4.568s
+CPU Time     : 5.001s
+CPU Time     : 5.137s
+CPU Time     : 5.946s
+CPU Time     : 6.723s
+CPU Time     : 8.878s
+Calls        : 1
+Calls        : 1
+Calls        : 1
+Calls        : 1
+Calls        : 1
+Calls        : 1
+Calls        : 1
+Calls        : 1
+Calls        : 1
+Calls        : 1
+Calls        : 1
+Models       : 1+
+Models       : 1+
+Models       : 1+
+Models       : 1+
+Models       : 1+
+Models       : 1+
+Models       : 1+
+Models       : 1+
+Models       : 1+
+Models       : 1+
+Models       : 1+
+Reading from asp/graph_shared_segments/0_input.lp ...
+Reading from asp/graph_shared_segments/0_input.lp ...
+Reading from asp/graph_shared_segments/0_input.lp ...
+Reading from asp/graph_shared_segments/0_input.lp ...
+Reading from asp/graph_shared_segments/0_input.lp ...
+Reading from asp/graph_shared_segments/0_input.lp ...
+Reading from asp/graph_shared_segments/0_input.lp ...
+Reading from asp/graph_shared_segments/0_input.lp ...
+Reading from asp/graph_shared_segments/0_input.lp ...
+Reading from asp/graph_shared_segments/0_input.lp ...
+Reading from asp/graph_shared_segments/0_input.lp ...
+SATISFIABLE
+SATISFIABLE
+SATISFIABLE
+SATISFIABLE
+SATISFIABLE
+SATISFIABLE
+SATISFIABLE
+SATISFIABLE
+SATISFIABLE
+SATISFIABLE
+SATISFIABLE
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Solving...
+Time         : 4.249s (Solving: 0.03s 1st Model: 0.01s Unsat: 0.00s)
+Time         : 4.282s (Solving: 0.04s 1st Model: 0.02s Unsat: 0.00s)
+Time         : 4.419s (Solving: 0.03s 1st Model: 0.01s Unsat: 0.00s)
+Time         : 4.478s (Solving: 0.11s 1st Model: 0.10s Unsat: 0.00s)
+Time         : 4.548s (Solving: 0.12s 1st Model: 0.10s Unsat: 0.00s)
+Time         : 4.576s (Solving: 0.12s 1st Model: 0.10s Unsat: 0.00s)
+Time         : 5.011s (Solving: 0.35s 1st Model: 0.33s Unsat: 0.00s)
+Time         : 5.147s (Solving: 0.47s 1st Model: 0.45s Unsat: 0.00s)
+Time         : 5.961s (Solving: 1.61s 1st Model: 1.59s Unsat: 0.00s)
+Time         : 6.736s (Solving: 2.19s 1st Model: 2.17s Unsat: 0.00s)
+Time         : 8.899s (Solving: 4.45s 1st Model: 4.43s Unsat: 0.00s)
+flatland version 1.0
+flatland version 1.0
+flatland version 1.0
+flatland version 1.0
+flatland version 1.0
+flatland version 1.0
+flatland version 1.0
+flatland version 1.0
+flatland version 1.0
+flatland version 1.0
+flatland version 1.0
+malfunction(1,1,32) malfunction(7,2,32)
+malfunction(1,2,31)
+malfunction(10,2,10)
+malfunction(11,2,0)
+malfunction(16,2,26)
+malfunction(19,2,44)
+malfunction(7,1,33) malfunction(13,2,33)
+malfunction(7,2,17)
+malfunction(7,2,46)
+malfunction(9,2,40)
+timestep:0
+timestep:1
+timestep:10
+timestep:11
+timestep:12
+timestep:13
+timestep:14
+timestep:15
+timestep:16
+timestep:17
+timestep:18
+timestep:19
+timestep:2
+timestep:20
+timestep:21
+timestep:22
+timestep:23
+timestep:24
+timestep:25
+timestep:26
+timestep:27
+timestep:28
+timestep:29
+timestep:3
+timestep:30
+timestep:31
+timestep:32
+timestep:33
+timestep:34
+timestep:35
+timestep:36
+timestep:37
+timestep:38
+timestep:39
+timestep:4
+timestep:40
+timestep:41
+timestep:42
+timestep:43
+timestep:44
+timestep:45
+timestep:46
+timestep:47
+timestep:48
+timestep:49
+timestep:5
+timestep:50
+timestep:51
+timestep:52
+timestep:53
+timestep:54
+timestep:6
+timestep:7
+timestep:8
+timestep:9

@@ -36,7 +36,7 @@ at(V,A,T+1):- malfunction_custom(A,_,T),at(V,A,T) .
 at(vertex(P,D),A,T+1):-
 	at(vertex(_,P),A,T),
 	vertex(P,D),
-	{malfunction_custom(A,_,T)}==0,
+	not malfunction_custom(A,_,T),
 	{vertex(P,_)}==1.
 
 
