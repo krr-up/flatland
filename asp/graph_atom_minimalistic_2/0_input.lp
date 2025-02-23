@@ -14,12 +14,13 @@ trackparts(Pos,D1,D2) :- cell(Pos,N), dir_bit(D1,N1), dir_bit(D2,N2),
     1 = ((N / 16**N1) \ 16 / 2**N2) \ 2.
 
 % generate edges
-edge((X,Y),(X2,Y2)) :- 
+reverse(n,s).reverse(s,n).reverse(w,e).reverse(e,w).
+edge((X,Y),(X2,Y2),D) :- 
     trackparts((X,Y),_,D),
     trackparts((X2,Y2),D,_),
     dir_move(D,(Xadd,Yadd)),
     X+Xadd=X2,Y+Yadd=Y2.
- edge(P2,P):- edge(P,P2).
+ edge(P2,P,Drev):- edge(P,P2,D),reverse(D,Drev).
 
 
 % basic initialization
@@ -28,11 +29,11 @@ time(0..T) :- end(_,_,T).
 at(P,A,T,D):- first_at(P,A,T,D).
 
 % a train may come to a diferent place if a vertex allows it to 
-1={at(V2,A,T,Dnew): trackparts(V2,D,Dnew),edge(V1,V2)
-	;at(end,A,T,n): trackparts(V2,D,_), edge(V1,V2), 
-		end(A,V2,Tlast),Tlast>T
-	; at(V1,A,T,D) %or remain in the same vertex
-	} :- at(V1,A, T-1,D), time(T), V1!=end. 
+{at(V1,A,T,D)} :- at(V1,A, T-1,D), time(T), V1!=end. 
+{at(V2,A,T,Dnew)} :- at(V1,A, T-1,D), time(T), V1!=end, edge(V1,V2,D), trackparts(V2,D,Dnew).
+{at(end,A,T,n)} :- at(V1,A, T-1,D), time(T), V1!=end, edge(V1,V2,D),  end(A,V2,Tlast),T<Tlast.
+
+:- at(V1,A,T,D1),at(V2,A,T,D2),(V1,D1)!=(V2,D2).
 
 % and all trains must reach an end
 end(A):- at(end,A,_,_).
