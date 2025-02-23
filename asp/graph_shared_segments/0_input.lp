@@ -36,3 +36,46 @@ shared_resource(edge(V1,V2),edge(V3,V4)) :- edge(V1,V2), edge(V3,V4),
 time(0..T) :- end(_,_,T).
 at(vertex(start),A,0) :- train(A).
 first_vertex(A,vertex((X,Y),(X-X',Y-Y'))) :- start(A,(X,Y),_,D), dir_move(D,(X',Y')).
+
+% allow transition on map
+{at(V,A,T+1): first_vertex(A,V), start(A,_,ST,_), T>=ST, T>=1, time(T+1)} :- at(vertex(start),A,T).
+% a train can stay at the same place
+{at(V,A,T)} :- at(V,A,T-1), time(T), V!=vertex(end).
+% a train may come to a diferent place if a vertex allows it to
+{at(V2,A,T)} :- at(V1,A, T-1), edge(V1,V2), time(T). 
+
+% if a train reaches its goal it leaves the map
+at(vertex(end),A,T+1) :- at(vertex(P,D),A,T), end(A,P,_).
+
+% ensure no duplicate options are choosen
+:- 2{at(V,A,T)}, train(A),time(T).
+
+% enforce vertex, edge and swap constraints
+:- at(V1,A,T), at(V2,B,T), A<B, shared_resource(V1,V2).
+:- at(V1,A,T), at(V2,A,T+1), at(V3,B,T), at(V4,B,T+1), A<B, shared_resource(edge(V1,V2),edge(V3,V4)).
+
+
+% all trains must have ended their task
+ended(A) :- end(A,_,ET), at(vertex(end),A,T).%, T<=ET.
+:- train(A), not ended(A).
+
+% action given to start
+a(A,2,T) :- at(_,A,T+1), at(vertex(start),A,T).
+
+% stop action if an agent waits
+a(A,4,T) :- at(V,A,T+1), at(V,A,T).
+
+% generate turns if necessary
+a(A,O,T) :- at(V,A,T), at(V',A,T+1), edge(V,_), turn(edge(V,V'),O).
+
+% generate move action if a train continues moving
+a(A,2,T) :- at(V,A,T), not at(V,A,T+1), not a(A,1,T), not a(A,3,T), at(_,A,T+1).
+
+
+% translate all actions into the ouput
+output(1,move_left).output(2,move_forward).output(3,move_right).output(4,wait).
+action(train(A),O',T) :- a(A,O,T), output(O,O').
+
+
+
+#show.
