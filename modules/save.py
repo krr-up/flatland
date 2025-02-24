@@ -16,7 +16,7 @@ def save_png(env, file_name, file_location):
     visually render a given environment and save image to file
     """
     DO_RENDERING = True    
-    env_renderer = RenderTool(env, gl="PILSVG")
+    env_renderer = RenderTool(env, gl="PILSVG", screen_width=2000, screen_height=2000)
     env_renderer.reset()
 
     if env_renderer is not None:
