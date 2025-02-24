@@ -1,4 +1,5 @@
 # standard packages
+import csv
 import warnings
 import os 
 import time
@@ -17,6 +18,7 @@ from clingo.application import Application, clingo_main
 
 # rendering visualizations
 from flatland.utils.rendertools import RenderTool
+from flatland.envs.rail_env import TrainState
 import imageio.v2 as imageio
 from PIL import Image, ImageDraw, ImageFont
 
@@ -73,7 +75,7 @@ class SimulationManager():
         app = FlatlandPlan(self.env, None)
         clingo_main(app, self.primary)
         self.save_context = app.save_context
-        return(app.action_list)
+        return(app.action_list, app.stats)
 
     def provide_context(self, actions, timestep, malfunctions) -> str:
         """ provide additional facts when updating list """
@@ -88,7 +90,7 @@ class SimulationManager():
         app = FlatlandPlan(self.env, context, supress_env=True)
         clingo_main(app, self.secondary)
         self.save_context = app.save_context
-        return(app.action_list)
+        return(app.action_list, app.stats)
 
 
 class OutputLogManager():
@@ -139,6 +141,41 @@ def get_args():
     parser.add_argument('--no-render', action='store_true', help='if included, run the Flatland simulation but do not render a GIF')
     return(parser.parse_args())
 
+def save_stats(primary, secondary, width, height, cities, trains, horizon, timesteps, primary_stats, secondary_stats, success, filename="output/log.csv"):
+    row = [
+        primary,
+        secondary,
+        width,
+        height,
+        cities,
+        trains,
+        horizon,
+        timesteps,
+        primary_stats,
+        secondary_stats,
+        success
+    ]
+    file_exists = os.path.isfile(filename)
+
+    with open(filename, mode='a', newline='') as file:
+        writer = csv.writer(file)
+        if not file_exists:
+            header = [
+                'Primary',
+                'Secondary',
+                'Width',
+                'Height',
+                'Cities',
+                'Trains',
+                'Horizon',
+                'Timesteps',
+                'Primary Stats',
+                'Secondary Stats',
+                'Success'
+            ]
+            writer.writerow(header)
+        writer.writerow(row)
+
 
 def main():
     # dev test main
@@ -168,7 +205,10 @@ def main():
     state_map = {0:'waiting', 1:'ready to depart', 2:'malfunction (off map)', 3:'moving', 4:'stopped', 5:'malfunction (on map)', 6:'done'}
     dir_map = {0:'n', 1:'e', 2:'s', 3:'w'}
 
-    actions = sim.build_actions()
+    actions, primary_stats = sim.build_actions()
+    secondary_stats = []
+    env._max_episode_steps=None
+    success = None
 
     timestep = 0
     while len(actions) > timestep:
@@ -189,7 +229,8 @@ def main():
 
         if len(new_malfs) > 0:
             context = sim.provide_context(actions, timestep, mal.get())
-            actions = sim.update_actions(context)
+            actions, s = sim.update_actions(context)
+            secondary_stats.append(s.copy())
 
         mal.deduct() #??? where in the loop should this go - before context?
         
@@ -229,6 +270,9 @@ def main():
             images.append(imageio.imread(filename))
 
         timestep = timestep + 1
+        if timestep >= 10000:
+            warnings.warn("What the hell is wrong with you. Why are you still running?")
+            break
 
     # get time stamp for gif and output log
     stamp = time.time()
@@ -241,6 +285,20 @@ def main():
     # save output log
     log.save(stamp)
 
+    # save stats
+    save_stats(
+        params.primary,
+        params.secondary,
+        env.width,
+        env.height,
+        args.env[0].split("_")[-1][:-4],
+        env.number_of_agents,
+        env._max_episode_steps,
+        env._elapsed_steps,
+        primary_stats,
+        secondary_stats,
+        all(info["state"][i] == TrainState.DONE for i in info["state"])
+        )
 
 if __name__ == "__main__":
     main()
