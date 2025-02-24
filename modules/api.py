@@ -17,6 +17,7 @@ class FlatlandPlan(Application):
         self.action_list = None
         self.save_context = None
         self.supress_env = supress_env
+        self.stats = None
 
     def main(self, ctl, files):
         # add encodings
@@ -44,6 +45,7 @@ class FlatlandPlan(Application):
             for model in handle:
                 models.append(model.symbols(atoms=True))
 
+        self.stats = ctl.statistics
         # capture output actions for renderer
         #return(build_action_list(models))
         self.action_list = build_action_list(models)
