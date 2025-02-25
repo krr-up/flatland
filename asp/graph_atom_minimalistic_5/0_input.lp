@@ -15,7 +15,6 @@ trackparts(Pos,D1,D2) :- cell_useful(Pos,N), dir_bit(D1,N1), dir_bit(D2,N2),
     1 = ((N / 16**N1) \ 16 / 2**N2) \ 2.
 
 % generate edges
-reverse(n,s).reverse(s,n).reverse(w,e).reverse(e,w).
 subcell((X,Y),D):- trackparts((X,Y),_,D).
 edge(subcell((X,Y),D),subcell((X2,Y2),Dnew)) :- 
 	subcell((X,Y),D),
@@ -30,8 +29,9 @@ time(0..T) :- end(_,_,T).
 {first_at(A,T2,subcell(P,D)): time(T2), T2>T}=1 :- start(A,P,T,D).
 at(A,T,P):- first_at(A,T,P).
 subcell(end).
+
 % a train may come to a diferent place if a vertex allows it to 
-{at(A,T,V1)} :- at(A,T-1,V1), time(T), V1!=trackparts(end). 
+{at(A,T,V1)} :- at(A,T-1,V1), time(T), V1!=subcell(end). 
 {at(A,T,subcell(V2,Dnew))} :- 
 	at(A,T-1,subcell(V1,D)), time(T), 
 	V1!=subcell(end), 
@@ -51,18 +51,11 @@ end(A,T):- end(A,T-1),time(T).
 
 % enforce vertex, edge and swap constraints
 :- at(A,T,V), at(B,T,V), A<B,V!= trackparts(end).
-:- at(A,T,subcell(V1,_)), at(B,T,subcell(V2,_)), A<B,
-	at(B,T+1,subcell(V1,_)),at(A,T+1,subcell(V2,_)),
-	edge(subcell(V1,_),subcell(V2,_)),
-	edge(subcell(V2,_),subcell(V1,_))
+reverse(n,s).reverse(s,n).reverse(w,e).reverse(e,w).
+:- at(A,T,subcell(V1,D1)), at(B,T,subcell(V2,D2)), A<B,
+	edge(subcell(V1,D1),subcell(V2,_)),reverse(D1,D2)
 	.
 
-%at2(A,T,V,D):-at(V,A,T,D).%translation
-%#show error/2.
-%#show trackparts/3.#show edge/2.
-%#show at2/4.
-%#show first_at/4.
-%
 
 % action given to start
 a(A,2,T) :- at(A,T,_),first_at(A,T,_).
@@ -82,7 +75,7 @@ a(A,O,T) :-
 	at(A,T,subcell(V1,Din)), 
 	at(A,T+1,subcell(V2,Dout)), turn(Din,Dout,O)
 	% And there are alternative paths(From the current cell origin)
-	%,trackparts(V2,Din,Dout2),Dout2 != Dout
+	,trackparts(V2,Din,Dout2),Dout2 != Dout
 	.
 
 % generate move action if a train continues moving

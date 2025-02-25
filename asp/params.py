@@ -1,7 +1,7 @@
 # primary=['asp/malfunctions_test.lp']
 primary=['asp/graph_reschedule/0_input.lp','asp/graph_reschedule/1_path.lp','asp/graph_reschedule/2_output.lp']
 secondary=['asp/graph_atom_minimalistic/0_input.lp','asp/graph_atom_minimalistic/1_path.lp','asp/graph_atom_minimalistic/2_output.lp','asp/graph_atom_minimalistic/3_malfunction.lp']
-secondary=['asp/graph_atom_minimalistic_3/0_input.lp','asp/graph_atom_minimalistic/1_path.lp','asp/graph_atom_minimalistic/2_output.lp','asp/graph_atom_minimalistic/3_malfunction.lp']
+secondary=['asp/graph_atom_minimalistic_5/0_input.lp','asp/graph_atom_minimalistic_5/1_path.lp','asp/graph_atom_minimalistic_5/2_output.lp','asp/graph_atom_minimalistic_5/3_malfunction.lp']
 #secondary=['asp/graph_shared_segments/0_input.lp','asp/graph_atom_minimalistic/1_path.lp','asp/graph_atom_minimalistic/2_output.lp','asp/graph_atom_minimalistic/3_malfunction.lp']
 # secondary=['asp/graph_continue/2_output.lp','asp/graph_continue/3_malfunction.lp']
 # secondary=["asp/graph_reschedule/3_malfunction.lp"]
