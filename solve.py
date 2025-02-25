@@ -270,7 +270,7 @@ def main():
             images.append(imageio.imread(filename))
 
         timestep = timestep + 1
-        if timestep >= 10000:
+        if timestep >= 1000:
             warnings.warn("What the hell is wrong with you. Why are you still running?")
             break
 
