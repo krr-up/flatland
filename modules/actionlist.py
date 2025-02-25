@@ -32,6 +32,8 @@ def build_context_from_save(models):
     """
     given a model from clingo, build a list of saved atoms
     """
+    if models == []:
+        return None
     save_list = []
     for func in models[0]: # only the first model
         func_name = func.name
@@ -45,6 +47,8 @@ def build_action_list(models):
     """
     given a model from clingo, build an python action list
     """
+    if models == []:
+        return None
     action_list = []
     for func in models[0]: # only the first model
         func_name = func.name
