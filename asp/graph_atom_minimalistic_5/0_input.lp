@@ -5,6 +5,7 @@ dir_bit(n,3).dir_bit(e,2).dir_bit(s,1).dir_bit(w,0).
 % directions and their assiciated move
 dir_move(n,(-1,0)).dir_move(e,(0,1)).dir_move(s,(1,0)).dir_move(w,(0,-1)).
 
+
 %% Conversion
 % decode track
 % D1 is the direction faced going in the cell
@@ -42,7 +43,7 @@ end(A,T):- end(A,T-1),time(T).
 :- train(A), not end(A,T), end(A,_,T).
 
 % enforce vertex, edge and swap constraints
-:- at(A,T,V), at(B,T,V), A<B,V!= subcell(end).
+:- at(A,T,subcell(V,D)), at(B,T,(V,D2)), A<B.
 reverse(n,s).reverse(s,n).reverse(w,e).reverse(e,w).
 :- at(A,T,subcell(V1,D1)), at(B,T,subcell(V2,D2)), A<B,
 	edge(subcell(V1,D1),subcell(V2,_)),reverse(D1,D2).
