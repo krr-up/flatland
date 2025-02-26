@@ -1,5 +1,5 @@
 % action given to start
-a(A,2,T) :- at(_,A,T+1), at(vertex(start),A,T).
+a(A,2,T) :- not at(vertex(start),A,T+1), at(vertex(start),A,T).
 
 % stop action if an agent waits
 a(A,4,T) :- at(V,A,T+1), at(V,A,T).
