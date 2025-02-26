@@ -13,7 +13,7 @@ first_vertex(A,B) :- load(first_vertex(A,B)).
 
 % if a malfunction affects the future this is saved as persist
 save(persist(A,B,C)) :- persist(A,B,C).
-holy(A,B,C) :- load(persist(A,B,C)).
+persist(A,B,C) :- load(persist(A,B,C)).
 at(V,A,T) :- persist(V,A,T).
 
 
