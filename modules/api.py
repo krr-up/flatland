@@ -65,7 +65,7 @@ class FlatlandPlan(Application):
         models = []
         with ctl.solve(yield_=True) as handle:
             for model in handle:
-                models.append(model.symbols(atoms=True))
+                models.append(model.symbols(atoms=True, terms=True))
 
         self.stats = ctl.statistics
         # capture output actions for renderer

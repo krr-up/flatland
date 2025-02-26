@@ -1,8 +1,3 @@
-% #include <incmode>.
-% #const imin = 1.
-
-
-
 #program base.
 %%% INPUT %%%
 %% Auxilliary Atoms
@@ -29,9 +24,9 @@ edge(vertex((X2,Y2),(X1,Y1)),vertex((X3,Y3),(X2,Y2))) :- vertex((X2,Y2),(X1,Y1))
     X2+X2'=X3, Y2+Y2'=Y3.
 
 % check whether edges correspond to a turn
-turn(edge(vertex((X2,Y2),(X1,Y1)),vertex((X3,Y3),(X2,Y2))),1) :- edge(vertex((X2,Y2),(X1,Y1)),vertex((X3,Y3),(X2,Y2))),
+turn(edge(vertex((X2,Y2),(X1,Y1)),vertex((X3,Y3),(X2,Y2))),move_left) :- edge(vertex((X2,Y2),(X1,Y1)),vertex((X3,Y3),(X2,Y2))),
     0 < (X2-X1)*(Y3-Y2) - (Y2-Y1)*(X3-X2).
-turn(edge(vertex((X2,Y2),(X1,Y1)),vertex((X3,Y3),(X2,Y2))),3) :- edge(vertex((X2,Y2),(X1,Y1)),vertex((X3,Y3),(X2,Y2))),
+turn(edge(vertex((X2,Y2),(X1,Y1)),vertex((X3,Y3),(X2,Y2))),move_right) :- edge(vertex((X2,Y2),(X1,Y1)),vertex((X3,Y3),(X2,Y2))),
     0 > (X2-X1)*(Y3-Y2) - (Y2-Y1)*(X3-X2).
 
 % generate shared resources
@@ -88,39 +83,34 @@ at(vertex(end),A,H+t) :- at(vertex(P,D),A,H+t-1), end(A,P,_), horizon(H).
 #external query(t).
 %%% GOAL %%%
 % all trains must have ended their task
-error(A) :- train(A), not at(vertex(end),A,_), query(t).
-:- error(A).
+:- train(A), not at(vertex(end),A,_), query(t).
 
 
 
 %%% OUTPUT %%%
 % action given to start
-a(A,2,T) :- at(_,A,T+1), at(vertex(start),A,T), query(t).
+#show action(train(A),move_forward,T) : at(_,A,T+1), at(vertex(start),A,T).
 % stop action if an agent waits
-a(A,4,T) :- at(V,A,T+1), at(V,A,T), query(t).
+#show action(train(A),wait,T) : at(V,A,T+1), at(V,A,T).
 % generate turns if necessary
-a(A,O,T) :- at(V,A,T), at(V',A,T+1), edge(V,_), turn(edge(V,V'),O), query(t).
+#show action(train(A),O,T) : at(V,A,T), at(V',A,T+1), turn(edge(V,V'),O).
 % generate move action if a train continues moving
-a(A,2,T) :- at(V,A,T), not at(V,A,T+1), not a(A,1,T), not a(A,3,T), at(_,A,T+1), query(t).
+#show action(train(A),move_forward,T) : at(V,A,T), at(V',A,T+1), edge(V,V'), not turn(edge(V,V'),_).
 
 
-% translate all actions into the output
-output(1,move_left).output(2,move_forward).output(3,move_right).output(4,wait).
-action(train(A),O',T) :- a(A,O,T), output(O,O'), query(t).
 
 % save map
-save(vertex(P,Q)) :- vertex(P,Q), query(t).
-save(edge(U,V)) :- edge(U,V), query(t).
-save(turn(E,O)) :- turn(E,O), query(t).
-save(shared_resource(A,B)) :- shared_resource(A,B), query(t).
-save(global(T)) :- global(T), query(t).
-save(first_vertex(A,B)) :- first_vertex(A,B), query(t).
+#show save(vertex(P,Q)) : vertex(P,Q), query(t).
+#show save(edge(U,V)) : edge(U,V), query(t).
+#show save(turn(E,O)) : turn(E,O), query(t).
+#show save(shared_resource(A,B)) : shared_resource(A,B), query(t).
+#show save(global(T)) : global(T), query(t).
+#show save(first_vertex(A,B)) : first_vertex(A,B), query(t).
 
 % train information
-save(end(A,B,C)) :- end(A,B,C), query(t).
-save(train(T)) :- train(T), query(t).
-save(start(A,B,C,D)) :- start(A,B,C,D), query(t).
-save(at(V,A,T)) :- at(V,A,T), query(t).
+#show save(end(A,B,C)) : end(A,B,C), query(t).
+#show save(train(T)) : train(T), query(t).
+#show save(start(A,B,C,D)) : start(A,B,C,D), query(t).
+#show save(at(V,A,T)) : at(V,A,T), query(t).
 
 #show.
-#show action/3.
