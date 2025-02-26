@@ -216,7 +216,7 @@ def main():
     success = None
 
     timestep = 0
-    if actions == None:
+    if actions == None or actions == []:
         failure_reason = "Unsatisfieable"
         success = False
     else:
@@ -240,6 +240,10 @@ def main():
                 context = sim.provide_context(actions, timestep, mal.get())
                 actions, s = sim.update_actions(context)
                 secondary_stats.append(s.copy())
+                if actions == None or actions == []:
+                    failure_reason = "Unsatisfieable"
+                    success = False
+                    break
 
             mal.deduct() #??? where in the loop should this go - before context?
             
