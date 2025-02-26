@@ -26,6 +26,7 @@ mt(T+1) :- malfunction(_,_,T).
 time(T..H) :- mt(T), load(horizon(H)).
 time(T..T+D+1) :- mt(T), malfunction(_,D,_).
 horizon(T) :- time(T), not time(T+1).
+#show horizon/1.
 
 
 % determine trains affected by the malfunction
@@ -86,13 +87,14 @@ at(vertex(end),A,H+t) :- at(vertex(P,D),A,H+t-1), end(A,P,_), horizon(H).
 :- at(V1,A,H+t-1), at(V2,A,H+t), at(V3,B,H+t-1), at(V4,B,H+t), A<B, shared_resource(edge(V1,V2),edge(V3,V4)), horizon(H).
 
 add(t).
+#show add/1.
 
 
 #program check(t).
 #external query(t).
 %%% GOAL %%%
 % all trains must have ended their task
-:- train(A), not at(vertex(end),A,H+t), horizon(H), query(t).
+:- train(A), not at(vertex(end),A,H+t-1), horizon(H), query(t).
 
 
 
@@ -109,18 +111,18 @@ add(t).
 
 
 % save map
-#show save(vertex(P,Q)) : vertex(P,Q), query(t).
-#show save(edge(U,V)) : edge(U,V), query(t).
-#show save(turn(E,O)) : turn(E,O), query(t).
-#show save(shared_resource(A,B)) : shared_resource(A,B), query(t).
-#show save(global(T)) : global(T), query(t).
-#show save(first_vertex(A,B)) : first_vertex(A,B), query(t).
-#show save(horizon(H+T)) : horizon(H), add(T), not add(T+1).
+#show save(vertex(P,Q)) : vertex(P,Q).
+#show save(edge(U,V)) : edge(U,V).
+#show save(turn(E,O)) : turn(E,O).
+#show save(shared_resource(A,B)) : shared_resource(A,B).
+#show save(global(T)) : global(T).
+#show save(first_vertex(A,B)) : first_vertex(A,B).
+#show save(horizon(H+M)) : horizon(H), M = #max{0; T: add(T)}.
 
 % train information
-#show save(end(A,B,C)) : end(A,B,C), query(t).
-#show save(train(T)) : train(T), query(t).
-#show save(start(A,B,C,D)) : start(A,B,C,D), query(t).
-#show save(at(V,A,T)) : at(V,A,T), query(t).
+#show save(end(A,B,C)) : end(A,B,C).
+#show save(train(T)) : train(T).
+#show save(start(A,B,C,D)) : start(A,B,C,D).
+#show save(at(V,A,T)) : at(V,A,T).
 
 #show.
