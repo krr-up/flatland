@@ -1,49 +1,56 @@
+#const imin = 1.
+#const imax = 10000.
 #program base.
-%%% INPUT %%%
-%% Auxilliary Atoms
-% directions and their bit
-dir_bit(n,3).dir_bit(e,2).dir_bit(s,1).dir_bit(w,0).
+%%% MALFUNCTION HANDLING %%%
+% load map
+vertex(A,B) :- load(vertex(A,B)).
+edge(U,V) :- load(edge(U,V)).
+turn(E,O) :- load(turn(E,O)).
+shared_resource(A,B) :- load(shared_resource(A,B)).
+global(T) :- load(global(T)).
+% load train info
+end(A,B,C+D) :- load(end(A,B,C)), D = #max{D': malfunction(_,D',_)}.
+train(A) :- load(train(A)).
+start(A,B,C,D) :- load(start(A,B,C,D)).
+first_vertex(A,B) :- load(first_vertex(A,B)).
 
-% directions and their assiciated move
-dir_move(n,(-1,0)).dir_move(e,(0,1)).dir_move(s,(1,0)).dir_move(w,(0,-1)).
+
+% if a malfunction affects the future this is saved as persist
+save(persist(A,B,C)) :- persist(A,B,C).
+persist(A,B,C) :- load(persist(A,B,C)).
+at(V,A,T) :- persist(V,A,T).
 
 
-%% Conversion
-% decode track
-trackparts(Pos,D1,D2) :- cell(Pos,N), dir_bit(D1,N1), dir_bit(D2,N2),
-    1 = ((N / 16**N1) \ 16 / 2**N2) \ 2.
-
-% generate direction free nodes
-vertex((X,Y),(X-X',Y-Y')) :- trackparts((X,Y),D,_), dir_move(D,(X',Y')).
-vertex(start).vertex(end).
-
-% generate edges
-edge(vertex((X2,Y2),(X1,Y1)),vertex((X3,Y3),(X2,Y2))) :- vertex((X2,Y2),(X1,Y1)), vertex((X3,Y3),(X2,Y2)),
-    trackparts((X2,Y2),D1,D2), dir_move(D1,(X1',Y1')), dir_move(D2,(X2',Y2')),
-    X1+X1'=X2, Y1+Y1'=Y2,
-    X2+X2'=X3, Y2+Y2'=Y3.
-
-% check whether edges correspond to a turn
-turn(edge(vertex((X2,Y2),(X1,Y1)),vertex((X3,Y3),(X2,Y2))),move_left) :- edge(vertex((X2,Y2),(X1,Y1)),vertex((X3,Y3),(X2,Y2))),
-    0 < (X2-X1)*(Y3-Y2) - (Y2-Y1)*(X3-X2).
-turn(edge(vertex((X2,Y2),(X1,Y1)),vertex((X3,Y3),(X2,Y2))),move_right) :- edge(vertex((X2,Y2),(X1,Y1)),vertex((X3,Y3),(X2,Y2))),
-    0 > (X2-X1)*(Y3-Y2) - (Y2-Y1)*(X3-X2).
-
-% generate shared resources
-shared_resource(vertex(At,From1),vertex(At,From2)) :- vertex(At,From1), vertex(At,From2).
-shared_resource(edge(V1,V2),edge(V3,V4)) :- edge(V1,V2), edge(V3,V4),
-    shared_resource(V1,V4), shared_resource(V2,V3).
-
-time(0..T) :- end(_,_,T).
+% malfunction time
+mt(T+1) :- malfunction(_,_,T).
+time(T..H) :- mt(T), load(horizon(H)).
+time(T..T+D+1) :- mt(T), malfunction(_,D,_).
 horizon(T) :- time(T), not time(T+1).
-at(vertex(start),A,0) :- train(A).
-first_vertex(A,vertex((X,Y),(X-X',Y-Y'))) :- start(A,(X,Y),_,D), dir_move(D,(X',Y')).
+
+
+% determine trains affected by the malfunction
+affected(A) :- malfunction(A,_,_).
+% mark a train which would ram into one affected by the malfunction
+affected(A) :- affected(B), mt(T), load(at(V1,B,T-1)), load(at(V2,A,T)), shared_resource(V1,V2).
+
+
+% copy previous states
+at(V,A,T') :- load(at(V,A,T')), mt(T), T'<=T, not affected(A).
+% if the train is malfunctioning or affected by it copy one less and extend the last position to show the failure
+at(V,A,T') :- load(at(V,A,T')), mt(T), T'<=T-1, affected(A).
+at(V,A,T) :- load(at(V,A,T-1)), mt(T), affected(A).
+% extend state for the malfunctioning train
+persist(V,A,T+(1..D+1)) :- load(at(V,A,T)), malfunction(A,D,T).
+
+
+% somehow, whenever a malfunction ended for a non existent train it magically spawned right after that, if the starttime allows for it, but with a little more lenience than the actuat start condition ... anyway thats what the following line is for (it always uses persist)
+persist(V,A,T+D+1) :- malfunction(A,D,T-1), load(at(vertex(start),A,T)), first_vertex(A,V), start(A,_,ST,_), T+D+1>=ST.
 
 
 
 %%% PATH UP TO LIMIT %%%
 % allow transition on map
-{at(V,A,T+1): first_vertex(A,V), start(A,_,ST,_), T>=ST, T>=1, time(T+1)} :- at(vertex(start),A,T).
+{at(V,A,T): first_vertex(A,V), start(A,_,ST,_), T-1>=ST, T-1>=1, time(T)} :- at(vertex(start),A,T-1).
 % a train can stay at the same place
 {at(V,A,T)} :- at(V,A,T-1), time(T).
 % a train may come to a diferent place if a vertex allows it to
@@ -55,15 +62,15 @@ at(vertex(end),A,T) :- at(vertex(P,D),A,T-1), end(A,P,_), time(T).
 :- 2{at(V,A,T)}, train(A),time(T).
 
 % enforce vertex, edge and swap constraints
-:- at(V1,A,T), at(V2,B,T), A<B, shared_resource(V1,V2).
-:- at(V1,A,T), at(V2,A,T+1), at(V3,B,T), at(V4,B,T+1), A<B, shared_resource(edge(V1,V2),edge(V3,V4)).
+:- at(V1,A,T), at(V2,B,T), A<B, shared_resource(V1,V2), time(T).
+:- at(V1,A,T-1), at(V2,A,T), at(V3,B,T-1), at(V4,B,T), A<B, shared_resource(edge(V1,V2),edge(V3,V4)), time(T).
 
 
 
 #program step(t).
 %%% PATH AFTER LIMIT %%%
 % allow transition on map
-{at(V,A,H+t): first_vertex(A,V), start(A,_,ST,_), H+t-1>=ST, H+t-1>=1} :- at(vertex(start),A,T), horizon(H).
+{at(V,A,H+t): first_vertex(A,V), start(A,_,ST,_), H+t-1>=ST, H+t-1>=1} :- at(vertex(start),A,H+t-1), horizon(H).
 % a train can stay at the same place
 {at(V,A,H+t)} :- at(V,A,H+t-1), horizon(H).
 % a train may come to a diferent place if a vertex allows it to
@@ -85,7 +92,7 @@ add(t).
 #external query(t).
 %%% GOAL %%%
 % all trains must have ended their task
-:- train(A), not at(vertex(end),A,_), query(t).
+:- train(A), not at(vertex(end),A,H+t), horizon(H), query(t).
 
 
 
