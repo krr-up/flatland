@@ -1,10 +1,11 @@
 import sys
 import pickle
 import io
-from clingo.symbol import Number
+# from clingo.symbol import Number
 from clingo.application import Application, clingo_main
 from modules.convert import convert_to_clingo
 from modules.actionlist import build_action_list, build_context_from_save
+from clingo import Number, String, Function
 
 class FlatlandPlan(Application):
     """ takes an environment and a set of primary encodings """
@@ -19,7 +20,11 @@ class FlatlandPlan(Application):
         self.supress_env = supress_env
         self.stats = None
 
+    def get(self, val, default):
+        return val if val != None else default
+
     def main(self, ctl, files):
+        ctl.configuration.solve.models="-1"
         # add encodings
         for f in files: 
             ctl.load(f)
@@ -35,10 +40,27 @@ class FlatlandPlan(Application):
             # print(f".join(self.actions): {' '.join(self.actions)}")
             ctl.add('base', [], ' '.join(self.actions))
         
-        # ground the program
-        ctl.ground([("base", [])], context=self)
-        ctl.configuration.solve.models="-1"
+        imin   = self.get(ctl.get_const("imin"), Number(0))
+        imax   = ctl.get_const("imax")
+        istop  = self.get(ctl.get_const("istop"), String("SAT"))
 
+        step, ret = 0, None
+        while ((imax is None or step < imax.number) and
+            (step == 0 or step < imin.number or (
+                (istop.string == "SAT"     and not ret.satisfiable) or
+                (istop.string == "UNSAT"   and not ret.unsatisfiable) or 
+                (istop.string == "UNKNOWN" and not ret.unknown)))):
+            parts = []
+            parts.append(("check", [Number(step)]))
+            if step > 0:
+                ctl.release_external(Function("query", [Number(step-1)]))
+                parts.append(("step", [Number(step)]))
+            else:
+                parts.append(("base", []))
+            ctl.ground(parts)
+            ctl.assign_external(Function("query", [Number(step)]), True)
+            ret, step = ctl.solve(), step+1
+        
         # solve and save models
         models = []
         with ctl.solve(yield_=True) as handle:
