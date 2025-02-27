@@ -4,6 +4,7 @@
 %% the "committed choices" as 
 %% at/3: Agent, Time, Subcell(Position,Direction)
 %% and base problem atoms that must be forwarded
+#const imax=1.
 
 % Guess first_at
 {first_at(A,T2,subcell(P,D)): time(T2), T2>T}=1 :- start(A,P,T,D).
