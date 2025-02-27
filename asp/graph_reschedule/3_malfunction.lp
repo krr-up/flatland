@@ -12,8 +12,9 @@ first_vertex(A,B) :- load(first_vertex(A,B)).
 
 
 % if a malfunction affects the future this is saved as persist
-save(persist(A,B,C)) :- persist(A,B,C).
-persist(A,B,C) :- load(persist(A,B,C)).
+save(persist(V,A,T)) :- persist(V,A,T).
+persist(V,A,T) :- load(persist(V,A,T)), not new_persist(_,A,T).
+persist(V,A,T) :- new_persist(V,A,T).
 at(V,A,T) :- persist(V,A,T).
 
 
@@ -34,10 +35,11 @@ at(V,A,T') :- load(at(V,A,T')), mt(T), T'<=T, not affected(A).
 at(V,A,T') :- load(at(V,A,T')), mt(T), T'<=T-1, affected(A).
 at(V,A,T) :- load(at(V,A,T-1)), mt(T), affected(A).
 % extend state for the malfunctioning train
-persist(V,A,T+(1..D+1)) :- load(at(V,A,T)), malfunction(A,D,T).
+new_persist(V,A,T+(1..D+1)) :- load(at(V,A,T)), malfunction(A,D,T).
 
 
 % somehow, whenever a malfunction ended for a non existent train it magically spawned right after that, if the starttime allows for it, but with a little more lenience than the actuat start condition ... anyway thats what the following line is for (it always uses persist)
-persist(V,A,T+D+1) :- malfunction(A,D,T-1), load(at(vertex(start),A,T)), first_vertex(A,V), start(A,_,ST,_), T+D+1>=ST.
+% this is also the reason this is encapsulated as new_persit as information from this persist can, by right of a follow up malfunction, be negated (aka pushed back)
+new_persist(V,A,T+D+1) :- malfunction(A,D,T-1), load(at(vertex(start),A,T)), first_vertex(A,V), start(A,_,ST,_), T+D+1>=ST.
 
 #show malfunction/3.
