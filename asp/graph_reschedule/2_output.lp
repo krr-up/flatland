@@ -22,6 +22,7 @@ save(turn(E,O)) :- turn(E,O).
 save(shared_resource(A,B)) :- shared_resource(A,B).
 save(global(T)) :- global(T).
 save(first_vertex(A,B)) :- first_vertex(A,B).
+save(last_vertex(A,B)) :- last_vertex(A,B).
 
 % train information
 save(end(A,B,C)) :- end(A,B,C).

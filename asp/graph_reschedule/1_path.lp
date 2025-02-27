@@ -3,9 +3,9 @@
 % a train can stay at the same place
 {at(V,A,T)} :- at(V,A,T-1), time(T).
 % a train may come to a diferent place if a vertex allows it to
-{at(V2,A,T)} :- at(V1,A, T-1), edge(V1,V2), time(T). 
+{at(V2,A,T)} :- at(V1,A,T-1), edge(V1,V2), not last_vertex(A,V2), time(T). 
 % if a train reaches its goal it leaves the map
-at(vertex(end),A,T) :- at(vertex(P,D),A,T-1), end(A,P,_), time(T).
+{at(vertex(end),A,T)} :- at(V1,A,T-1), edge(V1,V2), last_vertex(A,V2), time(T). 
 
 % ensure no duplicate options are choosen
 :- 2{at(V,A,T)}, train(A), time(T).
