@@ -288,6 +288,8 @@ def main():
             if env._elapsed_steps == env._max_episode_steps:
                 failure_reason = "Not finished on time."
                 break
+            if all(info["state"][i] == TrainState.DONE for i in info["state"]):
+                break
 
         # get time stamp for gif and output log
         stamp = time.time()
