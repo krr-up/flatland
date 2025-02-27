@@ -9,7 +9,6 @@ def to_dicts(action_list):
     this is more consistent with the structure that flatland accepts
     """
     result = []
-
     current_time_step = action_list[0][2]
     current_dict = {}
 
