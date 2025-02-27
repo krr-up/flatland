@@ -56,14 +56,11 @@ persist(V,A,T+(1..D+1)) :- load(at(V,A,T)), malfunction(A,D,T).
 
 % ensure no duplicate options are choosen
 :- 2{at(V,A,T)}, train(A), time(T).
+% two agents can't end at the same time
+:- at(vertex(end),A,T), at(vertex(end),B,T), A<B, {at(vertex(end),A,T-1);at(vertex(end),B,T-1)} 0.
 
 % enforce vertex, edge and swap constraints
 :- at(V1,A,T), at(V2,B,T), A<B, shared_resource(V1,V2), time(T).
-% error(A,B,V1,V2,T) :- at(V1,A,T), at(V2,B,T), A<B, shared_resource(V1,V2), time(T).
-% #minimize{1,Q,W,E,R,T: error(Q,W,E,R,T)}.
-% #show error/5.
-% #show malfunction/3.
-% #show persist/3.
 :- at(V1,A,T-1), at(V2,A,T), at(V3,B,T-1), at(V4,B,T), A<B, shared_resource(edge(V1,V2),edge(V3,V4)), time(T).
 
 
@@ -81,6 +78,8 @@ persist(V,A,T+(1..D+1)) :- load(at(V,A,T)), malfunction(A,D,T).
 
 % ensure no duplicate options are choosen
 :- 2{at(V,A,H+t)}, train(A), horizon(H).
+% two agents can't end at the same time
+:- at(vertex(end),A,H+t), at(vertex(end),B,H+t), A<B, {at(vertex(end),A,H+t-1);at(vertex(end),B,H+t-1)} 0, horizon(H).
 
 % enforce vertex, edge and swap constraints
 :- at(V1,A,H+t), at(V2,B,H+t), A<B, shared_resource(V1,V2), horizon(H).

@@ -9,6 +9,8 @@
 
 % ensure no duplicate options are choosen
 :- 2{at(V,A,T)}, train(A), time(T).
+% two agents can't end at the same time
+:- at(vertex(end),A,T), at(vertex(end),B,T), A<B, {at(vertex(end),A,T-1);at(vertex(end),B,T-1)} 0.
 
 % enforce vertex, edge and swap constraints
 :- at(V1,A,T), at(V2,B,T), A<B, shared_resource(V1,V2).
