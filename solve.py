@@ -212,9 +212,9 @@ def main():
 
     actions, primary_stats = sim.build_actions()
     secondary_stats = []
-    # env._max_episode_steps=None
+    env._max_episode_steps = None
 
-    timestep = 0
+    timestep, end = 0, False
     if actions == None or actions == []:
         failure_reason = "Unsatisfieable"
     else:
@@ -228,6 +228,7 @@ def main():
 
             # end if simulation is finished
             if done['__all__'] and timestep < len(actions)-1:
+                end = True
                 warnings.warn('Simulation has reached its end before actions list has been exhausted.')
                 break
 
@@ -302,7 +303,10 @@ def main():
         success = all(info["state"][i] == TrainState.DONE for i in info["state"])
     
     if failure_reason == None and not success:
-        failure_reason = "Mismatching Actions"
+        if end:
+            failure_reason = "Ended to Early"
+        else:
+            failure_reason = "Mismatching Actions"
 
     # save stats
     save_stats(
