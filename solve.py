@@ -212,13 +212,11 @@ def main():
 
     actions, primary_stats = sim.build_actions()
     secondary_stats = []
-    env._max_episode_steps=None
-    success = None
+    # env._max_episode_steps=None
 
     timestep = 0
     if actions == None or actions == []:
         failure_reason = "Unsatisfieable"
-        success = False
     else:
         while len(actions) > timestep:
             # add to the log
@@ -242,7 +240,6 @@ def main():
                 secondary_stats.append(s.copy())
                 if actions == None or actions == []:
                     failure_reason = "Unsatisfieable"
-                    success = False
                     break
 
             mal.deduct() #??? where in the loop should this go - before context?
@@ -286,6 +283,9 @@ def main():
             if timestep >= 1000:
                 warnings.warn("What the hell is wrong with you. Why are you still running?")
                 failure_reason = "Reached 1000 Timesteps"
+                break
+            if env._elapsed_steps == env._max_episode_steps:
+                failure_reason = "Not finished on time."
                 break
 
         # get time stamp for gif and output log
