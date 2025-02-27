@@ -56,10 +56,6 @@ def build_action_list(models):
             agent_num = agent.arguments[0].number
             action_list.append((agent_num,action,timestep.number))
 
-    print('-----sorted_list-------')
-    print(action_list)
     sorted_list = sorted(action_list, key=lambda x: (x[2], x[0]))
-    #print('-----sorted_list-------')
-    #print(sorted_list)
     return(to_dicts(sorted_list))
 
