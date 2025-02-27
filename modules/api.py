@@ -45,6 +45,7 @@ class FlatlandPlan(Application):
         istop  = self.get(ctl.get_const("istop"), String("SAT"))
 
         step, ret = 0, None
+        models = []
         while ((imax is None or step < imax.number) and
             (step == 0 or step < imin.number or (
                 (istop.string == "SAT"     and not ret.satisfiable) or
@@ -59,13 +60,11 @@ class FlatlandPlan(Application):
                 parts.append(("base", []))
             ctl.ground(parts)
             ctl.assign_external(Function("query", [Number(step)]), True)
-            ret, step = ctl.solve(), step+1
-        
-        # solve and save models
-        models = []
-        with ctl.solve(yield_=True) as handle:
-            for model in handle:
-                models.append(model.symbols(atoms=True, terms=True))
+            with ctl.solve(yield_=True) as handle:
+                for model in handle:
+                    models.append(model.symbols(atoms=True, terms=True))
+                ret = handle.get()
+            step += 1
 
         self.stats = ctl.statistics
         # capture output actions for renderer
