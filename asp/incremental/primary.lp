@@ -39,6 +39,7 @@ time(0..T) :- end(_,_,T).
 horizon(T) :- time(T), not time(T+1).
 at(vertex(start),A,0) :- train(A).
 first_vertex(A,vertex((X,Y),(X-X',Y-Y'))) :- start(A,(X,Y),_,D), dir_move(D,(X',Y')).
+last_vertex(A,vertex(P,P')) :- end(A,P,_).
 
 
 
@@ -48,12 +49,12 @@ first_vertex(A,vertex((X,Y),(X-X',Y-Y'))) :- start(A,(X,Y),_,D), dir_move(D,(X',
 % a train can stay at the same place
 {at(V,A,T)} :- at(V,A,T-1), time(T).
 % a train may come to a diferent place if a vertex allows it to
-{at(V2,A,T)} :- at(V1,A, T-1), edge(V1,V2), time(T). 
+{at(V2,A,T)} :- at(V1,A,T-1), edge(V1,V2), not last_vertex(A,V2), time(T). 
 % if a train reaches its goal it leaves the map
-at(vertex(end),A,T) :- at(vertex(P,D),A,T-1), end(A,P,_), time(T).
+{at(vertex(end),A,T)} :- at(V1,A,T-1), edge(V1,V2), last_vertex(A,V2), time(T). 
 
 % ensure no duplicate options are choosen
-:- 2{at(V,A,T)}, train(A),time(T).
+:- 2{at(V,A,T)}, train(A), time(T).
 
 % enforce vertex, edge and swap constraints
 :- at(V1,A,T), at(V2,B,T), A<B, shared_resource(V1,V2).
@@ -68,9 +69,9 @@ at(vertex(end),A,T) :- at(vertex(P,D),A,T-1), end(A,P,_), time(T).
 % a train can stay at the same place
 {at(V,A,H+t)} :- at(V,A,H+t-1), horizon(H).
 % a train may come to a diferent place if a vertex allows it to
-{at(V2,A,H+t)} :- at(V1,A,H+t-1), edge(V1,V2), horizon(H). 
+{at(V2,A,H+t)} :- at(V1,A,H+t-1), edge(V1,V2), not last_vertex(A,V2), horizon(H). 
 % if a train reaches its goal it leaves the map
-at(vertex(end),A,H+t) :- at(vertex(P,D),A,H+t-1), end(A,P,_), horizon(H).
+{at(vertex(end),A,H+t)} :- at(V1,A,H+t-1), edge(V1,V2), last_vertex(A,V2), horizon(H). 
 
 % ensure no duplicate options are choosen
 :- 2{at(V,A,H+t)}, train(A), horizon(H).

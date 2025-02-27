@@ -1,4 +1,4 @@
-#const imax = 1000.
+#const imax = 100.
 #program base.
 %%% MALFUNCTION HANDLING %%%
 % load map
@@ -40,6 +40,7 @@ at(V,A,T') :- load(at(V,A,T')), mt(T), T'<=T, not affected(A).
 at(V,A,T') :- load(at(V,A,T')), mt(T), T'<=T-1, affected(A).
 at(V,A,T) :- load(at(V,A,T-1)), mt(T), affected(A).
 % extend state for the malfunctioning train
+% if not already at the end
 new_persist(V,A,T+(1..D+1)) :- load(at(V,A,T)), malfunction(A,D,T).
 
 
@@ -55,12 +56,12 @@ new_persist(V,A,T+D+1) :- malfunction(A,D,T-1), load(at(vertex(start),A,T)), fir
 % a train can stay at the same place
 {at(V,A,T)} :- at(V,A,T-1), time(T).
 % a train may come to a diferent place if a vertex allows it to
-{at(V2,A,T)} :- at(V1,A, T-1), edge(V1,V2), time(T). 
+{at(V2,A,T)} :- at(V1,A,T-1), edge(V1,V2), not last_vertex(A,V2), time(T). 
 % if a train reaches its goal it leaves the map
-at(vertex(end),A,T) :- at(vertex(P,D),A,T-1), end(A,P,_), time(T).
+{at(vertex(end),A,T)} :- at(V1,A,T-1), edge(V1,V2), last_vertex(A,V2), time(T). 
 
 % ensure no duplicate options are choosen
-:- 2{at(V,A,T)}, train(A), time(T).
+:- 2{at(V,A,T)}, train(A), time(T), mt(T').
 
 % enforce vertex, edge and swap constraints
 :- at(V1,A,T), at(V2,B,T), A<B, shared_resource(V1,V2), time(T).
@@ -75,9 +76,9 @@ at(vertex(end),A,T) :- at(vertex(P,D),A,T-1), end(A,P,_), time(T).
 % a train can stay at the same place
 {at(V,A,H+t)} :- at(V,A,H+t-1), horizon(H).
 % a train may come to a diferent place if a vertex allows it to
-{at(V2,A,H+t)} :- at(V1,A,H+t-1), edge(V1,V2), horizon(H). 
+{at(V2,A,H+t)} :- at(V1,A,H+t-1), edge(V1,V2), not last_vertex(A,V2), horizon(H). 
 % if a train reaches its goal it leaves the map
-at(vertex(end),A,H+t) :- at(vertex(P,D),A,H+t-1), end(A,P,_), horizon(H).
+{at(vertex(end),A,H+t)} :- at(V1,A,H+t-1), edge(V1,V2), last_vertex(A,V2), horizon(H). 
 
 % ensure no duplicate options are choosen
 :- 2{at(V,A,H+t)}, train(A), horizon(H).
@@ -87,7 +88,6 @@ at(vertex(end),A,H+t) :- at(vertex(P,D),A,H+t-1), end(A,P,_), horizon(H).
 :- at(V1,A,H+t-1), at(V2,A,H+t), at(V3,B,H+t-1), at(V4,B,H+t), A<B, shared_resource(edge(V1,V2),edge(V3,V4)), horizon(H).
 
 add(t).
-#show add/1.
 
 
 #program check(t).
