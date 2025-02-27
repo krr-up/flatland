@@ -39,7 +39,7 @@ time(0..T) :- end(_,_,T).
 horizon(T) :- time(T), not time(T+1).
 at(vertex(start),A,0) :- train(A).
 first_vertex(A,vertex((X,Y),(X-X',Y-Y'))) :- start(A,(X,Y),_,D), dir_move(D,(X',Y')).
-last_vertex(A,vertex(P,P')) :- end(A,P,_).
+last_vertex(A,vertex(P,P')) :- end(A,P,_), vertex(P,P').
 
 
 
