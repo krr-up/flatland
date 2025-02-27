@@ -28,7 +28,7 @@ end(A,B,C):- load(end(A,B,C)).
 train(A):- load(train(A)).
 start(A,P,T,D):- load(start(A,P,T,D)).
 % train information
-at(A,T,P):- load(at(A,T,P)),malfunction(_,_,TLast),T< TLast.
+at(A,T,P):- load(at(A,T,P)),malfunction(_,_,TLast),T <= TLast.
 
 % malfunction time
 malfunction_custom(A,D,T):- malfunction(A,D,T), D>1.
