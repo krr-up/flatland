@@ -26,6 +26,7 @@ edge(subcell((X,Y),D),subcell((X2,Y2),Dnew)) :-
 time(0..T) :- end(_,_,T).
 
 
+#const imax=1.
 
 {first_at(A,T2,subcell(P,D)): time(T2), T2>T}=1 :- start(A,P,T,D).
 at(A,T,P):- first_at(A,T,P).
