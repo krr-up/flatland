@@ -51,7 +51,7 @@ persist(V,A,T+(1..D+1)) :- load(at(V,A,T)), malfunction(A,D,T), not load(at(vert
 % a train may move to a different place if a vertex allows it to
 {at(V2,A,T)} :- at(V1,A,T-1), edge(V1,V2), time(T). 
 % if a train reaches its goal it leaves the map
-{at(vertex(end),A,T)} :- at(V,A,T-1), last_vertex(A,V), time(T). 
+at(vertex(end),A,T) :- at(V,A,T-1), last_vertex(A,V), time(T). 
 
 % ensure no duplicate options are choosen
 :- 2{at(V,A,T)}, train(A), time(T).
@@ -71,7 +71,7 @@ persist(V,A,T+(1..D+1)) :- load(at(V,A,T)), malfunction(A,D,T), not load(at(vert
 % a train may come to a diferent place if a vertex allows it to
 {at(V2,A,H+t)} :- at(V1,A,H+t-1), edge(V1,V2), horizon(H). 
 % if a train reaches its goal it leaves the map
-{at(vertex(end),A,H+t)} :- at(V,A,H+t-1), last_vertex(A,V), horizon(H). 
+at(vertex(end),A,H+t) :- at(V,A,H+t-1), last_vertex(A,V), horizon(H). 
 
 % ensure no duplicate options are choosen
 :- 2{at(V,A,H+t)}, train(A), horizon(H).
@@ -101,8 +101,6 @@ add(t).
 #show action(train(A),O,T) : at(V,A,T), at(V',A,T+1), turn(edge(V,V'),O).
 % generate move action if a train continues moving
 #show action(train(A),move_forward,T) : at(V,A,T), at(V',A,T+1), edge(V,V'), not turn(edge(V,V'),_).
-% generate last move (separately since its no edge)
-#show action(train(A),move_forward,T) : not at(vertex(end),A,T), at(vertex(end),A,T+1).
 
 
 
