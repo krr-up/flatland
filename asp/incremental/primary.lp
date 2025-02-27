@@ -1,4 +1,3 @@
-#const imin = 1.
 #const imax = 10000.
 #program base.
 %%% INPUT %%%
@@ -81,7 +80,6 @@ at(vertex(end),A,H+t) :- at(vertex(P,D),A,H+t-1), end(A,P,_), horizon(H).
 :- at(V1,A,H+t-1), at(V2,A,H+t), at(V3,B,H+t-1), at(V4,B,H+t), A<B, shared_resource(edge(V1,V2),edge(V3,V4)), horizon(H).
 
 add(t).
-#show add/1.
 
 
 #program check(t).

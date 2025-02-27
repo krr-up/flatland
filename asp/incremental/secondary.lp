@@ -1,5 +1,4 @@
-#const imin = 1.
-#const imax = 10000.
+#const imax = 1000.
 #program base.
 %%% MALFUNCTION HANDLING %%%
 % load map
@@ -16,8 +15,9 @@ first_vertex(A,B) :- load(first_vertex(A,B)).
 
 
 % if a malfunction affects the future this is saved as persist
-save(persist(A,B,C)) :- persist(A,B,C).
-persist(A,B,C) :- load(persist(A,B,C)).
+save(persist(V,A,T)) :- persist(V,A,T).
+persist(V,A,T) :- load(persist(V,A,T)), not new_persist(_,A,T).
+persist(V,A,T) :- new_persist(V,A,T).
 at(V,A,T) :- persist(V,A,T).
 
 
@@ -26,7 +26,6 @@ mt(T+1) :- malfunction(_,_,T).
 time(T..H) :- mt(T), load(horizon(H)).
 time(T..T+D+1) :- mt(T), malfunction(_,D,_).
 horizon(T) :- time(T), not time(T+1).
-#show horizon/1.
 
 
 % determine trains affected by the malfunction
@@ -41,11 +40,12 @@ at(V,A,T') :- load(at(V,A,T')), mt(T), T'<=T, not affected(A).
 at(V,A,T') :- load(at(V,A,T')), mt(T), T'<=T-1, affected(A).
 at(V,A,T) :- load(at(V,A,T-1)), mt(T), affected(A).
 % extend state for the malfunctioning train
-persist(V,A,T+(1..D+1)) :- load(at(V,A,T)), malfunction(A,D,T).
+new_persist(V,A,T+(1..D+1)) :- load(at(V,A,T)), malfunction(A,D,T).
 
 
 % somehow, whenever a malfunction ended for a non existent train it magically spawned right after that, if the starttime allows for it, but with a little more lenience than the actuat start condition ... anyway thats what the following line is for (it always uses persist)
-persist(V,A,T+D+1) :- malfunction(A,D,T-1), load(at(vertex(start),A,T)), first_vertex(A,V), start(A,_,ST,_), T+D+1>=ST.
+% this is also the reason this is encapsulated as new_persit as information from this persist can, by right of a follow up malfunction, be negated (aka pushed back)
+new_persist(V,A,T+D+1) :- malfunction(A,D,T-1), load(at(vertex(start),A,T)), first_vertex(A,V), start(A,_,ST,_), T+D+1>=ST.
 
 
 
@@ -60,7 +60,7 @@ persist(V,A,T+D+1) :- malfunction(A,D,T-1), load(at(vertex(start),A,T)), first_v
 at(vertex(end),A,T) :- at(vertex(P,D),A,T-1), end(A,P,_), time(T).
 
 % ensure no duplicate options are choosen
-:- 2{at(V,A,T)}, train(A),time(T).
+:- 2{at(V,A,T)}, train(A), time(T).
 
 % enforce vertex, edge and swap constraints
 :- at(V1,A,T), at(V2,B,T), A<B, shared_resource(V1,V2), time(T).
