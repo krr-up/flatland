@@ -25,7 +25,6 @@ def to_dicts(action_list):
     result.append(current_dict)
 
     # replace actions with RailEnvActions
-    mapping = {"move_forward":RailEnvActions.MOVE_FORWARD, "move_right":RailEnvActions.MOVE_RIGHT, "move_left":RailEnvActions.MOVE_LEFT, "wait":RailEnvActions.STOP_MOVING}
     return(convert_actions_to_flatland(result))
 
 def build_context_from_save(models):
@@ -58,6 +57,8 @@ def build_action_list(models):
             agent_num = agent.arguments[0].number
             action_list.append((agent_num,action,timestep.number))
 
+    print(action_list)
     sorted_list = sorted(action_list, key=lambda x: (x[2], x[0]))
+    print(sorted_list)
     return(to_dicts(sorted_list))
 
