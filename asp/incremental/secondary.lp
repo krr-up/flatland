@@ -12,6 +12,7 @@ end(A,B,C+D) :- load(end(A,B,C)), D = #max{D': malfunction(_,D',_)}.
 train(A) :- load(train(A)).
 start(A,B,C,D) :- load(start(A,B,C,D)).
 first_vertex(A,B) :- load(first_vertex(A,B)).
+last_vertex(A,B) :- load(last_vertex(A,B)).
 
 
 % if a malfunction affects the future this is saved as persist
@@ -117,6 +118,7 @@ add(t).
 #show save(shared_resource(A,B)) : shared_resource(A,B).
 #show save(global(T)) : global(T).
 #show save(first_vertex(A,B)) : first_vertex(A,B).
+#show save(last_vertex(A,B)) : last_vertex(A,B).
 #show save(horizon(H+M)) : horizon(H), M = #max{0; T: add(T)}.
 
 % train information

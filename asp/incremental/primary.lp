@@ -110,6 +110,7 @@ add(t).
 #show save(shared_resource(A,B)) : shared_resource(A,B).
 #show save(global(T)) : global(T).
 #show save(first_vertex(A,B)) : first_vertex(A,B).
+#show save(last_vertex(A,B)) : last_vertex(A,B).
 #show save(horizon(H+M)) : horizon(H), M = #max{0; T: add(T)}.
 
 % train information
