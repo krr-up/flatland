@@ -96,6 +96,7 @@ add(t).
 #show action(train(A),move_forward,T) : at(vertex(start),A,T), not at(vertex(start),A,T+1).
 % stop action if an agent waits
 #show action(train(A),wait,T) : at(V,A,T+1), at(V,A,T).
+#show action(train(A),nothing,T) : at(V,A,T+1), at(V,A,T), V=(vertex(start);vertex(end)).
 % generate turns if necessary
 #show action(train(A),O,T) : at(V,A,T), at(V',A,T+1), turn(edge(V,V'),O).
 % generate move action if a train continues moving
