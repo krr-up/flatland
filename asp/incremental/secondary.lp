@@ -95,7 +95,7 @@ add(t).
 #external query(t).
 %%% GOAL %%%
 % all trains must have ended their task
-:- train(A), not at(vertex(end),A,H+t-1), horizon(H), query(t).
+:- train(A), not at(vertex(end),A,H+t), horizon(H), query(t).
 
 
 
@@ -108,6 +108,8 @@ add(t).
 #show action(train(A),O,T) : at(V,A,T), at(V',A,T+1), turn(edge(V,V'),O).
 % generate move action if a train continues moving
 #show action(train(A),move_forward,T) : at(V,A,T), at(V',A,T+1), edge(V,V'), not turn(edge(V,V'),_).
+% generate last move (separately since its no edge)
+#show action(train(A),move_forward,T) : not at(vertex(end),A,T), at(vertex(end),A,T+1).
 
 
 
