@@ -1,4 +1,4 @@
-#const imax = 10000.
+#const imax = 100.
 #program base.
 %%% INPUT %%%
 %% Auxilliary Atoms
@@ -48,15 +48,13 @@ last_vertex(A,vertex(P,P')) :- end(A,P,_), vertex(P,P').
 {at(V,A,T+1): first_vertex(A,V), start(A,_,ST,_), T>=ST, T>=1, time(T+1)} :- at(vertex(start),A,T).
 % a train can stay at the same place
 {at(V,A,T)} :- at(V,A,T-1), time(T).
-% a train may come to a diferent place if a vertex allows it to
-{at(V2,A,T)} :- at(V1,A,T-1), edge(V1,V2), not last_vertex(A,V2), time(T). 
+% a train may move to a different place if a vertex allows it to
+{at(V2,A,T)} :- at(V1,A,T-1), edge(V1,V2), time(T). 
 % if a train reaches its goal it leaves the map
-{at(vertex(end),A,T)} :- at(V1,A,T-1), edge(V1,V2), last_vertex(A,V2), time(T). 
+at(vertex(end),A,T) :- at(V,A,T-1), last_vertex(A,V), time(T).
 
 % ensure no duplicate options are choosen
 :- 2{at(V,A,T)}, train(A), time(T).
-% two agents can't end at the same time
-:- at(vertex(end),A,T), at(vertex(end),B,T), A<B, {at(vertex(end),A,T-1);at(vertex(end),B,T-1)} 0.
 
 % enforce vertex, edge and swap constraints
 :- at(V1,A,T), at(V2,B,T), A<B, shared_resource(V1,V2).
@@ -71,14 +69,12 @@ last_vertex(A,vertex(P,P')) :- end(A,P,_), vertex(P,P').
 % a train can stay at the same place
 {at(V,A,H+t)} :- at(V,A,H+t-1), horizon(H).
 % a train may come to a diferent place if a vertex allows it to
-{at(V2,A,H+t)} :- at(V1,A,H+t-1), edge(V1,V2), not last_vertex(A,V2), horizon(H). 
+{at(V2,A,H+t)} :- at(V1,A,H+t-1), edge(V1,V2), horizon(H). 
 % if a train reaches its goal it leaves the map
-{at(vertex(end),A,H+t)} :- at(V1,A,H+t-1), edge(V1,V2), last_vertex(A,V2), horizon(H). 
+at(vertex(end),A,H+t) :- at(V,A,H+t-1), last_vertex(A,V), horizon(H). 
 
 % ensure no duplicate options are choosen
 :- 2{at(V,A,H+t)}, train(A), horizon(H).
-% two agents can't end at the same time
-:- at(vertex(end),A,H+t), at(vertex(end),B,H+t), A<B, {at(vertex(end),A,H+t-1);at(vertex(end),B,H+t-1)} 0, horizon(H).
 
 % enforce vertex, edge and swap constraints
 :- at(V1,A,H+t), at(V2,B,H+t), A<B, shared_resource(V1,V2), horizon(H).
