@@ -17,8 +17,7 @@ last_vertex(A,B) :- load(last_vertex(A,B)).
 
 % if a malfunction affects the future this is saved as persist
 save(persist(V,A,T)) :- persist(V,A,T).
-persist(V,A,T) :- load(persist(V,A,T)), not new_persist(_,A,T).
-persist(V,A,T) :- new_persist(V,A,T).
+persist(V,A,T) :- load(persist(V,A,T)).
 at(V,A,T) :- persist(V,A,T).
 
 
@@ -41,13 +40,7 @@ at(V,A,T') :- load(at(V,A,T')), mt(T), T'<=T, not affected(A).
 at(V,A,T') :- load(at(V,A,T')), mt(T), T'<=T-1, affected(A).
 at(V,A,T) :- load(at(V,A,T-1)), mt(T), affected(A).
 % extend state for the malfunctioning train
-% if not already at the end
-new_persist(V,A,T+(1..D+1)) :- load(at(V,A,T)), malfunction(A,D,T).
-
-
-% somehow, whenever a malfunction ended for a non existent train it magically spawned right after that, if the starttime allows for it, but with a little more lenience than the actuat start condition ... anyway thats what the following line is for (it always uses persist)
-% this is also the reason this is encapsulated as new_persit as information from this persist can, by right of a follow up malfunction, be negated (aka pushed back)
-new_persist(V,A,T+D+1) :- malfunction(A,D,T-1), load(at(vertex(start),A,T)), first_vertex(A,V), start(A,_,ST,_), T+D+1>=ST.
+persist(V,A,T+(1..D+1)) :- load(at(V,A,T)), malfunction(A,D,T).
 
 
 
@@ -62,10 +55,15 @@ new_persist(V,A,T+D+1) :- malfunction(A,D,T-1), load(at(vertex(start),A,T)), fir
 {at(vertex(end),A,T)} :- at(V1,A,T-1), edge(V1,V2), last_vertex(A,V2), time(T). 
 
 % ensure no duplicate options are choosen
-:- 2{at(V,A,T)}, train(A), time(T), mt(T').
+:- 2{at(V,A,T)}, train(A), time(T).
 
 % enforce vertex, edge and swap constraints
 :- at(V1,A,T), at(V2,B,T), A<B, shared_resource(V1,V2), time(T).
+% error(A,B,V1,V2,T) :- at(V1,A,T), at(V2,B,T), A<B, shared_resource(V1,V2), time(T).
+% #minimize{1,Q,W,E,R,T: error(Q,W,E,R,T)}.
+% #show error/5.
+% #show malfunction/3.
+% #show persist/3.
 :- at(V1,A,T-1), at(V2,A,T), at(V3,B,T-1), at(V4,B,T), A<B, shared_resource(edge(V1,V2),edge(V3,V4)), time(T).
 
 
@@ -95,7 +93,7 @@ add(t).
 #external query(t).
 %%% GOAL %%%
 % all trains must have ended their task
-:- train(A), not at(vertex(end),A,H+t), horizon(H), query(t).
+:- train(A), not at(vertex(end),A,H+t), horizon(H), query(t), mt(T').
 
 
 
@@ -103,7 +101,8 @@ add(t).
 % action given to start
 #show action(train(A),move_forward,T) : at(vertex(start),A,T), not at(vertex(start),A,T+1).
 % stop action if an agent waits
-#show action(train(A),wait,T) : at(V,A,T+1), at(V,A,T).
+#show action(train(A),wait,T) : at(V,A,T+1), at(V,A,T), V!=vertex(start), V!=vertex(end).
+#show action(train(A),nothing,T) : at(V,A,T+1), at(V,A,T), V=(vertex(start);vertex(end)).
 % generate turns if necessary
 #show action(train(A),O,T) : at(V,A,T), at(V',A,T+1), turn(edge(V,V'),O).
 % generate move action if a train continues moving
