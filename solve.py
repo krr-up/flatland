@@ -242,6 +242,8 @@ def main():
                 if actions == None or actions == []:
                     failure_reason = "Unsatisfieable"
                     break
+                for a in actions[timestep]:
+                    env.agents[a].action_saver.saved_action = None
 
             mal.deduct() #??? where in the loop should this go - before context?
             
