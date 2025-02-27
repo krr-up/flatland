@@ -206,7 +206,7 @@ def main():
 
     # create directory
     os.makedirs("tmp/frames", exist_ok=True)
-    action_map = {1:'move_left',2:'move_forward',3:'move_right',4:'wait'}
+    action_map = {0:'nothing',1:'move_left',2:'move_forward',3:'move_right',4:'wait'}
     state_map = {0:'waiting', 1:'ready to depart', 2:'malfunction (off map)', 3:'moving', 4:'stopped', 5:'malfunction (on map)', 6:'done'}
     dir_map = {0:'n', 1:'e', 2:'s', 3:'w'}
 
