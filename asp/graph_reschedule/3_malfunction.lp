@@ -1,36 +1,39 @@
-% save map
-save(vertex(P,Q)) :- vertex(P,Q).
-save(edge(U,V)) :- edge(U,V).
-save(turn(E,O)) :- turn(E,O).
-save(shared_resource(A,B)) :- shared_resource(A,B).
-save(global(T)) :- global(T).
-save(first_vertex(A,B)) :- first_vertex(A,B).
-
-% train information
-save(end(A,B,C)) :- end(A,B,C).
-save(train(T)) :- train(T).
-save(start(A,B,C,D)) :- start(A,B,C,D).
-save(at(V,A,T)) :- at(V,A,T).
-
-
 % load map
 vertex(A,B) :- load(vertex(A,B)).
 edge(U,V) :- load(edge(U,V)).
 turn(E,O) :- load(turn(E,O)).
 shared_resource(A,B) :- load(shared_resource(A,B)).
 global(T) :- load(global(T)).
-first_vertex(A,B) :- load(first_vertex(A,B)).
-
 % load train info
+end(A,B,C+D) :- load(end(A,B,C)), D = #max{D': malfunction(_,D',_)}.
 train(A) :- load(train(A)).
 start(A,B,C,D) :- load(start(A,B,C,D)).
-end(A,B,C) :- load(end(A,B,C)).
+first_vertex(A,B) :- load(first_vertex(A,B)).
+last_vertex(A,B) :- load(last_vertex(A,B)).
+
+
+% if a malfunction affects the future this is saved as persist
+save(persist(V,A,T)) :- persist(V,A,T).
+persist(V,A,T) :- load(persist(V,A,T)).
+at(V,A,T) :- persist(V,A,T).
 
 
 % malfunction time
-at(V,A,T):- load(at(V,A,T)),malfunction(_,_,TLast),T< TLast.
-malfunction_custom(A,D-1,T+1):- malfunction(A,D,T), D>1.
-malfunction_custom(A,D-1,T+1):- malfunction_custom(A,D,T), D>1.
-at(V,A,T+1):- malfunction_custom(A,_,T),at(V,A,T) .
+mt(T+1) :- malfunction(_,_,T).
+time(T1..T2) :- mt(T1), end(_,_,T2).
+
+
+% determine trains affected by the malfunction
+affected(A) :- malfunction(A,_,_).
+% mark a train which would ram into one affected by the malfunction
+affected(A) :- affected(B), mt(T), load(at(V1,B,T-1)), load(at(V2,A,T)), shared_resource(V1,V2).
+
+
+% copy previous states
+at(V,A,T') :- load(at(V,A,T')), mt(T), T'<=T, not affected(A).
+% if the train is malfunctioning or affected by it copy one less and extend the last position to show the failure
+at(V,A,T') :- load(at(V,A,T')), mt(T), T'<=T-1, affected(A).
+% extend state for the malfunctioning train
+persist(V,A,T+(1..D+1)) :- load(at(V,A,T)), malfunction(A,D,T), not load(at(vertex(end),A,T+1)).
 
 #show malfunction/3.

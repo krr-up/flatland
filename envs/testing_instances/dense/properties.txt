@@ -1,0 +1,4 @@
+Width = 24
+Height = 24
+Trains = 20
+Cities = 3

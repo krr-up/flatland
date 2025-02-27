@@ -1,4 +1,5 @@
 # standard packages
+import csv
 import warnings
 import os 
 import time
@@ -17,6 +18,7 @@ from clingo.application import Application, clingo_main
 
 # rendering visualizations
 from flatland.utils.rendertools import RenderTool
+from flatland.envs.rail_env import TrainState
 import imageio.v2 as imageio
 from PIL import Image, ImageDraw, ImageFont
 
@@ -73,9 +75,7 @@ class SimulationManager():
         app = FlatlandPlan(self.env, None)
         clingo_main(app, self.primary)
         self.save_context = app.save_context
-        #print('------app.action_list------')
-        #print(app.action_list)
-        return(app.action_list)
+        return(app.action_list, app.stats)
 
     def provide_context(self, actions, timestep, malfunctions) -> str:
         """ provide additional facts when updating list """
@@ -88,9 +88,8 @@ class SimulationManager():
         """ update list of actions following malfunction """
         # pass env, secondary, context
         app = FlatlandPlan(self.env, context, supress_env=True)
-        clingo_main(app, self.secondary)
         self.save_context = app.save_context
-        return(app.action_list)
+        return(app.action_list, app.stats)
 
 
 class OutputLogManager():
@@ -141,8 +140,48 @@ def get_args():
     parser.add_argument('--no-render', action='store_true', help='if included, run the Flatland simulation but do not render a GIF')
     return(parser.parse_args())
 
+def save_stats(instance_name, primary, secondary, width, height, seed, trains, horizon, timesteps, primary_stats, secondary_stats, success, reason, filename="output/log.csv"):
+    row = [
+        instance_name,
+        primary,
+        secondary,
+        width,
+        height,
+        seed,
+        trains,
+        horizon,
+        timesteps,
+        primary_stats,
+        secondary_stats,
+        success,
+        reason
+    ]
+    file_exists = os.path.isfile(filename)
+
+    with open(filename, mode='a', newline='') as file:
+        writer = csv.writer(file)
+        if not file_exists:
+            header = [
+                'Instance',
+                'Primary',
+                'Secondary',
+                'Width',
+                'Height',
+                'Seed',
+                'Trains',
+                'Horizon',
+                'Timesteps',
+                'Primary Stats',
+                'Secondary Stats',
+                'Success',
+                'Reason'
+            ]
+            writer.writerow(header)
+        writer.writerow(row)
+
 
 def main():
+    failure_reason = None
     # dev test main
     if check_params(params):
         args: Namespace = get_args()
@@ -166,85 +205,128 @@ def main():
 
     # create directory
     os.makedirs("tmp/frames", exist_ok=True)
-    action_map = {1:'move_left',2:'move_forward',3:'move_right',4:'wait'}
+    action_map = {0:'nothing',1:'move_left',2:'move_forward',3:'move_right',4:'wait'}
     state_map = {0:'waiting', 1:'ready to depart', 2:'malfunction (off map)', 3:'moving', 4:'stopped', 5:'malfunction (on map)', 6:'done'}
     dir_map = {0:'n', 1:'e', 2:'s', 3:'w'}
 
-    actions = sim.build_actions()
+    actions, primary_stats = sim.build_actions()
+    secondary_stats = []
+    env._max_episode_steps = None
 
-    timestep = 0
-    while len(actions) > timestep:
-        # add to the log
-        for a in actions[timestep]:
-            log.add(f'{a};{timestep};{env.agents[a].position};{dir_map[env.agents[a].direction]};{state_map[env.agents[a].state]};{action_map[actions[timestep][a]]}\n')
+    timestep, end = 0, False
+    if actions == None or actions == []:
+        failure_reason = "Unsatisfieable"
+    else:
+        while len(actions) > timestep:
+            # add to the log
+            for a in actions[timestep]:
+                log.add(f'{a};{timestep};{env.agents[a].position};{dir_map[env.agents[a].direction]};{state_map[env.agents[a].state]};{action_map[actions[timestep][a]]}\n')
 
-        print(f'timestep:{timestep}')
-        _, _, done, info = env.step(actions[timestep])
-        # end if simulation is finished
-        if done['__all__'] and timestep < len(actions)-1:
-            warnings.warn('Simulation has reached its end before actions list has been exhausted.')
-            break
+            print(timestep)
+            _, _, done, info = env.step(actions[timestep])
 
-        # check for new malfunctions
-        new_malfs = mal.check(info)
+            # end if simulation is finished
+            if done['__all__'] and timestep < len(actions)-1:
+                end = True
+                warnings.warn('Simulation has reached its end before actions list has been exhausted.')
+                break
 
-        if len(new_malfs) > 0:
-            context = sim.provide_context(actions, timestep, mal.get())
-            actions = sim.update_actions(context)
-            #print(''.join(context))
-            #print(actions)
-            #assert(timestep<1)
+            # check for new malfunctions
+            new_malfs = mal.check(info)
 
-        mal.deduct() #??? where in the loop should this go - before context?
-        
-        # render an image
-        filename = 'tmp/frames/flatland_frame_{:04d}.png'.format(timestep)
-        if env_renderer is not None:
-            env_renderer.render_env(show=True, show_observations=False, show_predictions=False)
-            env_renderer.gl.save_image(filename)
-            env_renderer.reset()
+            if len(new_malfs) > 0:
+                context = sim.provide_context(actions, timestep, mal.get())
+                actions, s = sim.update_actions(context)
+                secondary_stats.append(s.copy())
+                if actions == None or actions == []:
+                    failure_reason = "Unsatisfieable"
+                    break
+                for a in actions[timestep]:
+                    env.agents[a].action_saver.saved_action = None
 
-            # add red numbers in the corner
-            with Image.open(filename) as img:
-                draw = ImageDraw.Draw(img)
-                padding = 10
-                font_size = int(min(img.width, img.height) * 0.10)
-                try:
-                    font = ImageFont.truetype("modules/LiberationMono-Regular.ttf", font_size)
-                except IOError:
-                    font = ImageFont.load_default()
-                
-                # prepare text
-                text = f"{timestep}"
-                size = font.getbbox(text)
-                text_width = size[2]-size[0]
-                text_position = (img.width - text_width - padding, padding)
-                
-                # draw text borders
-                x, y = text_position
-                border_color = "black"
-                for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1), (-1, -1), (-1, 1), (1, -1), (1, 1)]:
-                    draw.text((x + dx, y + dy), text, fill=border_color, font=font)
-                
-                # draw text
-                draw.text(text_position, text, fill="red", font=font)
-                img.save(filename)
+            mal.deduct() #??? where in the loop should this go - before context?
+            
+            # render an image
+            filename = 'tmp/frames/flatland_frame_{:04d}.png'.format(timestep)
+            if env_renderer is not None:
+                env_renderer.render_env(show=True, show_observations=False, show_predictions=False)
+                env_renderer.gl.save_image(filename)
+                env_renderer.reset()
 
-            images.append(imageio.imread(filename))
+                # add red numbers in the corner
+                with Image.open(filename) as img:
+                    draw = ImageDraw.Draw(img)
+                    padding = 10
+                    font_size = int(min(img.width, img.height) * 0.10)
+                    try:
+                        font = ImageFont.truetype("modules/LiberationMono-Regular.ttf", font_size)
+                    except IOError:
+                        font = ImageFont.load_default()
+                    
+                    # prepare text
+                    text = f"{timestep}"
+                    size = font.getbbox(text)
+                    text_width = size[2]-size[0]
+                    text_position = (img.width - text_width - padding, padding)
+                    
+                    # draw text borders
+                    x, y = text_position
+                    border_color = "black"
+                    for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1), (-1, -1), (-1, 1), (1, -1), (1, 1)]:
+                        draw.text((x + dx, y + dy), text, fill=border_color, font=font)
+                    
+                    # draw text
+                    draw.text(text_position, text, fill="red", font=font)
+                    img.save(filename)
 
-        timestep = timestep + 1
+                images.append(imageio.imread(filename))
 
-    # get time stamp for gif and output log
-    stamp = time.time()
-    os.makedirs(f"output/{stamp}", exist_ok=True)
+            timestep = timestep + 1
+            if timestep >= 1000:
+                warnings.warn("What the hell is wrong with you. Why are you still running?")
+                failure_reason = "Reached 1000 Timesteps"
+                break
+            if env._elapsed_steps == env._max_episode_steps:
+                failure_reason = "Not finished on time."
+                break
+            if all(info["state"][i] == TrainState.DONE for i in info["state"]):
+                break
+
+        # get time stamp for gif and output log
+        stamp = time.time()
+        os.makedirs(f"output/{stamp}", exist_ok=True)
+
+        # combine images into gif
+        if not no_render:
+            imageio.mimsave(f"output/{stamp}/animation.gif", images, format='GIF', loop=0, duration=240)
+
+        # save output log
+        log.save(stamp)
+
+        success = all(info["state"][i] == TrainState.DONE for i in info["state"])
     
-    # combine images into gif
-    if not no_render:
-        imageio.mimsave(f"output/{stamp}/animation.gif", images, format='GIF', loop=0, duration=240)
+    if failure_reason == None and not success:
+        if end:
+            failure_reason = "Ended to Early"
+        else:
+            failure_reason = "Mismatching Actions"
 
-    # save output log
-    log.save(stamp)
-
+    # save stats
+    save_stats(
+        args.env[0],
+        params.primary,
+        params.secondary,
+        env.width,
+        env.height,
+        env._seed()[0],
+        env.number_of_agents,
+        env._max_episode_steps,
+        env._elapsed_steps,
+        primary_stats,
+        secondary_stats,
+        success,
+        failure_reason
+        )
 
 if __name__ == "__main__":
     main()

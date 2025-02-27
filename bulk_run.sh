@@ -1,7 +1,15 @@
 #!/bin/bash
 
-# Define the directory containing the .pkl files
-pkl_folder="envs/pkl"
+# Check if an argument is provided
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <path_to_pkl_folder>"
+    exit 1
+fi
+
+# Assign the first argument to the variable
+pkl_folder="$1"
+# Normalize the folder path by removing trailing slashes
+pkl_folder="${pkl_folder%/}"
 
 # Check if the folder exists
 if [ ! -d "$pkl_folder" ]; then
@@ -22,7 +30,7 @@ for instance in "$pkl_folder"/*.pkl; do
 
   # Run the solve.py command
   echo "Running 'python solve.py $instance'"
-  python solve.py "$instance" > /dev/null 2>&1
+  python solve.py "$instance" --no-render > /dev/null 2>&1
 
   
   # Check if the command was successful

@@ -24,13 +24,14 @@ def to_dicts(action_list):
     result.append(current_dict)
 
     # replace actions with RailEnvActions
-    mapping = {"move_forward":RailEnvActions.MOVE_FORWARD, "move_right":RailEnvActions.MOVE_RIGHT, "move_left":RailEnvActions.MOVE_LEFT, "wait":RailEnvActions.STOP_MOVING}
     return(convert_actions_to_flatland(result))
 
 def build_context_from_save(models):
     """
     given a model from clingo, build a list of saved atoms
     """
+    if models == []:
+        return None
     save_list = []
     for func in models[0]: # only the first model
         func_name = func.name
@@ -44,8 +45,8 @@ def build_action_list(models):
     """
     given a model from clingo, build an python action list
     """
-    #print('-----models-------')
-    #print(models)
+    if models == []:
+        return None
     action_list = []
     for func in models[0]: # only the first model
         func_name = func.name
