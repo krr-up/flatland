@@ -34,6 +34,6 @@ at(V,A,T') :- load(at(V,A,T')), mt(T), T'<=T, not affected(A).
 % if the train is malfunctioning or affected by it copy one less and extend the last position to show the failure
 at(V,A,T') :- load(at(V,A,T')), mt(T), T'<=T-1, affected(A).
 % extend state for the malfunctioning train
-new_persist(V,A,T+(1..D+1)) :- load(at(V,A,T)), malfunction(A,D,T), not load(at(vertex(end),A,T+1)).
+persist(V,A,T+(1..D+1)) :- load(at(V,A,T)), malfunction(A,D,T), not load(at(vertex(end),A,T+1)).
 
 #show malfunction/3.

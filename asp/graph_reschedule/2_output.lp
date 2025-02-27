@@ -4,7 +4,7 @@ a(A,2,T) :- not at(vertex(start),A,T+1), at(vertex(start),A,T).
 a(A,4,T) :- at(V,A,T+1), at(V,A,T), V!=vertex(start), V!=vertex(end).
 a(A,0,T) :- at(V,A,T+1), at(V,A,T), V=(vertex(start);vertex(end)).
 % generate turns if necessary
-a(A,O,T) :- at(V,A,T), at(V',A,T+1), edge(V,_), turn(edge(V,V'),O).
+a(A,O,T) :- at(V,A,T), at(V',A,T+1), turn(edge(V,V'),O).
 % generate move action if a train continues moving
 a(A,2,T) :- at(V,A,T), not at(V,A,T+1), not a(A,1,T), not a(A,3,T), at(_,A,T+1).
 

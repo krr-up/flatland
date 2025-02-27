@@ -45,7 +45,7 @@ last_vertex(A,vertex(P,P')) :- end(A,P,_), vertex(P,P').
 
 %%% PATH UP TO LIMIT %%%
 % allow transition on map
-{at(V,A,T+1): first_vertex(A,V), start(A,_,ST,_), T>=ST, T>=1, time(T+1)} :- at(vertex(start),A,T).
+{at(V,A,T): first_vertex(A,V), start(A,_,ST,_), T-1>=ST, T-1>=1, time(T)} :- at(vertex(start),A,T-1).
 % a train can stay at the same place
 {at(V,A,T)} :- at(V,A,T-1), time(T).
 % a train may move to a different place if a vertex allows it to
@@ -101,8 +101,6 @@ add(t).
 #show action(train(A),O,T) : at(V,A,T), at(V',A,T+1), turn(edge(V,V'),O).
 % generate move action if a train continues moving
 #show action(train(A),move_forward,T) : at(V,A,T), at(V',A,T+1), edge(V,V'), not turn(edge(V,V'),_).
-% generate last move (separately since its no edge)
-#show action(train(A),move_forward,T) : not at(vertex(end),A,T), at(vertex(end),A,T+1).
 
 
 
