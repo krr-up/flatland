@@ -1,3 +1,4 @@
+#const imax=1.
 %% Auxilliary Atoms
 % directions and their bit
 dir_bit(n,3).dir_bit(e,2).dir_bit(s,1).dir_bit(w,0).
