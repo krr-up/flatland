@@ -182,6 +182,19 @@ def save_stats(instance_name, primary, secondary, width, height, seed, trains, h
             writer.writerow(header)
         writer.writerow(row)
 
+def entry_exists(instance_name, primary, secondary, filename="output/log.csv"):
+    if not os.path.isfile(filename):
+        return False
+
+    with open(filename, mode='r') as file:
+        reader = csv.reader(file)
+        next(reader)  # Skip header
+        for row in reader:
+            if row[0] == instance_name and row[1] == primary and row[2] == secondary:
+                return True
+    return False
+
+
 def import_module(module_path):
     spec = importlib.util.spec_from_file_location("module.name", module_path)
     module = importlib.util.module_from_spec(spec)
@@ -224,6 +237,8 @@ def main():
     env._max_episode_steps = None
 
     timestep, end = 0, False
+    if entry_exists(args.env[0], params.primary, params.secondary):
+        raise Exception("Already evaluated.")
     if actions == None or actions == []:
         failure_reason = "Unsatisfieable"
     else:
