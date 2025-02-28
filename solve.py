@@ -143,13 +143,15 @@ def get_args():
     parser.add_argument('--no-render', action='store_true', help='if included, run the Flatland simulation but do not render a GIF')
     return(parser.parse_args())
 
-def save_stats(instance_name, primary, secondary, width, height, seed, trains, horizon, timesteps, primary_stats, secondary_stats, success, reason, filename="output/log.csv"):
+def save_stats(instance_name, primary, secondary, width, height, targets, malfunction_rate, seed, trains, horizon, timesteps, primary_stats, secondary_stats, success, reason, filename="output/log.csv"):
     row = [
         instance_name,
         primary,
         secondary,
         width,
         height,
+        targets,
+        malfunction_rate,
         seed,
         trains,
         horizon,
@@ -170,6 +172,8 @@ def save_stats(instance_name, primary, secondary, width, height, seed, trains, h
                 'Secondary',
                 'Width',
                 'Height',
+                'Targets',
+                'Malfunction Rate',
                 'Seed',
                 'Trains',
                 'Horizon',
@@ -182,7 +186,7 @@ def save_stats(instance_name, primary, secondary, width, height, seed, trains, h
             writer.writerow(header)
         writer.writerow(row)
 
-def entry_exists(instance_name, primary, secondary, filename="output/log.csv"):
+def entry_exists(instance_name, primary, secondary, horizon, filename="output/log.csv"):
     if not os.path.isfile(filename):
         return False
 
@@ -190,7 +194,7 @@ def entry_exists(instance_name, primary, secondary, filename="output/log.csv"):
         reader = csv.reader(file)
         next(reader)  # Skip header
         for row in reader:
-            if row[0] == instance_name and row[1] == primary and row[2] == secondary:
+            if row[0] == instance_name and row[1] == primary and row[2] == secondary and row[9] == horizon:
                 return True
     return False
 
@@ -237,7 +241,7 @@ def main():
     env._max_episode_steps = None
 
     timestep, end = 0, False
-    if entry_exists(args.env[0], params.primary, params.secondary):
+    if entry_exists(args.env[0], params.primary, params.secondary, env._max_episode_steps):
         raise Exception("Already evaluated.")
     if actions == None or actions == []:
         failure_reason = "Unsatisfieable"
@@ -307,9 +311,9 @@ def main():
                 images.append(imageio.imread(filename))
 
             timestep = timestep + 1
-            if timestep >= 1000:
+            if timestep >= 10000:
                 warnings.warn("What the hell is wrong with you. Why are you still running?")
-                failure_reason = "Reached 1000 Timesteps"
+                failure_reason = "Reached 10000 Timesteps"
                 break
             if env._elapsed_steps == env._max_episode_steps:
                 failure_reason = "Not finished on time."
@@ -343,6 +347,8 @@ def main():
         params.secondary,
         env.width,
         env.height,
+        len(set(agent.target for agent in env.agents)),
+        env.malfunction_generator.MFP.malfunction_rate,
         env._seed()[0],
         env.number_of_agents,
         env._max_episode_steps,
