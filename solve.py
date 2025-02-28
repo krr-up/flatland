@@ -1,14 +1,15 @@
 # standard packages
 import csv
+import sys
 import warnings
 import os 
 import time
 import pickle
 import json
 from argparse import ArgumentParser, Namespace
+import importlib.util
 
 # custom modules
-from asp import params
 from modules.api import FlatlandPlan
 from modules.convert import convert_malfunctions_to_clingo, convert_formers_to_clingo, convert_futures_to_clingo
 
@@ -137,6 +138,7 @@ def check_params(par):
 def get_args():
     """ capture command line inputs """
     parser = ArgumentParser()
+    parser.add_argument('enc', type=str, default='', nargs=1, help='the encoding as a .py file')
     parser.add_argument('env', type=str, default='', nargs=1, help='the Flatland environment as a .pkl file')
     parser.add_argument('--no-render', action='store_true', help='if included, run the Flatland simulation but do not render a GIF')
     return(parser.parse_args())
@@ -180,14 +182,21 @@ def save_stats(instance_name, primary, secondary, width, height, seed, trains, h
             writer.writerow(header)
         writer.writerow(row)
 
+def import_module(module_path):
+    spec = importlib.util.spec_from_file_location("module.name", module_path)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules["module.name"] = module
+    spec.loader.exec_module(module)
+    return module
+
 
 def main():
     failure_reason = None
     # dev test main
-    if check_params(params):
-        args: Namespace = get_args()
-        env = pickle.load(open(args.env[0], "rb"))
-        no_render = args.no_render
+    args: Namespace = get_args()
+    env = pickle.load(open(args.env[0], "rb"))
+    params = import_module(args.enc[0])
+    no_render = args.no_render
 
     # create manager objects
     mal = MalfunctionManager(env.get_num_agents())
