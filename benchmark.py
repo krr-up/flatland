@@ -26,7 +26,7 @@ def run_solve(params_file, pkl_file):
     """Run the solve command with the given parameters."""
     command = f"python solve.py {params_file} {pkl_file} --no-render"
     try:
-        result = subprocess.run(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=3600)  # 1 hour timeout
+        result = subprocess.run(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=7200)  # 2 hour timeout
     except subprocess.TimeoutExpired:
         print(f"Command timed out: {command}")
         return -1  # Indicate that the command timed out
