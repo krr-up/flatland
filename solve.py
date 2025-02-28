@@ -6,6 +6,7 @@ import os
 import time
 import pickle
 import json
+import time
 from argparse import ArgumentParser, Namespace
 import importlib.util
 
@@ -208,6 +209,7 @@ def import_module(module_path):
 
 
 def main():
+    start_time = time.time()
     failure_reason = None
     # dev test main
     args: Namespace = get_args()
@@ -247,6 +249,9 @@ def main():
         failure_reason = "Unsatisfieable"
     else:
         while len(actions) > timestep:
+            if time.time() - start > 3600:
+                failure_reason = "Exceeded 60 Minutes"
+                break
             # add to the log
             for a in actions[timestep]:
                 log.add(f'{a};{timestep};{env.agents[a].position};{dir_map[env.agents[a].direction]};{state_map[env.agents[a].state]};{action_map[actions[timestep][a]]}\n')
