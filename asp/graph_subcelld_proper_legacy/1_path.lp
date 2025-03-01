@@ -5,37 +5,31 @@
 %% at/3: Agent, Time, Subcell(Position,Direction)
 %% and base problem atoms that must be forwarded
 #const imax=1.
-%#show at/3.
-%#show end/2.
+
 % Guess first_at
 {first_at(A,T2,subcell(P,D)): time(T2), T2>T,T2>1 }=1 :- start(A,P,T,D).
-% at/3 should use the direction within the cell 
-% which is always the opposite of the direction faced
-reverse(n,s).reverse(s,n).reverse(w,e).reverse(e,w).
-at(A,T,subcell(P,Din)):- first_at(A,T,subcell(P,Dout)),reverse(Din,Dout).
+at(A,T,P):- first_at(A,T,P).
+
 :- at(A,1,P).
 subcell(end).subcell(start).
 
 % a train may come to a diferent place if a vertex allows it to 
 % or stay in place; trains disappear upon completion
-% edge(in_subcell,out_next_subcell)
-% at(Agent, Timestamp, (Position, Direction within subcell) )
-1={at(A,T,subcell(V1,D));
-at(A,T,subcell(V2,Dnew)):edge(subcell(V2,Dnew),subcell(V1,D))
-;at(A,T,subcell(end)):edge(subcell(V2,_),subcell(V1,D)),end(A,V2,_)} :- 
+1={at(A,T,subcell(V1,D))
+;at(A,T,subcell(V2,Dnew)):edge(subcell(V1,D),subcell(V2,Dnew))
+;at(A,T,subcell(end)):edge(subcell(V1,D),subcell(V2,_)),end(A,V2,_)} :- 
 	at(A,T-1,subcell(V1,D)), time(T).
 
 % and all trains must reach an end
 end(A,T):- at(A,T,subcell(end)).
 end(A,T):- end(A,T-1),time(T).
-%:- {at(A,T,C)}60.
-%:- {at(A,T,subcell((35,25),D))} < 1.
 :- train(A), not end(A,T), end(A,_,T).
 
 % enforce vertex, edge and swap constraints
 :- at(A,T,subcell(V,D)), at(B,T,subcell(V,D2)), A<B.
-:- at(A,T,subcell(V1,_)), at(B,T,subcell(V2,_)),
-at(A,T+1, subcell(V2,_)),at(B,T+1,subcell(V1,_)).
+reverse(n,s).reverse(s,n).reverse(w,e).reverse(e,w).
+:- at(A,T,subcell(V1,D1)), at(B,T,subcell(V2,D2)),
+	edge(subcell(V1,D1),subcell(V2,_)),reverse(D1,D2).
 
 % choices + base problem
 save(at(A,T,P)):- at(A,T,P).
