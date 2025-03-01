@@ -249,7 +249,7 @@ def main():
         failure_reason = "Unsatisfieable"
     else:
         while len(actions) > timestep:
-            if time.time() - start > 3600:
+            if time.time() - start_time > 3600:
                 failure_reason = "Exceeded 60 Minutes"
                 break
             # add to the log
