@@ -1,2 +1,2 @@
 primary=['asp/graph_reschedule_naive/0_input.lp','asp/graph_reschedule_naive/1_path.lp','asp/graph_reschedule_naive/2_output.lp']
-secondary=['asp/graph_reschedule_naive/1_path.lp','asp/graph_reschedule_naive/2_output.lp','asp/graph_reschedule_naive/3_malfunction.lp']
+secondary=['asp/graph_reschedule_naive/0_input.lp','asp/graph_reschedule_naive/1_path.lp','asp/graph_reschedule_naive/2_output.lp','asp/graph_reschedule_naive/3_malfunction.lp']

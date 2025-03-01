@@ -1,12 +1,11 @@
 % load map
-cell(A,B) :- cell(A,B).
+cell(A,B) :- load(cell(A,B)).
 global(T) :- load(global(T)).
 % load train info
 end(A,B,C+D) :- load(end(A,B,C)), D = #max{D': malfunction(_,D',_)}.
 train(A) :- load(train(A)).
 start(A,B,C,D) :- load(start(A,B,C,D)).
-first_vertex(A,B) :- load(first_vertex(A,B)).
-last_vertex(A,B) :- load(last_vertex(A,B)).
+
 
 
 % if a malfunction affects the future this is saved as persist
@@ -17,7 +16,6 @@ at(V,A,T) :- persist(V,A,T).
 
 % malfunction time
 mt(T+1) :- malfunction(_,_,T).
-time(T1..T2) :- mt(T1), end(_,_,T2).
 
 
 % determine trains affected by the malfunction
