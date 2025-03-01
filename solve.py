@@ -209,6 +209,7 @@ def import_module(module_path):
 
 
 def main():
+    csv.field_size_limit(sys.maxsize)
     start_time = time.time()
     failure_reason = None
     # dev test main
