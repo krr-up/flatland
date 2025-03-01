@@ -21,6 +21,7 @@ trackparts(Pos,D1,D2) :- cell_useful(Pos,N), dir_bit(D1,N1), dir_bit(D2,N2),
 
 % generate edges
 subcell((X,Y),D):- trackparts((X,Y),_,D).
+% edge((prev_cell,direction going into current ), (current_subcell,direction one may go out to))
 edge(subcell((X,Y),D),subcell((X2,Y2),Dnew)) :- 
 	subcell((X,Y),D),
     trackparts((X2,Y2),D,Dnew),
