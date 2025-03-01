@@ -27,6 +27,9 @@ at(A,T,subcell(V2,Dnew)):edge(subcell(V2,Dnew),subcell(V1,D))
 
 % and all trains must reach an end
 end(A,T):- at(A,T,subcell(end)).
+busy(A,T,V):- at(A,T,subcell(end)), end(A,V,_).
+:- busy(A,T,V),busy(B,T,V),A<B.
+
 end(A,T):- end(A,T-1),time(T).
 :- train(A), not end(A,T), end(A,_,T).
 
