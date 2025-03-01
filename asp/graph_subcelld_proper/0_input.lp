@@ -30,7 +30,6 @@ edge(subcell((X,Y),D),subcell((X2,Y2),Dnew)) :-
 
 % basic initialization
 time(0..T) :- end(_,_,T).
-%time(0..270).
 
 save(cell_useful(U,V)) :- cell_useful(U,V).
 save(trackparts(Pos,D1,D2)) :- trackparts(Pos,D1,D2).
