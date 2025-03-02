@@ -1,4 +1,5 @@
 # standard packages
+import ast
 import csv
 import sys
 import warnings
@@ -195,8 +196,13 @@ def entry_exists(instance_name, primary, secondary, horizon, filename="output/lo
         reader = csv.reader(file)
         next(reader)  # Skip header
         for row in reader:
-            if row[0] == instance_name and row[1] == primary and row[2] == secondary and row[9] == horizon:
-                return True
+            if row[0] == instance_name and row[1] == str(primary) and row[2] == str(secondary):# and row[9] == str(horizon):
+                if horizon == None:
+                    if row[9] == "":
+                        return True
+                else:
+                    if row[9] == str(horizon):
+                        return True
     return False
 
 
