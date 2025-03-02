@@ -16,6 +16,8 @@ at(V,A,T) :- persist(V,A,T).
 
 % malfunction time
 mt(T+1) :- malfunction(_,_,T).
+time(T1..T2) :- mt(T1), end(_,_,T2).
+
 
 
 % determine trains affected by the malfunction
