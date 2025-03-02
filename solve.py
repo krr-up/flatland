@@ -231,6 +231,10 @@ def main():
     else:
         sim = SimulationManager(env, params.primary, None)
     log = OutputLogManager()
+    env._max_episode_steps = None
+
+    if entry_exists(args.env[0], params.primary, params.secondary, env._max_episode_steps):
+        raise Exception("Already evaluated.")
 
     # envrionment rendering
     env_renderer = None
@@ -247,11 +251,8 @@ def main():
 
     actions, primary_stats = sim.build_actions()
     secondary_stats = []
-    env._max_episode_steps = None
 
     timestep, end = 0, False
-    if entry_exists(args.env[0], params.primary, params.secondary, env._max_episode_steps):
-        raise Exception("Already evaluated.")
     if actions == None or actions == []:
         failure_reason = "Unsatisfieable"
     else:
@@ -372,4 +373,7 @@ def main():
         )
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        warnings.warn(str(e))
