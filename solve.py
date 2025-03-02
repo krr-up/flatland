@@ -143,6 +143,7 @@ def get_args():
     parser.add_argument('enc', type=str, default='', nargs=1, help='the encoding as a .py file')
     parser.add_argument('env', type=str, default='', nargs=1, help='the Flatland environment as a .pkl file')
     parser.add_argument('--no-render', action='store_true', help='if included, run the Flatland simulation but do not render a GIF')
+    parser.add_argument('--no-horizon', action='store_true', help='if included, run the Flatland simulation with no instance ending')
     return(parser.parse_args())
 
 def save_stats(instance_name, primary, secondary, width, height, targets, malfunction_rate, seed, trains, horizon, timesteps, primary_stats, secondary_stats, success, reason, filename="output/log.csv"):
@@ -196,11 +197,12 @@ def entry_exists(instance_name, primary, secondary, horizon, filename="output/lo
         reader = csv.reader(file)
         next(reader)  # Skip header
         for row in reader:
-            if row[0] == instance_name and row[1] == str(primary) and row[2] == str(secondary):# and row[9] == str(horizon):
+            if row[0] == instance_name and row[1] == str(primary) and row[2] == str(secondary):
                 if horizon == None:
                     if row[9] == "":
                         return True
                 else:
+                    print
                     if row[9] == str(horizon):
                         return True
     return False
@@ -223,6 +225,7 @@ def main():
     env = pickle.load(open(args.env[0], "rb"))
     params = import_module(args.enc[0])
     no_render = args.no_render
+    no_horizon = args.no_horizon
 
     # create manager objects
     mal = MalfunctionManager(env.get_num_agents())
@@ -231,8 +234,13 @@ def main():
     else:
         sim = SimulationManager(env, params.primary, None)
     log = OutputLogManager()
-    if entry_exists(args.env[0], params.primary, params.secondary, env._max_episode_steps):
-        raise Exception("Already evaluated.")
+
+    if no_horizon:
+        if entry_exists(args.env[0], params.primary, params.secondary, None):
+            raise Exception("Already evaluated.")
+    else:
+        if entry_exists(args.env[0], params.primary, params.secondary, env._max_episode_steps):
+            raise Exception("Already evaluated.")
 
     # envrionment rendering
     env_renderer = None
@@ -249,7 +257,8 @@ def main():
 
     actions, primary_stats = sim.build_actions()
     secondary_stats = []
-    env._max_episode_steps = None
+    if no_horizon:
+        env._max_episode_steps = None
 
     timestep, end = 0, False
     if actions == None or actions == []:

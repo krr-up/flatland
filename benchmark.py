@@ -24,7 +24,7 @@ def find_pkl_files():
 
 def run_solve(params_file, pkl_file):
     """Run the solve command with the given parameters."""
-    command = f"python solve.py {params_file} {pkl_file} --no-render"
+    command = f"python solve.py {params_file} {pkl_file} --no-render --no-horizon"
     try:
         result = subprocess.run(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=7200)  # 2 hour timeout
     except subprocess.TimeoutExpired:
