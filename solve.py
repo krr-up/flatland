@@ -1,14 +1,16 @@
 # standard packages
 import csv
+import sys
 import warnings
 import os 
 import time
 import pickle
 import json
+import time
 from argparse import ArgumentParser, Namespace
+import importlib.util
 
 # custom modules
-from asp import params
 from modules.api import FlatlandPlan
 from modules.convert import convert_malfunctions_to_clingo, convert_formers_to_clingo, convert_futures_to_clingo
 
@@ -137,17 +139,20 @@ def check_params(par):
 def get_args():
     """ capture command line inputs """
     parser = ArgumentParser()
+    parser.add_argument('enc', type=str, default='', nargs=1, help='the encoding as a .py file')
     parser.add_argument('env', type=str, default='', nargs=1, help='the Flatland environment as a .pkl file')
     parser.add_argument('--no-render', action='store_true', help='if included, run the Flatland simulation but do not render a GIF')
     return(parser.parse_args())
 
-def save_stats(instance_name, primary, secondary, width, height, seed, trains, horizon, timesteps, primary_stats, secondary_stats, success, reason, filename="output/log.csv"):
+def save_stats(instance_name, primary, secondary, width, height, targets, malfunction_rate, seed, trains, horizon, timesteps, primary_stats, secondary_stats, success, reason, filename="output/log.csv"):
     row = [
         instance_name,
         primary,
         secondary,
         width,
         height,
+        targets,
+        malfunction_rate,
         seed,
         trains,
         horizon,
@@ -168,6 +173,8 @@ def save_stats(instance_name, primary, secondary, width, height, seed, trains, h
                 'Secondary',
                 'Width',
                 'Height',
+                'Targets',
+                'Malfunction Rate',
                 'Seed',
                 'Trains',
                 'Horizon',
@@ -180,14 +187,36 @@ def save_stats(instance_name, primary, secondary, width, height, seed, trains, h
             writer.writerow(header)
         writer.writerow(row)
 
+def entry_exists(instance_name, primary, secondary, horizon, filename="output/log.csv"):
+    if not os.path.isfile(filename):
+        return False
+
+    with open(filename, mode='r') as file:
+        reader = csv.reader(file)
+        next(reader)  # Skip header
+        for row in reader:
+            if row[0] == instance_name and row[1] == primary and row[2] == secondary and row[9] == horizon:
+                return True
+    return False
+
+
+def import_module(module_path):
+    spec = importlib.util.spec_from_file_location("module.name", module_path)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules["module.name"] = module
+    spec.loader.exec_module(module)
+    return module
+
 
 def main():
+    csv.field_size_limit(sys.maxsize)
+    start_time = time.time()
     failure_reason = None
     # dev test main
-    if check_params(params):
-        args: Namespace = get_args()
-        env = pickle.load(open(args.env[0], "rb"))
-        no_render = args.no_render
+    args: Namespace = get_args()
+    env = pickle.load(open(args.env[0], "rb"))
+    params = import_module(args.enc[0])
+    no_render = args.no_render
 
     # create manager objects
     mal = MalfunctionManager(env.get_num_agents())
@@ -215,10 +244,15 @@ def main():
     env._max_episode_steps = None
 
     timestep, end = 0, False
+    if entry_exists(args.env[0], params.primary, params.secondary, env._max_episode_steps):
+        raise Exception("Already evaluated.")
     if actions == None or actions == []:
         failure_reason = "Unsatisfieable"
     else:
         while len(actions) > timestep:
+            if time.time() - start_time > 3600:
+                failure_reason = "Exceeded 60 Minutes"
+                break
             # add to the log
             for a in actions[timestep]:
                 log.add(f'{a};{timestep};{env.agents[a].position};{dir_map[env.agents[a].direction]};{state_map[env.agents[a].state]};{action_map[actions[timestep][a]]}\n')
@@ -283,9 +317,9 @@ def main():
                 images.append(imageio.imread(filename))
 
             timestep = timestep + 1
-            if timestep >= 1000:
+            if timestep >= 10000:
                 warnings.warn("What the hell is wrong with you. Why are you still running?")
-                failure_reason = "Reached 1000 Timesteps"
+                failure_reason = "Reached 10000 Timesteps"
                 break
             if env._elapsed_steps == env._max_episode_steps:
                 failure_reason = "Not finished on time."
@@ -319,6 +353,8 @@ def main():
         params.secondary,
         env.width,
         env.height,
+        len(set(agent.target for agent in env.agents)),
+        env.malfunction_generator.MFP.malfunction_rate,
         env._seed()[0],
         env.number_of_agents,
         env._max_episode_steps,
