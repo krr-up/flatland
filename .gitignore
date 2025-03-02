@@ -1,6 +1,6 @@
 venv
 tmp/frames/*
-output/*
+# output/*
 */__pycache__
 *env_*
 *.pyc
