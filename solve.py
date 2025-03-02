@@ -1,5 +1,5 @@
+
 # standard packages
-import ast
 import csv
 import sys
 import warnings
@@ -231,8 +231,6 @@ def main():
     else:
         sim = SimulationManager(env, params.primary, None)
     log = OutputLogManager()
-    env._max_episode_steps = None
-
     if entry_exists(args.env[0], params.primary, params.secondary, env._max_episode_steps):
         raise Exception("Already evaluated.")
 
@@ -251,6 +249,7 @@ def main():
 
     actions, primary_stats = sim.build_actions()
     secondary_stats = []
+    env._max_episode_steps = None
 
     timestep, end = 0, False
     if actions == None or actions == []:
@@ -373,7 +372,4 @@ def main():
         )
 
 if __name__ == "__main__":
-    try:
-        main()
-    except Exception as e:
-        warnings.warn(str(e))
+    main()
