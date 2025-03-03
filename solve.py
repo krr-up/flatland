@@ -263,6 +263,7 @@ def main():
     timestep, end = 0, False
     if actions == None or actions == []:
         failure_reason = "Unsatisfieable"
+        success = False
     else:
         while len(actions) > timestep:
             if time.time() - start_time > 3600:
@@ -379,6 +380,11 @@ def main():
         success,
         failure_reason
         )
+    
+    if success:
+        print("Successful run!")
+    else:
+        print(f"Failed due to: {failure_reason}.")
 
 if __name__ == "__main__":
     try:
