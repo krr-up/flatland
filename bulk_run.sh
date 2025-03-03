@@ -38,7 +38,7 @@ for instance in "$pkl_folder"/*.pkl; do
 
   # Run the solve.py command
   echo "Running 'python solve.py $params_file $instance --no-horizon'"
-  python solve.py "$params_file" "$instance" --no-horizon > /dev/null 2>&1
+  python solve.py "$params_file" "$instance" --no-render --no-horizon > /dev/null 2>&1
 
   # Check if the command was successful
   if [ $? -ne 0 ]; then
