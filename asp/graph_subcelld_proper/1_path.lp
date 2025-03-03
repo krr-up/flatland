@@ -12,8 +12,7 @@ malfunction_custom(A,D-1,T+1):- malfunction_custom(A,D,T), D>1.
 at(A,T+1,P):- malfunction_custom(A,_,T),at(A,T,P) .
 :- malfunction_custom(A,_,T),not at(A,T,P),first_at(A,T+1,P).
 % malfunction adjustments
-delay_turn(T):- malfunction_custom(A,_,T).
-delay(D):-D=#count{T:delay_turn(T)}.
+delay(D):-D=#count{T:malfunction_custom(_,_,T)}.
 % extend time upon malfunction
 time_delay(1..T):-time(T),delay(0).
 time_delay(Tmal..T+D+1):-time(T), delay(D), malfunction(A,_,Tmal).
