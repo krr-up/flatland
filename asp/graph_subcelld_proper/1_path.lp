@@ -47,9 +47,8 @@ end(A,T):- at(A,T,subcell(end)).
 busy(A,T,V):- at(A,T,subcell(end)), end_delay(A,V,_).
 :- busy(A,T,V),busy(B,T,V),A<B.%no two trains ending at same time
 end(A,T):- end(A,T-1),time_delay(T).
-%:- train(A), not end(A,T), end_delay(A,_,T).
+:- train(A), not end(A,T), end_delay(A,_,T).
 
-%end_delay(A,V,T):-end(A,V,T).
 
 % enforce vertex, edge and swap constraints
 :- at(A,T,subcell(V,D)), at(B,T,subcell(V,D2)), A<B.
