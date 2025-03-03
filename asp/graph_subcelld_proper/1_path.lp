@@ -5,10 +5,27 @@
 %% at/3: Agent, Time, Subcell(Position,Direction)
 %% and base problem atoms that must be forwarded
 #const imax=1.
-#show at/3.
+%#show at/3.
+#show malfunction/3.
+
+% malfunction time
+malfunction_custom(A,D,T):- malfunction(A,D,T), D>1.
+malfunction_custom(A,D-1,T+1):- malfunction_custom(A,D,T), D>1.
+at(A,T+1,P):- malfunction_custom(A,_,T),at(A,T,P) .
+:- malfunction_custom(A,_,T),not at(A,T,P),first_at(A,T+1,P).
+
+% malfunction adjustments
+delay_turn(T):- malfunction_custom(A,_,T).
+delay(D):-D=#count{T:delay_turn(T)}.
+% extend time upon malfunction
+time_delay(1..T):-time(T),delay(0).
+time_delay(Tmal..T+D+1):-time(T), delay(D), malfunction(A,_,Tmal).
+% extend end upon malfunction
+end_delay(A,V,D+T):-end(A,V,T),delay(D).
+
 
 % Guess first_at
-{first_at(A,T2,subcell(P,D)): time(T2), T2>T,T2>1 }=1 :- start(A,P,T,D).
+{first_at(A,T2,subcell(P,D)): time_delay(T2), T2>T,T2>1 }=1 :- start(A,P,T,D).
 % at/3 should use the direction within the cell 
 % which is always the opposite of the direction faced
 reverse(n,s).reverse(s,n).reverse(w,e).reverse(e,w).
@@ -20,18 +37,23 @@ subcell(end).subcell(start).
 % or stay in place; trains disappear upon completion
 % edge(in_subcell,out_next_subcell)
 % at(Agent, Timestamp, (Position, Direction within subcell) )
+
+
+
 1={at(A,T,subcell(V1,D));
 at(A,T,subcell(V2,Dnew)):edge(subcell(V2,Dnew),subcell(V1,D))
-;at(A,T,subcell(end)):edge(subcell(V2,_),subcell(V1,D)),end(A,V2,_)} :- 
-	at(A,T-1,subcell(V1,D)), time(T).
+;at(A,T,subcell(end)):edge(subcell(V2,_),subcell(V1,D)),end_delay(A,V2,_)} :- 
+	at(A,T-1,subcell(V1,D)), time_delay(T).
 
 % and all trains must reach an end
 end(A,T):- at(A,T,subcell(end)).
-busy(A,T,V):- at(A,T,subcell(end)), end(A,V,_).
+busy(A,T,V):- at(A,T,subcell(end)), end_delay(A,V,_).
 :- busy(A,T,V),busy(B,T,V),A<B.
 
-end(A,T):- end(A,T-1),time(T).
-:- train(A), not end(A,T), end(A,_,T).
+end(A,T):- end(A,T-1),time_delay(T).
+:- train(A), not end(A,T), end_delay(A,_,T).
+
+%end_delay(A,V,T):-end(A,V,T).
 
 % enforce vertex, edge and swap constraints
 :- at(A,T,subcell(V,D)), at(B,T,subcell(V,D2)), A<B.
