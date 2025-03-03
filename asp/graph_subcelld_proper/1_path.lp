@@ -34,15 +34,21 @@ subcell(end).
 % or stay in place; trains disappear upon completion
 % edge(in_subcell,out_next_subcell)
 % at(Agent, Timestamp, (Position, Direction within subcell) )
-1={at(A,T,subcell(V1,D));
-at(A,T,subcell(V2,Dnew)):edge(subcell(V2,Dnew),subcell(V1,D))
-;at(A,T,subcell(end)):edge(subcell(V2,_),subcell(V1,D)),end_delay(A,V2,_)} :- 
-	at(A,T-1,subcell(V1,D)), time_delay(T).
+{at(A,T,P)}:- at(A,T-1,P), 
+	time_delay(T),end_delay(A,_,TLast),T<TLast.
+{at(A,T,subcell(V2,Dnew))}:- at(A,T-1,subcell(V1,D)), 
+	edge(subcell(V2,Dnew),subcell(V1,D)),
+	end_delay(A,_,TLast), T<TLast,time_delay(T).
+{at(A,T,subcell(end))}:- at(A,T-1,subcell(V1,D)), 
+	edge(subcell(V2,_),subcell(V1,D)),
+	end_delay(A,V2,TLast),T<TLast,time_delay(T).
+:- 2{at(A,T,P)},train(A),time_delay(T).
+
 % and all trains must reach an end
 end(A,T):- at(A,T,subcell(end)).
-busy(A,T,V):- at(A,T,subcell(end)), end_delay(A,V,_).
-:- busy(A,T,V),busy(B,T,V),A<B.%no two trains ending at same time
 end(A,T):- end(A,T-1),time_delay(T).
+busy(A,T,V):- at(A,T,subcell(end)), end_delay(A,V,_).
+:- busy(A,T,V),busy(B,T,V),A<B.%no two trains ending at same time and place
 :- train(A), not end(A,T), end_delay(A,_,T).
 
 % enforce vertex, edge and swap constraints
