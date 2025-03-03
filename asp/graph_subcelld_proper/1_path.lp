@@ -7,6 +7,7 @@
 #const imax=1.
 %#show at/3.
 #show malfunction/3.
+%#show end_delay/3.
 
 % malfunction time
 malfunction_custom(A,D,T):- malfunction(A,D,T), D>1.
@@ -25,33 +26,28 @@ end_delay(A,V,D+T):-end(A,V,T),delay(D).
 
 
 % Guess first_at
-{first_at(A,T2,subcell(P,D)): time_delay(T2), T2>T,T2>1 }=1 :- start(A,P,T,D).
+{first_at(A,T2,subcell(P,D)): time_delay(T2), T2>T,T2>0 }=1 :- start(A,P,T,D).
 % at/3 should use the direction within the cell 
 % which is always the opposite of the direction faced
 reverse(n,s).reverse(s,n).reverse(w,e).reverse(e,w).
 at(A,T,subcell(P,Din)):- first_at(A,T,subcell(P,Dout)),reverse(Din,Dout).
 :- at(A,1,_).
-subcell(end).subcell(start).
+subcell(start).
 
 % a train may come to a diferent place if a vertex allows it to 
 % or stay in place; trains disappear upon completion
 % edge(in_subcell,out_next_subcell)
 % at(Agent, Timestamp, (Position, Direction within subcell) )
-
-
-
 1={at(A,T,subcell(V1,D));
 at(A,T,subcell(V2,Dnew)):edge(subcell(V2,Dnew),subcell(V1,D))
 ;at(A,T,subcell(end)):edge(subcell(V2,_),subcell(V1,D)),end_delay(A,V2,_)} :- 
 	at(A,T-1,subcell(V1,D)), time_delay(T).
-
 % and all trains must reach an end
 end(A,T):- at(A,T,subcell(end)).
 busy(A,T,V):- at(A,T,subcell(end)), end_delay(A,V,_).
-:- busy(A,T,V),busy(B,T,V),A<B.
-
+:- busy(A,T,V),busy(B,T,V),A<B.%no two trains ending at same time
 end(A,T):- end(A,T-1),time_delay(T).
-:- train(A), not end(A,T), end_delay(A,_,T).
+%:- train(A), not end(A,T), end_delay(A,_,T).
 
 %end_delay(A,V,T):-end(A,V,T).
 
