@@ -1,15 +1,23 @@
 #!/bin/bash
 
-# Check if an argument is provided
-if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 <path_to_pkl_folder>"
+# Check if two arguments are provided
+if [ "$#" -ne 2 ]; then
+    echo "Usage: $0 <path_to_params.py> <path_to_pkl_folder>"
     exit 1
 fi
 
-# Assign the first argument to the variable
-pkl_folder="$1"
+# Assign the arguments to variables
+params_file="$1"
+pkl_folder="$2"
+
 # Normalize the folder path by removing trailing slashes
 pkl_folder="${pkl_folder%/}"
+
+# Check if the params file exists
+if [ ! -f "$params_file" ]; then
+  echo "Error: File '$params_file' does not exist."
+  exit 1
+fi
 
 # Check if the folder exists
 if [ ! -d "$pkl_folder" ]; then
@@ -29,10 +37,9 @@ for instance in "$pkl_folder"/*.pkl; do
   fi
 
   # Run the solve.py command
-  echo "Running 'python solve.py $instance'"
-  python solve.py "$instance" --no-render > /dev/null 2>&1
+  echo "Running 'python solve.py $params_file $instance --no-horizon'"
+  python solve.py "$params_file" "$instance" --no-horizon > /dev/null 2>&1
 
-  
   # Check if the command was successful
   if [ $? -ne 0 ]; then
     echo "Failed to process $instance"
