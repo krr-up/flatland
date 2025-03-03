@@ -5,16 +5,12 @@
 %% at/3: Agent, Time, Subcell(Position,Direction)
 %% and base problem atoms that must be forwarded
 #const imax=1.
-%#show at/3.
-#show malfunction/3.
-%#show end_delay/3.
 
 % malfunction time
 malfunction_custom(A,D,T):- malfunction(A,D,T), D>1.
 malfunction_custom(A,D-1,T+1):- malfunction_custom(A,D,T), D>1.
 at(A,T+1,P):- malfunction_custom(A,_,T),at(A,T,P) .
 :- malfunction_custom(A,_,T),not at(A,T,P),first_at(A,T+1,P).
-
 % malfunction adjustments
 delay_turn(T):- malfunction_custom(A,_,T).
 delay(D):-D=#count{T:delay_turn(T)}.
@@ -25,14 +21,14 @@ time_delay(Tmal..T+D+1):-time(T), delay(D), malfunction(A,_,Tmal).
 end_delay(A,V,D+T):-end(A,V,T),delay(D).
 
 
-% Guess first_at
+% Guessing first_at
 {first_at(A,T2,subcell(P,D)): time_delay(T2), T2>T,T2>0 }=1 :- start(A,P,T,D).
 % at/3 should use the direction within the cell 
 % which is always the opposite of the direction faced
 reverse(n,s).reverse(s,n).reverse(w,e).reverse(e,w).
 at(A,T,subcell(P,Din)):- first_at(A,T,subcell(P,Dout)),reverse(Din,Dout).
 :- at(A,1,_).
-subcell(start).
+subcell(end).
 
 % a train may come to a diferent place if a vertex allows it to 
 % or stay in place; trains disappear upon completion
@@ -49,15 +45,15 @@ busy(A,T,V):- at(A,T,subcell(end)), end_delay(A,V,_).
 end(A,T):- end(A,T-1),time_delay(T).
 :- train(A), not end(A,T), end_delay(A,_,T).
 
-
 % enforce vertex, edge and swap constraints
 :- at(A,T,subcell(V,D)), at(B,T,subcell(V,D2)), A<B.
 :- at(A,T,subcell(V1,D1)), at(B,T,subcell(V2,D2)),
 	A<B,reverse(D1,D2),
 	edge(subcell(V2,D2),subcell(V1,_)).
 
-% choices + base problem
+% base problem
 save(at(A,T,P)):- at(A,T,P).
 save(end(A,B,C)):- end(A,B,C).
 save(train(A)):- train(A).
+% train choices
 save(start(A,P,T,D)):- start(A,P,T,D).

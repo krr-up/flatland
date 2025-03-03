@@ -14,7 +14,7 @@ dir_move(n,(-1,0)).dir_move(e,(0,1)).dir_move(s,(1,0)).dir_move(w,(0,-1)).
 %% Conversion
 % decode track
 % D1 is the direction faced going in the cell
-% D2 is the direction when facing the next cell 
+% D2 is the direction facing towards next cell 
 cell_useful(Pos,N):- cell(Pos,N),N>0.
 trackparts(Pos,D1,D2) :- cell_useful(Pos,N), dir_bit(D1,N1), dir_bit(D2,N2),
     1 = ((N / 16**N1) \ 16 / 2**N2) \ 2.
