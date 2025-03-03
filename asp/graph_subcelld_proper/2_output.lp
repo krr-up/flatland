@@ -3,8 +3,8 @@
 
 % action given to start
 a(A,2,0):- train(A).
-a(A,2,T) :- time(T),first_at(A,T+1,_).
-a(A,4,T) :- not at(A,T+1,_),train(A),time(T),time(T+1).
+a(A,2,T) :- time_delay(T),first_at(A,T+1,_).
+a(A,4,T) :- not at(A,T+1,_),train(A),time_delay(T),time_delay(T+1).
 
 % stop action if an agent waits
 a(A,4,T) :- at(A,T+1,V), at(A,T,V).

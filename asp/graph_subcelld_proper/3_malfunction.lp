@@ -9,7 +9,8 @@ save(trackparts(Pos,D1,D2)) :- trackparts(Pos,D1,D2).
 save(subcell(Pos,D)) :- subcell(Pos,D).
 save(edge(U,V)) :- edge(U,V).
 save(time(T)):- time(T).
-
+% malfunction-forwarding
+save(malfunction_custom(A,D,T)):-malfunction_custom(A,D,T).
 
 % load map
 cell_useful(U,V) :- load(cell_useful(U,V)).
@@ -21,13 +22,11 @@ time(T):- load(time(T)).
 end(A,B,C):- load(end(A,B,C)).
 train(A):- load(train(A)).
 start(A,P,T,D):- load(start(A,P,T,D)).
+% malfunction-forwarding
+malfunction_custom(A,D,T):-load(malfunction_custom(A,D,T)).
 % train information
-at(A,T,P):- load(at(A,T,P)),malfunction(_,_,TLast),T <= TLast.
+at(A,T,P):- load(at(A,T,P)),malfunction(_,_,TLast),T < TLast.
 
-% malfunction time
-malfunction_custom(A,D,T):- malfunction(A,D,T), D>1.
-malfunction_custom(A,D-1,T+1):- malfunction_custom(A,D,T), D>1.
-at(A,T+1,P):- malfunction_custom(A,_,T),at(A,T,P) .
-:- malfunction_custom(A,_,T),not at(A,T,P),first_at(A,T+1,P).
+
 
 #show malfunction/3.
