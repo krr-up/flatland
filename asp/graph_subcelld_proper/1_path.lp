@@ -13,9 +13,10 @@ at(A,T+1,P):- malfunction_custom(A,_,T),at(A,T,P) .
 :- malfunction_custom(A,_,T),not at(A,T,P),first_at(A,T+1,P).
 % malfunction adjustments
 delay(D):-D=#count{T:malfunction_custom(_,_,T)}.
+max_t(N):-N=#max{T:end(_,_,T)}.
 % extend time upon malfunction
-time_delay(1..T):-time(T),delay(0).
-time_delay(Tmal..T+D+1):-time(T), delay(D), malfunction(A,_,Tmal).
+time_delay(1..T):-max_t(T),delay(0).
+time_delay(Tmal..T+D+1):-max_t(T), delay(D), malfunction(A,_,Tmal).
 % extend end upon malfunction
 end_delay(A,V,D+T):-end(A,V,T),delay(D).
 

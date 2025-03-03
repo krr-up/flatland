@@ -29,10 +29,10 @@ edge(subcell((X,Y),D),subcell((X2,Y2),Dnew)) :-
     X+Xadd=X2,Y+Yadd=Y2.
 
 % basic initialization
-time(0..T) :- end(_,_,T).
+%time(0..T) :- end(_,_,T).
 
 save(cell_useful(U,V)) :- cell_useful(U,V).
 save(trackparts(Pos,D1,D2)) :- trackparts(Pos,D1,D2).
 save(subcell(Pos,D)) :- subcell(Pos,D).
 save(edge(U,V)) :- edge(U,V).
-save(time(T)):- time(T).
+%save(time(T)):- time(T).
