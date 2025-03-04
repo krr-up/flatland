@@ -23,6 +23,14 @@ end(A,B,C):- load(end(A,B,C)).
 train(A):- load(train(A)).
 start(A,P,T,D):- load(start(A,P,T,D)).
 % train information
-at(A,T,P):- load(at(A,T,P)),malfunction(_,_,TLast),T < TLast.
+affected(A) :- malfunction(A,_,_).
+affected(A) :- 
+	affected(B), malfunction(_,_,T),time_delay(T+1),
+	load(at(B,T,(V,_))), 
+	load(at(A,T+1,(V,_))).
+malfunction_custom(B,1,T):-affected(B), malfunction(_,_,T).
+
+at(A,T,P):- load(at(A,T,P)),malfunction(A,_,TLast),T < TLast.
+at(A,T,P):- load(at(A,T,P)),malfunction(B,_,TLast),A<B,T <= TLast.
 % malfunction-forwarding
 malfunction_custom(A,D,T):-load(malfunction_custom(A,D,T)).
