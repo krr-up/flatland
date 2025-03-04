@@ -9,7 +9,6 @@ save(cell_useful(U,V)) :- cell_useful(U,V).
 save(trackparts(Pos,D1,D2)) :- trackparts(Pos,D1,D2).
 save(subcell(Pos,D)) :- subcell(Pos,D).
 save(edge(U,V)) :- edge(U,V).
-save(time(T)):- time(T).
 % base problem
 save(at(A,T,P)) :- at(A,T,P).
 save(end(A,B,C)):- end(A,B,C).
@@ -25,7 +24,6 @@ cell_useful(U,V) :- load(cell_useful(U,V)).
 trackparts(Pos,D1,D2) :- load(trackparts(Pos,D1,D2)).
 subcell(Pos,D) :- load(subcell(Pos,D)).
 edge(U,V):- load(edge(U,V)).
-time(T):- load(time(T)).
 % base problem
 end(A,B,C):- load(end(A,B,C)).
 train(A):- load(train(A)).
