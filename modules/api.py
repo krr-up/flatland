@@ -15,6 +15,7 @@ class FlatlandPlan(Application):
         self.env = env
         self.actions = actions
         self.action_list = None
+        self.save_context = None
 
     def main(self, ctl, files):
         # add encodings
@@ -43,7 +44,7 @@ class FlatlandPlan(Application):
 
         # capture output actions for renderer
         #return(build_action_list(models))
-        self.action_list = build_action_list(models)
+        self.action_list, self.save_context = build_action_list(models)
 
 
 # let's see later whether we even need this
