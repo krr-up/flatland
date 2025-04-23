@@ -80,6 +80,19 @@ def create_env():
     )
     return env
 
+def accelerator(env, a):
+    """
+    a function to gradually increase the speed of a train when it moves from a stopped position
+    """
+    pass
+    # max_speed = env.agent[a].speed_counter._speed
+    # inv_speed = 1/speed
+
+    # if (env.agent[a].initial_position == env.agent[a].position) & env.agent[a].speed_counter.counter == 0:
+    #     speed = 
+    
+    # if 
+
 
 def flatland_3_0_example(sleep_for_animation, do_rendering):
     np.random.seed(1)
@@ -121,12 +134,16 @@ def flatland_3_0_example(sleep_for_animation, do_rendering):
     score = 0
     # Run episode
     frame_step = 0
-    for step in range(500):
+    for step in range(750):
         # print(env.agents[0])
         if env.agents[0].initial_position == env.agents[0].position:
-            env.agents[0].speed_counter._speed = 0.25
-        elif env.agents[0].speed_counter._speed == 0.25:
-            env.agents[0].speed_counter._speed = 0.5
+            env.agents[0].speed_counter._speed = 1./5.
+        elif env.agents[0].speed_counter._speed == 1./5.:
+            env.agents[0].speed_counter._speed = 1./4.
+        elif env.agents[0].speed_counter._speed == 1./4.:
+            env.agents[0].speed_counter._speed = 1./3.
+        elif env.agents[0].speed_counter._speed == 1./3.:
+            env.agents[0].speed_counter._speed = 1./2.
         else: 
             env.agents[0].speed_counter._speed = 1.0
 
