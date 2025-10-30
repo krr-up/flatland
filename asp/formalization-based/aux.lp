@@ -1,4 +1,4 @@
-%% -- UTILITIES -- %%
+% -- UTILITIES -- %
 
 % Directions
 dir(n).
@@ -18,7 +18,7 @@ offset(s, 1, 0).
 offset(w, 0,-1). 
 offset(e, 0, 1).
 
-%% -- TRACK TYPES -- %%
+% -- TRACK TYPES -- %
 
 % Track Type 1 - Straight
 connection(32800,   (n,s)).
@@ -91,19 +91,19 @@ connection(6672,    (w,n)).
 connection(Type,(D,D')) :- connection(Type,(D',D)).
 
 
-%% -- HTC -- %%
+% -- HTC -- %
 htc(Type,(D,D'))            :-  connection(Type,(From,D')),
                                 inverse(From,D).
 
 
-%% -- ADJACENCY -- %%
+% -- ADJACENCY -- %
 adjacent((X,Y),D,(X',Y'))   :-  cell((X,Y),_),
                                 offset(D,Dx,Dy),
                                 X'=X+Dx, Y'=Y+Dy,
                                 cell((X',Y'),_).
 
 
-%% -- CONNECTEDNESS -- %%
+% -- CONNECTEDNESS -- %
 connected((X,Y),D,(X',Y'))  :-  cell((X,Y),Type),           % cell c
                                 cell((X',Y'),Type'),        % cell c'
                                 adjacent((X,Y),D,(X',Y')),  % rule (a)
