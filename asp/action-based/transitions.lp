@@ -137,10 +137,10 @@ transition(6672 , (n,l)).
 transition(6672 , (e,r)).
 
 % Track Type 7 - Dead end
-transition(8192, (n,f)).
-transition(4   , (w,f)).
-transition(128 , (s,f)).
-transition(256 , (e,f)).
+% transition(8192, (n,f)).
+% transition(4   , (w,f)).
+% transition(128 , (s,f)).
+% transition(256 , (e,f)).
 
 % Choice
 % given an orientation and a track type, the train has a choice
