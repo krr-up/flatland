@@ -1,8 +1,8 @@
 % -- SUBNODES & EDGES -- %
 subnode(X,Y,D)                  :-  cell((X,Y),Type), htc(Type, (D,_); Type, (_,D)).
-edge((X1,Y1,D1), (X2,Y2,D2))    :-  subnode(X1,Y1,D1), subnode(X2,Y2,D2),               % (c,d) and (c',d')
-                                    connected((X1,Y1),D1,(X2,Y2)),                      % connectedness rule
-                                    cell((X2,Y2), Type2), htc(Type2, (D1,D2)).          % (d,d") in Htc' and d" is fixed
+edge((X1,Y1,D1), (X2,Y2,D2))    :-  subnode(X1,Y1,D1), subnode(X2,Y2,D2),               
+                                    connected((X1,Y1),D1,(X2,Y2)),                      
+                                    cell((X2,Y2), Type2), htc(Type2, (D1,D2)).          
 
 decision(X,Y,D)                 :-  subnode(X,Y,D), cell((X',Y'),_), #count{ D' : edge((X,Y,D),(X',Y',D')) } > 1.
 

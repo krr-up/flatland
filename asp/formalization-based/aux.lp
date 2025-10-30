@@ -104,8 +104,8 @@ adjacent((X,Y),D,(X',Y'))   :-  cell((X,Y),_),
 
 
 % -- CONNECTEDNESS -- %
-connected((X,Y),D,(X',Y'))  :-  cell((X,Y),Type),           % cell c
-                                cell((X',Y'),Type'),        % cell c'
-                                adjacent((X,Y),D,(X',Y')),  % rule (a)
-                                htc(Type,(D',D)),           % rule (b)
-                                htc(Type',(D,D'')).         % rule (c)
+connected((X,Y),D,(X',Y'))  :-  cell((X,Y),Type),           
+                                cell((X',Y'),Type'),        
+                                adjacent((X,Y),D,(X',Y')),  
+                                htc(Type,(D',D)),           
+                                htc(Type',(D,D'')).         
