@@ -46,7 +46,62 @@ class RandomAgent:
     def load(self, filename):
         # Load a policy
         return
+    
 
+class SpeedManager:
+    def __init__(self, speed, max_speed):
+        self.speed = 1.0
+        self.MAX_SPEED = 1.0
+
+
+    def get_speed(self):
+        """
+        return the current speed of the train
+        """
+        return(self.speed)
+    
+
+    def get_max_speed(self):
+        """
+        return the maximum speed of the train
+        """
+        return(self.MAX_SPEED)
+
+
+    def accelerate(self):
+        """
+        accelerate the train
+        return: faster speed of train
+        """
+        if self.speed == 0.0:
+            self.speed = self.MAX_SPEED / 4.0
+        elif self.speed == self.MAX_SPEED / 4.0:
+            self.speed = self.MAX_SPEED / 2.0
+        elif self.speed == self.MAX_SPEED / 2.0:
+            self.speed = self.MAX_SPEED
+
+        return(self.speed)   
+
+
+    def brake(self):
+        """
+        accelerate the train
+        return: slower speed of train
+        """
+        if self.speed == self.MAX_SPEED:
+            self.speed = self.MAX_SPEED / 2.0
+        else:
+            self.speed = 0.0
+
+        return(self.speed)
+
+# class ActionManager:
+#     def __init__(self, state, action, prev_action):
+#         self.state = TrainState.WAITING
+#         self.action = None
+#         self.old_action = None
+
+    
 
 def create_env():
     # Use the new sparse_rail_generator to generate feasible network configurations with corresponding tasks
@@ -79,19 +134,6 @@ def create_env():
         obs_builder_object=TreeObsForRailEnv(max_depth=3, predictor=ShortestPathPredictorForRailEnv())
     )
     return env
-
-def accelerator(env, a):
-    """
-    a function to gradually increase the speed of a train when it moves from a stopped position
-    """
-    pass
-    # max_speed = env.agent[a].speed_counter._speed
-    # inv_speed = 1/speed
-
-    # if (env.agent[a].initial_position == env.agent[a].position) & env.agent[a].speed_counter.counter == 0:
-    #     speed = 
-    
-    # if 
 
 
 def flatland_3_0_example(sleep_for_animation, do_rendering):
@@ -136,19 +178,23 @@ def flatland_3_0_example(sleep_for_animation, do_rendering):
     frame_step = 0
     for step in range(750):
         # print(env.agents[0])
-        if env.agents[0].initial_position == env.agents[0].position:
-            env.agents[0].speed_counter._speed = 1./5.
-        elif env.agents[0].speed_counter._speed == 1./5.:
-            env.agents[0].speed_counter._speed = 1./4.
-        elif env.agents[0].speed_counter._speed == 1./4.:
-            env.agents[0].speed_counter._speed = 1./3.
-        elif env.agents[0].speed_counter._speed == 1./3.:
-            env.agents[0].speed_counter._speed = 1./2.
-        else: 
-            env.agents[0].speed_counter._speed = 1.0
+        # if env.agents[0].initial_position == env.agents[0].position:
+        #     env.agents[0].speed_counter._speed = 1./5.
+        # elif env.agents[0].speed_counter._speed == 1./5.:
+        #     env.agents[0].speed_counter._speed = 1./4.
+        # elif env.agents[0].speed_counter._speed == 1./4.:
+        #     env.agents[0].speed_counter._speed = 1./3.
+        # elif env.agents[0].speed_counter._speed == 1./3.:
+        #     env.agents[0].speed_counter._speed = 1./2.
+        # else: 
+        #     env.agents[0].speed_counter._speed = 1.0
+
+        # speeds = []
+        speeds = SpeedManager()
 
         # Chose an action for each agent in the environment
         for a in range(env.get_num_agents()):
+            # speeds[a] = SpeedManager()
             action = agent.act(obs[a])
             action_dict.update({a: action})
 
