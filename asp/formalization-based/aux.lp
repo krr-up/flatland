@@ -1,21 +1,18 @@
-% Directions
-dir(n).
-dir(s).
-dir(w).
-dir(e).
+%%#(\label{aux:begin-util}#)
+dir(n). dir(s). dir(w). dir(e).
 
-% Inverse directions
 inverse(n,s).      
 inverse(s,n).      
 inverse(w,e).      
 inverse(e,w).
 
-% Offset shifts
 offset(n,-1, 0). 
 offset(s, 1, 0). 
 offset(w, 0,-1). 
 offset(e, 0, 1).
+%%#(\label{aux:end-util}#)
 
+%%#(\label{aux:begin-track-type}#)
 % Track Type 1 - Straight
 connection(32800,   (n,s)).
 connection(1025,    (w,e)).
@@ -29,6 +26,7 @@ connection(2064,    (w,n)).
 % Track Type 2 - Simple switch (left)
 connection(37408,   (n,s)).
 connection(37408,   (s,w)).
+%%#(\label{aux:end-track-type-preview}#)
 connection(17411,   (w,e)).
 connection(17411,   (e,s)).
 connection(32872,   (n,s)).
@@ -85,8 +83,9 @@ connection(6672,    (s,w)).
 connection(6672,    (w,n)).
 
 connection(Type,(D,D')) :- connection(Type,(D',D)).
+%%#(\label{aux:end-track-type}#)
 
-
+%%#(\label{aux:begin-def}#)
 htc(Type,(D,D')) :- connection(Type,(From,D')), 
     inverse(From,D).
 adjacent((X,Y),D,(X',Y')) :- cell((X,Y),_), 
@@ -94,4 +93,5 @@ adjacent((X,Y),D,(X',Y')) :- cell((X,Y),_),
     cell((X',Y'),_).
 connected((X,Y),D,(X',Y')) :- cell((X,Y),Type), cell((X',Y'),Type'), 
     adjacent((X,Y),D,(X',Y')), 
-    htc(Type,(D',D)), htc(Type',(D,D'')).         
+    htc(Type,(D',D)), htc(Type',(D,D'')).   
+%%#(\label{aux:end-def}#)      
