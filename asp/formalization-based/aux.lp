@@ -1,16 +1,24 @@
-%% -- GENERIC -- %%
-offset(n,-1, 0). 
-offset(s, 1, 0). 
-offset(w, 0,-1). 
-offset(e, 0, 1).
+%% -- UTILITIES -- %%
 
+% Directions
+dir(n).
+dir(s).
+dir(w).
+dir(e).
+
+% Inverse directions
 inverse(n,s).      
 inverse(s,n).      
 inverse(w,e).      
 inverse(e,w).
 
+% Offset shifts
+offset(n,-1, 0). 
+offset(s, 1, 0). 
+offset(w, 0,-1). 
+offset(e, 0, 1).
 
-%% -- transitions.lp -- %%
+%% -- TRACK TYPES -- %%
 
 % Track Type 1 - Straight
 connection(32800,   (n,s)).
@@ -82,17 +90,22 @@ connection(6672,    (w,n)).
 
 connection(Type,(D,D')) :- connection(Type,(D',D)).
 
-%% -- SUBNODES -- %%
-subnode(X,Y,D)                  :-  cell((X,Y),Type), connection(Type, (D,D'); Type, (D',D)).
-edge((X1,Y1,D1), (X2,Y2,D2))    :-  subnode(X1,Y1,D1), subnode(X2,Y2,D2),                                   % (c,d) and (c',d')
-                                    offset(D1,Dx,Dy), X2=X1+Dx, Y2=Y1+Dy,                                   % a(c,d) = c'
-                                    cell((X1,Y1), Type1), connection(Type1, (_,D1)),                        % (d',d) in Htc
-                                    cell((X2,Y2), Type2), connection(Type2, (From,D2)), inverse(D1,From).   % (d,d") in Htc' and d" is fixed
 
-decision(X,Y,D)                 :-  subnode(X,Y,D), cell((X',Y'),_), #count{ D' : edge((X,Y,D),(X',Y',D')) } > 1.
+%% -- HTC -- %%
+htc(Type,(D,D'))            :-  connection(Type,(From,D')),
+                                inverse(From,D).
 
-%% -- PATH DEFINITION -- %%
-:- step((X1,Y1),D1,T), step((X2,Y2),D2,T+1), not edge((X1,Y1,D1),(X2,Y2,D2)).
-:- step((X,Y),D,T1), step((X,Y),D,T2), not T1=T2.
 
-#show edge/2.
+%% -- ADJACENCY -- %%
+adjacent((X,Y),D,(X',Y'))   :-  cell((X,Y),_),
+                                offset(D,Dx,Dy),
+                                X'=X+Dx, Y'=Y+Dy,
+                                cell((X',Y'),_).
+
+
+%% -- CONNECTEDNESS -- %%
+connected((X,Y),D,(X',Y'))  :-  cell((X,Y),Type),           % cell c
+                                cell((X',Y'),Type'),        % cell c'
+                                adjacent((X,Y),D,(X',Y')),  % rule (a)
+                                htc(Type,(D',D)),           % rule (b)
+                                htc(Type',(D,D'')).         % rule (c)
