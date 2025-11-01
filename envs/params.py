@@ -10,13 +10,13 @@ max_rail_pairs_in_city=2
 remove_agents_at_target=True
 
 # speed
-# speed_ratio_map={1 : 1}
-speed_ratio_map= {
-        1:   0.50,
-        1/2: 0.00,  
-        1/3: 0.00,
-        1/4: 0.50
-    }
+speed_ratio_map={1 : 1}
+# speed_ratio_map= {
+#         1:   0.50,
+#         1/2: 0.00,  
+#         1/3: 0.00,
+#         1/4: 0.50
+#     }
 
 # malfunctions
 malfunction_rate=0/30
