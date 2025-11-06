@@ -79,11 +79,13 @@ connection(6672,    (w,n)).
 
 connection(Type,(D,D')) :- connection(Type,(D',D)).
 
-htc(Type,(D,D')) :- connection(Type,(From,D')), 
+transition(Type,(D,D')) :- connection(Type,(From,D')), 
     inverse(From,D).
+
 adjacent((X,Y),D,(X',Y')) :- cell((X,Y),_), 
     offset(D,Dx,Dy), X'=X+Dx, Y'=Y+Dy, 
     cell((X',Y'),_).
+
 connected((X,Y),D,(X',Y')) :- cell((X,Y),Type), cell((X',Y'),Type'), 
     adjacent((X,Y),D,(X',Y')), 
-    htc(Type,(D',D)), htc(Type',(D,D'')).   
+    transition(Type,(D',D)), transition(Type',(D,D'')).   
