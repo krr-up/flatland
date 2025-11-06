@@ -3,7 +3,7 @@ node(C;C') :- edge(C,C').
 
 p(C,C',D) :- connected(C,D,C'),
     cell(C,Type),
-    htc(Type,(D,D')).
+    transition(Type,(D,D')).
 q(C,C',D) :- connected(C,D,C').
 
 :- step(C,D,T), step(C',D',T+1), not edge(C,C').
