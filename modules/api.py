@@ -33,7 +33,7 @@ class FlatlandPlan(Application):
         
         # ground the program
         ctl.ground([("base", [])], context=self)
-        ctl.configuration.solve.models="1"
+        ctl.configuration.solve.models="-1"
 
         # solve and save models
         models = []
@@ -44,8 +44,6 @@ class FlatlandPlan(Application):
         # capture output actions for renderer
         #return(build_action_list(models))
         self.action_list = build_action_list(models)
-
-
 
 
 # let's see later whether we even need this

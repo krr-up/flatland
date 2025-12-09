@@ -18,6 +18,7 @@ from clingo.application import Application, clingo_main
 # rendering visualizations
 from flatland.utils.rendertools import RenderTool
 import imageio.v2 as imageio
+from PIL import Image, ImageDraw, ImageFont
 
 
 class MalfunctionManager():
@@ -76,9 +77,9 @@ class SimulationManager():
         # actions that have already been executed
         # wait actions that are enforced because of malfunctions
         # future actions that were previously planned
-        past = convert_formers_to_clingo(actions[:timestep+1])
+        past = convert_formers_to_clingo(actions[:timestep])
         present = convert_malfunctions_to_clingo(malfunctions, timestep)
-        future = convert_futures_to_clingo(actions[timestep+1:])
+        future = convert_futures_to_clingo(actions[timestep:])
         return(past + present + future)
 
     def update_actions(self, context) -> list:
@@ -133,7 +134,8 @@ def check_params(par):
 def get_args():
     """ capture command line inputs """
     parser = ArgumentParser()
-    parser.add_argument('env', type=str, default='', nargs=1, help='the flatland environment as a .pkl file')
+    parser.add_argument('env', type=str, default='', nargs=1, help='the Flatland environment as a .pkl file')
+    parser.add_argument('--no-render', action='store_true', help='if included, run the Flatland simulation but do not render a GIF')
     return(parser.parse_args())
 
 
@@ -142,6 +144,7 @@ def main():
     if check_params(params):
         args: Namespace = get_args()
         env = pickle.load(open(args.env[0], "rb"))
+        no_render = args.no_render
 
     # create manager objects
     mal = MalfunctionManager(env.get_num_agents())
@@ -149,9 +152,11 @@ def main():
     log = OutputLogManager()
 
     # envrionment rendering
-    env_renderer = RenderTool(env, gl="PILSVG")
-    env_renderer.reset()
-    images = []
+    env_renderer = None
+    if not no_render:
+        env_renderer = RenderTool(env, gl="PILSVG")
+        env_renderer.reset()
+        images = []
 
     # create directory
     os.makedirs("tmp/frames", exist_ok=True)
@@ -163,6 +168,10 @@ def main():
 
     timestep = 0
     while len(actions) > timestep:
+        # add to the log
+        for a in actions[timestep]:
+            log.add(f'{a};{timestep};{env.agents[a].position};{dir_map[env.agents[a].direction]};{state_map[env.agents[a].state]};{action_map[actions[timestep][a]]}\n')
+
         _, _, done, info = env.step(actions[timestep])
 
         # end if simulation is finished
@@ -178,25 +187,52 @@ def main():
             actions = sim.update_actions(context)
 
         mal.deduct() #??? where in the loop should this go - before context?
-
+        
         # render an image
         filename = 'tmp/frames/flatland_frame_{:04d}.png'.format(timestep)
         if env_renderer is not None:
             env_renderer.render_env(show=True, show_observations=False, show_predictions=False)
             env_renderer.gl.save_image(filename)
             env_renderer.reset()
-        images.append(imageio.imread(filename))
 
-        # add to the log
-        for a in actions[timestep]:
-            log.add(f'{a};{timestep};{env.agents[a].position};{dir_map[env.agents[a].direction]};{state_map[env.agents[a].state]};{action_map[actions[timestep][a]]}\n')
+            # add red numbers in the corner
+            with Image.open(filename) as img:
+                draw = ImageDraw.Draw(img)
+                padding = 10
+                font_size = int(min(img.width, img.height) * 0.10)
+                try:
+                    font = ImageFont.truetype("modules/LiberationMono-Regular.ttf", font_size)
+                except IOError:
+                    font = ImageFont.load_default()
+                
+                # prepare text
+                text = f"{timestep}"
+                size = font.getbbox(text)
+                text_width = size[2]-size[0]
+                text_position = (img.width - text_width - padding, padding)
+                
+                # draw text borders
+                x, y = text_position
+                border_color = "black"
+                for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1), (-1, -1), (-1, 1), (1, -1), (1, 1)]:
+                    draw.text((x + dx, y + dy), text, fill=border_color, font=font)
+                
+                # draw text
+                draw.text(text_position, text, fill="red", font=font)
+                img.save(filename)
+
+            images.append(imageio.imread(filename))
+        # images.append(imageio.imread(filename))
 
         timestep = timestep + 1
 
-    # combine images into gif
+    # get time stamp for gif and output log
     stamp = time.time()
     os.makedirs(f"output/{stamp}", exist_ok=True)
-    imageio.mimsave(f"output/{stamp}/animation.gif", images, format='GIF', loop=0, duration=240)
+    
+    # combine images into gif
+    if not no_render:
+        imageio.mimsave(f"output/{stamp}/animation.gif", images, format='GIF', loop=0, duration=240)
 
     # save output log
     log.save(stamp)
