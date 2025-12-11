@@ -1,25 +1,11 @@
-% pre-spawn logic
-step(Z,(X,Y),D,T) :- start(Z,(X,Y),T,D).
+% work in progress!!!
+#const global = 3.
 
-% first step
-{ step(Z,N',D',T) : p(N,N',D), q(N,N',D') } = 1 :- start(Z,N,T-1,D).
+{ step(Z,C,T) : edge(C,C') } = 1 :- T = 1..global, start(Z,_,_,_).
 
-% subsequent steps
-{ step(Z,N',D',T) : node(N') } = 1 :- 
-    step(Z,N,D,T-1),
-    p(N,N',D),
-    q(N,N',D'),
-    % end(Z,_,End), not T > End.
-    T <= 2.
+:- step(Z,C0,T-1), step(Z,C,T), step(Z,C',T+1), q(C0,C,D), not p(C,C',D).
+:- step(Z,C,T), step(Z,C',T-1), q(C',C,D),
+    step(Z,C,T'), step(Z,C'',T'-1), q(C'',C,D'), 
+    not D=D'.  % no repetitions
 
- 
-
-% % constraints
-% :- end(Z,(X,Y),_), not step(Z,(X,Y),_,_).               % we must reach the end
-% :- step(Z1,(X,Y),_,T), step(Z2,(X,Y),_,T), Z1>Z2.       % vertex conflict
-% :- step(Z1,(X,Y),_,T), step(Z2,(X,Y),_,T-1), Z1>Z2 .    % edge conflict
-
-
-
-% #show p/3.
-#show step/4.
+#show step/3.   
