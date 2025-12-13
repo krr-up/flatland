@@ -1,11 +1,11 @@
 dir(n). dir(s). dir(w). dir(e).
 
-inverse(n,s). inverse(s,n).      
+inverse(n,s). inverse(s,n).
 inverse(w,e). inverse(e,w).
 
-offset(n,-1, 0). 
-offset(s, 1, 0). 
-offset(w, 0,-1). 
+offset(n,-1, 0).
+offset(s, 1, 0).
+offset(w, 0,-1).
 offset(e, 0, 1).
 
 % Track Type 1 - Straight
@@ -13,15 +13,14 @@ connection(32800,   (n,s)).
 connection(1025,    (w,e)).
 
 % Track Type 8 - Curve
-connection(4608,    (s,w)).   
+connection(4608,    (s,w)).
 connection(16386,   (e,s)).
 connection(72,      (n,e)).
-connection(2064,    (w,n)). 
+connection(2064,    (w,n)).
 
 % Track Type 2 - Simple switch (left)
 connection(37408,   (n,s)).
-connection(37408,   (s,w)).
-%%#(\label{aux:end-track-type-preview}#)
+connection(37408,   (s,w)).%%#(\label{aux:end-track-type-preview}#)
 connection(17411,   (w,e)).
 connection(17411,   (e,s)).
 connection(32872,   (n,s)).
@@ -79,13 +78,13 @@ connection(6672,    (w,n)).
 
 connection(Type,(D,D')) :- connection(Type,(D',D)).
 
-transition(Type,(D,D')) :- connection(Type,(From,D')), 
+transition(Type,(D,D')) :- connection(Type,(From,D')),
     inverse(From,D).
 
-adjacent((X,Y),D,(X',Y')) :- cell((X,Y),_), 
-    offset(D,Dx,Dy), X'=X+Dx, Y'=Y+Dy, 
+adjacent((X,Y),D,(X',Y')) :- cell((X,Y),_),
+    offset(D,Dx,Dy), X'=X+Dx, Y'=Y+Dy,
     cell((X',Y'),_).
 
-connected((X,Y),D,(X',Y')) :- cell((X,Y),Type), cell((X',Y'),Type'), 
-    adjacent((X,Y),D,(X',Y')), 
-    transition(Type,(D',D)), transition(Type',(D,D'')).   
+connected((X,Y),D,(X',Y')) :- cell((X,Y),Type), cell((X',Y'),Type'),
+    adjacent((X,Y),D,(X',Y')),
+    transition(Type,(D',D)), transition(Type',(D,D'')).
