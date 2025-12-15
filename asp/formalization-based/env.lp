@@ -1,6 +1,6 @@
 % sub-node example environment #2
 % running exaxmple used in the formalization paper
-start(0,(1,1),0,e).
+start(0,(0,2),0,e).
 end(0,(2,2),12).
 speed(0,1).
 
