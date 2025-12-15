@@ -5,6 +5,9 @@
 :- path(Z,C,C',_,T), not path(Z,_,C,C',T-1), T=2..h.
 :- path(Z,C,C',_,T), path(Z,C,C',_,T'), T>T'.
 
+% :- path(Z,C,C',_,1), not hyperedge(B,C,C'), node(B).
+% :- path(Z,C,_,_,1), not hyperedge(A,B,C), node(A), node(B).
+
 :- start(Z,C,T,_), not path(Z,C,_,_,T+1).
 :- end(Z,C,_),     not path(Z,_,_,C,h).
 
