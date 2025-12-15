@@ -1,12 +1,6 @@
-dir(n). dir(s). dir(w). dir(e).
-
-inverse(n,s). inverse(s,n).
-inverse(w,e). inverse(e,w).
-
-offset(n,-1, 0).
-offset(s, 1, 0).
-offset(w, 0,-1).
-offset(e, 0, 1).
+    dir(n).         dir(s).        dir(w).         dir(e).
+inverse(n,s).   inverse(s,n).  inverse(w,e).   inverse(e,w).
+ offset(n,-1,0). offset(s,1,0). offset(w,0,-1). offset(e,0,1).
 
 % Track Type 1 - Straight
 connection(32800,   (n,s)).
@@ -25,8 +19,8 @@ connection(17411,   (w,e)).
 connection(17411,   (e,s)).
 connection(32872,   (n,s)).
 connection(32872,   (n,e)).
-connection(3089,    (w,e)).
-connection(3089,    (w,n)).
+connection(3089,(w,e)).
+connection(3089,(w,n)).
 
 % Track Type 9 - Simple switch (right)
 connection(49186,   (n,s)).
