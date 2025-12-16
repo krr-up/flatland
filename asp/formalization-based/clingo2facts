@@ -1,0 +1,3 @@
+#!/bin/bash
+
+clingo $@ --out-ifs='\n'
