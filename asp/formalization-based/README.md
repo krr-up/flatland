@@ -23,13 +23,13 @@ clingo directions.lp grid-functions.lp tracks.lp example.lp hypergraph.lp```
 ### Directed graph with edge functions ###
 
 ```text
-clingo directions.lp grid-functions.lp tracks.lp example.lp edge-functions.lp | \
+clingo1facts directions.lp grid-functions.lp tracks.lp example.lp edge-functions.lp | \
 clingo2facts - pathfinding-functions.lp -c h=10```
 
 ### Directed graph with sub-nodes ###
 
 ```text
-clingo directions.lp grid-functions.lp tracks.lp example.lp subnodes.lp | \
+clingo1facts directions.lp grid-functions.lp tracks.lp example.lp subnodes.lp | \
 clingo2facts - pathfinding-subnodes.lp -c h=10```
 
 ### Directed graph with hyper-edges ###
