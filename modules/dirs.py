@@ -27,8 +27,8 @@ def find_start(dir):
     max_env = 0
     try:
         for f in os.listdir(dir + 'pkl/'):
-            if re.match('env_(\d+).*?\.pkl', f):
-                env_num = int(re.match('env_(\d+).*?\.pkl', f)[1])
+            if re.match(r'env_(\d+).*?\.pkl', f):
+                env_num = int(re.match(r'env_(\d+).*?\.pkl', f)[1])
                 if env_num > max_env:
                     max_env = env_num
         return(max_env+1)
