@@ -4,7 +4,7 @@ import io
 from clingo.symbol import Number
 from clingo.application import Application, clingo_main
 from modules.convert import convert_to_clingo
-from modules.actionlist import build_action_list
+from modules.actionlist import build_action_list, build_context_from_save
 
 class FlatlandPlan(Application):
     """ takes an environment and a set of primary encodings """
@@ -15,6 +15,7 @@ class FlatlandPlan(Application):
         self.env = env
         self.actions = actions
         self.action_list = None
+        self.save_context = None
 
     def main(self, ctl, files):
         # add encodings
@@ -28,7 +29,7 @@ class FlatlandPlan(Application):
         
         # add actions
         if self.actions is not None:
-            print(f".join(self.actions): {' '.join(self.actions)}")
+            # print(f".join(self.actions): {' '.join(self.actions)}")
             ctl.add('base', [], ' '.join(self.actions))
         
         # ground the program
@@ -44,6 +45,7 @@ class FlatlandPlan(Application):
         # capture output actions for renderer
         #return(build_action_list(models))
         self.action_list = build_action_list(models)
+        self.save_context = build_context_from_save(models)
 
 
 # let's see later whether we even need this

@@ -62,8 +62,8 @@ def convert_malfunctions_to_clingo(malfs, timestep) -> str:
     for m in malfs:
         train, duration = m[0], m[1]
         facts.append(f'malfunction({train},{duration},{timestep}).\n')
-        for t in range(timestep+1, timestep+1+m[1]): # remove: make sure this duration should be included (aka remove +1 or keep it?)
-            facts.append(f':- not action(train({train}),wait,{t}).\n') #remove: can this be a list of strings or should it be one long string?
+        # for t in range(timestep+1, timestep+1+m[1]): # remove: make sure this duration should be included (aka remove +1 or keep it?)
+        #     facts.append(f':- not action(train({train}),wait,{t}).\n') #remove: can this be a list of strings or should it be one long string?
 
     return(facts)
 
