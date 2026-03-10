@@ -15,4 +15,20 @@ primary=['asp/tk/encoding_incremental.lp', 'asp/tk/tracks_incremental.lp']
 primary=['asp/tk/speed_revamp.lp', 'asp/tk/tracks.lp']
 # primary=['asp/tk/encoding_transition.lp', 'asp/tk/tracks_transition.lp']
 
+
+# -------------- moving cars --------------
+# ------ batch linking encoding ------ (comment out LIFO encoding to ignore sequencing constraints)
+primary=['asp/cars_choice_order/encoding_incremental_enriched.lp',
+         'asp/cars_choice_order/tracks_incremental_enriched.lp',
+         'asp/cars_choice_order/moving_cars.lp',
+         'asp/cars_choice_order/lifo.lp'
+         ]
+
+# ------ single operation encoding ------ (comment out LIFO encoding to ignore sequencing constraints)
+# primary=['asp/cars_temporal_order/encoding_incremental_enriched.lp',
+#          'asp/cars_temporal_order/tracks_incremental_enriched.lp',
+#          'asp/cars_temporal_order/moving_cars.lp',
+#          'asp/cars_temporal_order/lifo.lp'
+#          ]
+
 secondary=[]
