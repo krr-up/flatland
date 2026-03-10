@@ -11,6 +11,8 @@ car_state(CarID, C, 0) :- car_start(CarID, C).
 % initialize all cars as unlinked
 unlinked(CarID, 0) :- car(CarID).
 
+num_cars(N) :- N = #count { CarID : car(CarID) }.
+
 % optimization goals: maximize delivered value and minimize delivery times
 #maximize { V, CarID : car_arrived(CarID, T), car_value(CarID, V) }.
 #minimize { T, CarID : car_arrived(CarID, T) }.
@@ -28,7 +30,8 @@ car_arrived_by(CarID, t) :-
     Tc <= t.
 
 :- query(t),
-   #count { CarID : car_arrived_by(CarID, t) } < 3.
+   num_cars(N),
+   #count { CarID : car_arrived_by(CarID, t) } < N.
 
 delivered_value(Sum, t) :- Sum = #sum { V, CarID : car_arrived(CarID, _), car_value(CarID, V) }.
 
