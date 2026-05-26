@@ -1,4 +1,4 @@
-# KRR-Flatland
+# KRR-flaspland
 
 ![Flatland animation](https://i.imgur.com/9cNtWjs.gif)
 
@@ -15,7 +15,7 @@ is necessary to integrate Python and ASP.
 
 ## Repository structure
 
-- 📁 `asp` which contains ASP encodings that can be used to handle path generation in Flatland
+- 📁 `asp` where users can place ASP encodings that can be used to handle path generation in Flatland
 - 📁 `doc` which contains thorough documentation about the framework
 - 📁 `envs` which contains pre-fabricated Flatland environments for development and testing
 - 📁 `modules` which contains scripts that assist in bridging the gap between Python and clingo
