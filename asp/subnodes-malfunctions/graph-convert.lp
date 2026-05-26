@@ -1,1 +1,0 @@
-% program to convert grid to subnode graph

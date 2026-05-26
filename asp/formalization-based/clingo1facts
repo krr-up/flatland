@@ -1,3 +1,0 @@
-#!/bin/bash
-
-clingo $@ --outf=0 -V0 --out-atomf=%s. --quiet=1,2,2 | head -n1
