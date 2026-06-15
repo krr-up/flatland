@@ -33,8 +33,10 @@ def build_action_list(models):
     """
     given a model from clingo, build an python action list
     """
+    if not models:
+        raise ValueError("No solution found: the encoding is unsatisfiable.")
     action_list = []
-    for func in models[0]: # only the first model
+    for func in models[-1]:  #last model
         func_name = func.name
         if func_name == "action":
             action = func.arguments[1].name
